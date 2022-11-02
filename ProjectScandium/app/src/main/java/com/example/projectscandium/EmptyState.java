@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -19,19 +18,19 @@ public class EmptyState extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty_state);
+
+        setupSkipButton();
+        setUpAnimation();
     }
 
     // Button to go to tutorial page
     private void setupSkipButton() {
-        Button btn = (Button) findViewById(R.id.skip_button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        Button btn = findViewById(R.id.skip_button);
+        btn.setOnClickListener(view -> {
 
-                // Goes to tutorial page
-                startTutorialPage();
+            // Goes to tutorial page
+            startTutorialPage();
 
-            }
         });
     }
 
@@ -74,5 +73,4 @@ public class EmptyState extends AppCompatActivity {
         Intent i = new Intent(EmptyState.this, TutorialPage.class);
         startActivity(i);
     }
-
 }
