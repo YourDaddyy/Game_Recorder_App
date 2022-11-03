@@ -1,5 +1,12 @@
 package com.example.projectscandium.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ConfigManager {
@@ -53,4 +60,27 @@ public class ConfigManager {
     public ArrayList<Configs> getConfigs() {
         return configs;
     }
+
+    // function to set the array list values
+    public void saveConfigs(Context mContext) {
+        SharedPreferences.Editor editor = mContext.getSharedPreferences("Configs", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(configs);
+        editor.putString("config list", json);
+        editor.apply();
+    }
+
+    // function to get the array list values
+    public void loadConfigs(Context mContext) {
+        SharedPreferences prefs = mContext.getSharedPreferences("Configs", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("config list", null);
+        Type type = new TypeToken<ArrayList<Configs>>() {
+        }.getType();
+        configs = gson.fromJson(json, type);
+        if (configs == null) {
+            configs = new ArrayList<>();
+        }
+    }
+
 }
