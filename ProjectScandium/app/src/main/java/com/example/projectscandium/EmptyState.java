@@ -10,6 +10,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+/**
+ * The welcome page.
+ */
 public class EmptyState extends AppCompatActivity {
 
     private static final int SECONDS = 4000;
