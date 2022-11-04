@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.example.projectscandium.model.Achievements;
+
 /**
  * The tutorial page.
  */
@@ -15,6 +17,8 @@ public class TutorialPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial_page);
+
+        setupSettingsButton();
     }
 
     // Button to go to game configurations page
@@ -30,8 +34,10 @@ public class TutorialPage extends AppCompatActivity {
 
     // Goes to game configurations page activity
     private void startConfigPage() {
-        //Intent i = new Intent(TutorialPage.this, gameConfigurations.class);
-        //startActivity(i);
+//        Intent i = new Intent(TutorialPage.this, AchievementsPage.class);
+        Intent i = new Intent(TutorialPage.this, GameConfigList.class);
+        startActivity(i);
+
     }
 
 }

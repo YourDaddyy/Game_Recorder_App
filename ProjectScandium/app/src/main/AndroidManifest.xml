@@ -13,6 +13,13 @@
         android:theme="@style/Theme.ProjectScandium"
         tools:targetApi="31">
         <activity
+            android:name=".AchievementsPage"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".GameConfigList"
             android:exported="false">
             <meta-data

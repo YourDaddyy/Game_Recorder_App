@@ -1,5 +1,6 @@
 package com.example.projectscandium;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,6 +41,7 @@ public class GameConfig extends AppCompatActivity {
         nameBox = findViewById(R.id.configNameBox);
         upperScoreBox = findViewById(R.id.UpperScoreBox);
         lowerScoreBox = findViewById(R.id.LowerScoreBox);
+
 
         // get the extra info from the intent
         int index = getIntent().getIntExtra("configIndex", -1);
@@ -208,7 +210,11 @@ public class GameConfig extends AppCompatActivity {
                 finish();
             }
         });
+
     }
+
+
+
 
     private boolean checkEmpty(EditText BoxId) {
         if (BoxId.getText().toString().isEmpty()) {
