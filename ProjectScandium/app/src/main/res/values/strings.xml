@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Project Scandium</string>
+    <string name="config_name_text">Config. Name:</string>
+    <string name="upper_score_text">Upper Score:</string>
+    <string name="lower_score_text">Lower Score:</string>
+    <string name="save_config_text">Save</string>
+    <string name="delete_config_text">Delete</string>
+    <string name="config_colon_text">:</string>
+    <string name="config_dash_text">-</string>
+    <string name="add_new_configuration_text">Add new configuration</string>
 </resources>
