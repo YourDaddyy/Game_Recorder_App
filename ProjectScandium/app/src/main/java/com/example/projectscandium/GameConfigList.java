@@ -14,13 +14,15 @@ import java.util.ArrayList;
 
 public class GameConfigList extends AppCompatActivity {
 
-    ConfigManager configManager;
     ListView ConfigList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_config_list);
+
+        // get the game config manager
+        ConfigManager.getInstance().loadConfigs(this);
 
         // get the floating action button and set the click listener
         FloatingActionButton newConfig = findViewById(R.id.newConfigButton);
@@ -38,7 +40,8 @@ public class GameConfigList extends AppCompatActivity {
         ConfigList = findViewById(R.id.configListContainer);
 
         // Access the ConfigManager to get the list of configs
-        configManager = ConfigManager.getInstance();
+        ConfigManager.getInstance().saveConfigs(this);
+        ConfigManager configManager = ConfigManager.getInstance();
 
         // Get a copy of the list of configs to a new array list
         ArrayList<Configs> configs = configManager.getConfigs();
