@@ -43,8 +43,10 @@ public class AchievementsPage extends AppCompatActivity {
         List<Achievements> achievements;
 
         // Some sorta of player count is received
-        int playerCount = 3;
+        int playerCount = 3; //default player count
+        int score = 0; //default score
         AchievementsInterface manager = new AchievementsInterface(playerCount);
+        manager.checkAchievements(score);
 
         // Grabs achievements from interface
         achievements = manager.getAllAchievements();
@@ -87,7 +89,7 @@ public class AchievementsPage extends AppCompatActivity {
 
     // Goes to game configurations page activity
     private void returnToConfigPage() {
-        Intent i = new Intent(AchievementsPage.this, TutorialPage.class);
+        Intent i = new Intent(AchievementsPage.this, GameConfig.class);
         startActivity(i);
     }
 }

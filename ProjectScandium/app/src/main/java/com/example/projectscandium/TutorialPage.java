@@ -34,8 +34,10 @@ public class TutorialPage extends AppCompatActivity {
 
     // Goes to game configurations page activity
     private void startConfigPage() {
-        Intent i = new Intent(TutorialPage.this, AchievementsPage.class);
+//        Intent i = new Intent(TutorialPage.this, AchievementsPage.class);
+        Intent i = new Intent(TutorialPage.this, GameConfigList.class);
         startActivity(i);
+
     }
 
 }
