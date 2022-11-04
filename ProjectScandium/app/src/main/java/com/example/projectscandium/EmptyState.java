@@ -73,7 +73,8 @@ public class EmptyState extends AppCompatActivity {
 
     // Goes to tutorial page activity
     private void startTutorialPage() {
-        Intent i = new Intent(EmptyState.this, TutorialPage.class);
+//        Intent i = new Intent(EmptyState.this, TutorialPage.class);
+        Intent i = new Intent(EmptyState.this, GameConfigList.class);
         startActivity(i);
     }
 }

@@ -20,6 +20,20 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".GameConfigList"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".GameConfig"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AddGame"
             android:exported="false">
             <meta-data
