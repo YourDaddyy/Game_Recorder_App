@@ -13,20 +13,7 @@ public class AchievementsManager implements Iterable<Achievements> {
 
     private final List<Achievements> achievements = new ArrayList<>();
 
-    /*
-      Singleton Support/
-   */
-    private static AchievementsManager instance;
-
-    private AchievementsManager() {
-        //Private to prevent anyone else from instantiating
-    }
-
-    public static AchievementsManager getInstance() {
-        if (instance == null) {
-            instance = new AchievementsManager();
-        }
-        return instance;
+    public AchievementsManager() {
     }
 
     // Adding new achievements
