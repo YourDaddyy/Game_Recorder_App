@@ -29,7 +29,7 @@ public class AchievementsPage extends AppCompatActivity {
         setUpAchievements(3, 0);
 
         // will change page according to config or game played mode
-        modeSetUp();
+        //modeSetUp();
     }
 
     // Sets up the page according to mode (game config or game play)

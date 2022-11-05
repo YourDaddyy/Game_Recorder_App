@@ -23,7 +23,7 @@ public class EmptyStateTutorial extends AppCompatActivity {
         setupSettingsButton();
 
         // Sets page up according to mode: config or play
-        pageSetUp();
+        //pageSetUp();
     }
 
     // Sets up the page according to mode (game config or game play)
