@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TutorialPage">
+    tools:context=".EmptyStateTutorial">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tutorial_content"
         android:layout_width="384dp"
         android:layout_height="425dp"
         android:text="Getting Started... \n \n1. Select Settings button  \n2. Enter the number of players \n3. Choose how to set score \n4. View possible achievement levels based on the number of players by clicking the view levels button \n5. Save your settings by clicking the save button \n6. Enjoy the game! :)"
@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.323" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tutorialTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tutorial"

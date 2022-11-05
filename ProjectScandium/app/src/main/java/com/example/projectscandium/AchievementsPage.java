@@ -17,34 +17,49 @@ import java.util.List;
 
 public class AchievementsPage extends AppCompatActivity {
 
+    public static final String EXTRA_ACHIEVEMENT = "Extra check";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
 
+        // Default mode a
         setupBackButton();
-        setUpAchievements();
+        setUpAchievements(3, 0);
+
+        // will change page according to config or game played mode
+        modeSetUp();
     }
 
-    // Button to go to game configurations page
-    private void setupBackButton() {
-        Button btn = findViewById(R.id.backButton);
-        btn.setOnClickListener(view -> {
+    // Sets up the page according to mode (game config or game play)
+    private void modeSetUp() {
+        Intent intent = getIntent();
 
-            // Goes to game configurations page
-            returnToConfigPage();
+        String type = intent.getStringExtra(EXTRA_ACHIEVEMENT);
 
-        });
+        // Mode is game config
+        if (type.equals("config")){
+            setupBackButton();
+            // Needs to get score and player count somehow
+            setUpAchievements(3,0);
+        }
+
+        // Mode is game play
+        if (type.equals("play")){
+            setupBackButton2();
+            // Needs to get score and player count somehow
+            setUpAchievements(5,0);
+
+        }
+
     }
 
     // Get score and set up achievements
-    private void setUpAchievements() {
+    private void setUpAchievements(int playerCount, int score) {
 
         List<Achievements> achievements;
 
-        // Some sorta of player count is received
-        int playerCount = 3; //default player count
-        int score = 0; //default score
         AchievementsInterface manager = new AchievementsInterface(playerCount);
         manager.checkAchievements(score);
 
@@ -86,10 +101,37 @@ public class AchievementsPage extends AppCompatActivity {
         }
     }
 
+    // Button to go to game configurations page
+    private void setupBackButton() {
+        Button btn = findViewById(R.id.backButton);
+        btn.setOnClickListener(view -> {
+
+            // Goes to game configurations page
+            returnToConfigPage();
+
+        });
+    }
 
     // Goes to game configurations page activity
     private void returnToConfigPage() {
         Intent i = new Intent(AchievementsPage.this, GameConfig.class);
+        startActivity(i);
+    }
+
+    // Button to go to game play page
+    private void setupBackButton2() {
+        Button btn = findViewById(R.id.backButton);
+        btn.setOnClickListener(view -> {
+
+            // Goes to game configurations page
+            returnToGamePage();
+
+        });
+    }
+
+    // Goes to game configurations page activity
+    private void returnToGamePage() {
+        Intent i = new Intent(AchievementsPage.this, AddGame.class);
         startActivity(i);
     }
 }

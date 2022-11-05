@@ -13,7 +13,7 @@ import android.widget.ImageView;
 /**
  * The welcome page.
  */
-public class EmptyState extends AppCompatActivity {
+public class WelcomePage extends AppCompatActivity {
 
     private static final int SECONDS = 4000;
 
@@ -33,6 +33,9 @@ public class EmptyState extends AppCompatActivity {
 
             // Goes to tutorial page
             startTutorialPage();
+
+            // Ends all processes of activity
+            finish();
 
         });
     }
@@ -73,7 +76,7 @@ public class EmptyState extends AppCompatActivity {
 
     // Goes to tutorial page activity
     private void startTutorialPage() {
-        Intent i = new Intent(EmptyState.this, TutorialPage.class);
+        Intent i = new Intent(WelcomePage.this, EmptyStateTutorial.class);
 //        Intent i = new Intent(EmptyState.this, GameConfigList.class);
         startActivity(i);
     }
