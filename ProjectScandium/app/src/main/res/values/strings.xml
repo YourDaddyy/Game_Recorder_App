@@ -9,5 +9,9 @@
     <string name="config_colon_text">:</string>
     <string name="config_dash_text">-</string>
     <string name="add_new_configuration_text">Add new configuration</string>
+    <string name="game_num">Game: %1$d</string>
+    <string name="game_player">Players: %1$d</string>
+    <string name="game_score">Combined Score: %1$d</string>
+    <string name="editGame_title">Edit Game</string>
 
 </resources>
