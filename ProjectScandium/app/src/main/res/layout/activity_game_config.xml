@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".GameConfig">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="4dp" />
+
     <TextView
         android:id="@+id/configNameTxt"
         android:layout_width="wrap_content"
@@ -88,5 +95,15 @@
         android:text="@string/delete_config_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LowerScoreTxt" />
+
+    <Button
+        android:id="@+id/achConfig"
+        android:layout_width="160dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="195dp"
+        android:layout_marginTop="200dp"
+        android:text="@string/config_ach_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveConfig" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
