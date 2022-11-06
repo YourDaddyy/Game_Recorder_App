@@ -12,7 +12,20 @@
     <string name="game_num">Game: %1$d</string>
     <string name="game_player">Players: %1$d</string>
     <string name="game_score">Combined Score: %1$d</string>
+    <string name="game_level">LEVEL: %1$d</string>
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
     <string name="config_tutorial_text">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible achievement levels based configuration by clicking the view achievements button \n5. Enjoy the game! :)</string>
+    <string name="game_tutorial">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the Players and Combined Score \n3. Press the Save Button. \n4. Enjoy the game! :)</string>
+    <string name="players">Players: ####</string>
+    <string name="combined_score">Combined Score: ####</string>
+    <string name="game_1">Game: 1</string>
+    <string name="level">Level: ###</string>
+    <string name="player">Player</string>
+    <string name="player_number_ncombined_score">Player Number\nCombined Score</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="score">Score</string>
+    <string name="addPlayer">%1$d</string>
+    <string name="addScore">%1$d</string>
 </resources>

@@ -7,37 +7,17 @@
     android:background="@drawable/achievement_background"
     tools:context=".AddGame">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.ProjectScandium.AppBarOverlay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0"
-        tools:layout_editor_absoluteX="-16dp">
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_anchor="@+id/appBarLayout"
-        app:layout_anchorGravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.ProjectScandium.PopupOverlay" />
-
+        layout="@layout/toolbar"
+        />
 
     <EditText
         android:id="@+id/player"
         android:layout_width="96dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Player"
+        android:hint="@string/player"
         android:inputType="number"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -46,14 +26,15 @@
         app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.187" />
+        app:layout_constraintVertical_bias="0.187"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/input_Info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="30sp"
-        android:text="Player Number\nCombined Score"
+        android:text="@string/player_number_ncombined_score"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -69,7 +50,7 @@
         android:layout_width="96dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Score"
+        android:hint="@string/score"
         android:inputType="number"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -78,21 +59,22 @@
         app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintVertical_bias="0.257"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Save"
+        android:text="@string/save"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.484" />
+        app:layout_constraintVertical_bias="0.461" />
 
     <TextView
         android:id="@+id/txtRes"
@@ -113,12 +95,14 @@
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="280dp"
-        android:layout_marginTop="5dp"
-        android:text="Delete"
-        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/delete"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtRes" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.554" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
