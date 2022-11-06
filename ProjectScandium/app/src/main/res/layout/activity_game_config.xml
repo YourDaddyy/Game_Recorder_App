@@ -99,7 +99,7 @@
     <Button
         android:id="@+id/achConfig"
         android:layout_width="160dp"
-        android:layout_height="38dp"
+        android:layout_height="48dp"
         android:layout_marginStart="195dp"
         android:layout_marginTop="200dp"
         android:text="@string/config_ach_text"

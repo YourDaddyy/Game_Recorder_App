@@ -46,18 +46,20 @@ public class Configs {
         this.gameConfigName = gameConfigName;
     }
 
-    public void addGame(Game game){
+    public void addGame(Game game) {
         this.games.add(game);
-        this.gameNum ++;
+        this.gameNum++;
     }
 
-    public void deleteGame(int index){
-        if(index == -1){return;}
+    public void deleteGame(int index) {
+        if (index == -1) {
+            return;
+        }
         games.remove(index);
-        this.gameNum --;
+        this.gameNum--;
     }
 
-    public Game searchGame(int index){
+    public Game searchGame(int index) {
         return this.games.get(index);
     }
 

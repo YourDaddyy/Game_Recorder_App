@@ -257,6 +257,7 @@ public class GameConfig extends AppCompatActivity {
         // listener for the achievement button
         achievementButton.setOnClickListener(view -> {
             Intent new_intent = new Intent(this, AchievementsPage.class);
+            new_intent.putExtra("configIndex", index);
             startActivity(new_intent);
         });
 
