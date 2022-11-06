@@ -249,6 +249,11 @@ public class GameConfig extends AppCompatActivity {
         });
 
         Button achievementButton = findViewById(R.id.achConfig);
+        if (Objects.equals(mode, "NewConfig")) {
+            achievementButton.setVisibility(View.GONE);
+        } else if (Objects.equals(mode, "EditConfig")) {
+            achievementButton.setVisibility(View.VISIBLE);
+        }
         // listener for the achievement button
         achievementButton.setOnClickListener(view -> {
             Intent new_intent = new Intent(this, AchievementsPage.class);
