@@ -70,7 +70,7 @@ public class GameList extends AppCompatActivity {
     private void populateGameList() {
         Configs config = cm.getConfigById(configPos);
         TextView txtEmpty = findViewById(R.id.txtEmpty);
-        if(config.getGameNum() == 99){
+        if(config.getGameNum() == 0){
             txtEmpty.setVisibility(View.VISIBLE);
         }else{
             txtEmpty.setVisibility(View.GONE);
@@ -112,7 +112,8 @@ public class GameList extends AppCompatActivity {
             txtScore.setText(getString(R.string.game_score, currentGame.getCombinedScore()));
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
-            txtLevel.setText(getString(R.string.game_level, 0));
+            int level = 0;
+            txtLevel.setText(getString(R.string.game_level, level));
 
             return itemView;
         }
