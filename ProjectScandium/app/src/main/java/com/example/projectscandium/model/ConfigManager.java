@@ -22,9 +22,6 @@ public class ConfigManager {
         return instance;
     }
 
-    // TODO: Array list to store games
-    // private ArrayList<Game> games = new ArrayList<>();
-
     // Array list to store configs
     private ArrayList<Configs> configs = new ArrayList<>();
 

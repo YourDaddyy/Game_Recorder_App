@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,11 +21,11 @@ import java.util.Objects;
 public class GameConfig extends AppCompatActivity {
 
     // get the game config manager
-    ConfigManager configManager;
-    Configs config;
+    private ConfigManager configManager;
+    private Configs config;
 
-    String name, upperScore, lowerScore, mode;
-    boolean emptyName, upperScoreCheck, lowerScoreCheck;
+    private String name, upperScore, lowerScore, mode;
+    private boolean emptyName, upperScoreCheck, lowerScoreCheck;
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
 
@@ -118,12 +119,17 @@ public class GameConfig extends AppCompatActivity {
                 // get the value of the upper score box
                 try {
                     upperScore = upperScoreBox.getText().toString();
-                    if (Integer.parseInt(upperScore) < 0) {
-                        upperScoreBox.setError("Score cannot be negative");
+                    if (upperScore.isEmpty()) {
+                        upperScoreBox.setError("Score cannot be empty");
                         upperScoreCheck = true;
                     } else {
-                        upperScoreBox.setError(null);
-                        upperScoreCheck = false;
+                        if (Integer.parseInt(upperScore) < 0) {
+                            upperScoreBox.setError("Score cannot be negative");
+                            upperScoreCheck = true;
+                        } else {
+                            upperScoreBox.setError(null);
+                            upperScoreCheck = false;
+                        }
                     }
                 } catch (NumberFormatException e) {
                     upperScoreBox.setError("Score must be a number");
@@ -149,12 +155,17 @@ public class GameConfig extends AppCompatActivity {
                 // get the value of the lower score box
                 try {
                     lowerScore = lowerScoreBox.getText().toString();
-                    if (Integer.parseInt(lowerScore) < 0) {
-                        lowerScoreBox.setError("Score cannot be negative");
+                    if (lowerScore.isEmpty()) {
+                        lowerScoreBox.setError("Score cannot be empty");
                         lowerScoreCheck = true;
                     } else {
-                        lowerScoreBox.setError(null);
-                        lowerScoreCheck = false;
+                        if (Integer.parseInt(lowerScore) < 0) {
+                            lowerScoreBox.setError("Score cannot be negative");
+                            lowerScoreCheck = true;
+                        } else {
+                            lowerScoreBox.setError(null);
+                            lowerScoreCheck = false;
+                        }
                     }
                 } catch (NumberFormatException ex) {
                     // set an error message based on the exception
@@ -210,6 +221,11 @@ public class GameConfig extends AppCompatActivity {
 
         // when the delete button is clicked
         Button deleteButton = findViewById(R.id.deleteConfig);
+        if (Objects.equals(mode, "NewConfig")) {
+            deleteButton.setVisibility(View.GONE);
+        } else if (Objects.equals(mode, "EditConfig")) {
+            deleteButton.setVisibility(View.VISIBLE);
+        }
         deleteButton.setOnClickListener(view -> {
             if (index != -1) {
                 // create a dialog box to confirm the delete
@@ -233,6 +249,11 @@ public class GameConfig extends AppCompatActivity {
         });
 
         Button achievementButton = findViewById(R.id.achConfig);
+        if (Objects.equals(mode, "NewConfig")) {
+            achievementButton.setVisibility(View.GONE);
+        } else if (Objects.equals(mode, "EditConfig")) {
+            achievementButton.setVisibility(View.VISIBLE);
+        }
         // listener for the achievement button
         achievementButton.setOnClickListener(view -> {
             Intent new_intent = new Intent(this, AchievementsPage.class);
@@ -247,9 +268,9 @@ public class GameConfig extends AppCompatActivity {
             if (BoxId == nameBox) {
                 nameBox.setError("Name cannot be empty");
             } else if (BoxId == upperScoreBox) {
-                upperScoreBox.setError("Score cannot be negative");
+                upperScoreBox.setError("Score cannot be empty");
             } else if (BoxId == lowerScoreBox) {
-                lowerScoreBox.setError("Score cannot be negative");
+                lowerScoreBox.setError("Score cannot be empty");
             }
             return false;
         } else {

@@ -3,12 +3,16 @@ package com.example.projectscandium;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,12 +23,13 @@ import com.example.projectscandium.model.Game;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GameList extends AppCompatActivity {
     //Singleton the game list
-    private ConfigManager cm = ConfigManager.getInstance();
+    private final ConfigManager cm = ConfigManager.getInstance();
     //Setup local game list
-    private ArrayList<Game> games = new ArrayList<>();
+    private final ArrayList<Game> games = new ArrayList<>();
     private ArrayAdapter<Game> adapter;
 
     private int configPos;
@@ -42,16 +47,16 @@ public class GameList extends AppCompatActivity {
 
         populateGameList();
         populateListView();
-
-        registerCLickCallback();
     }
 
     // reset game list page
     @Override
     public void onResume() {
         super.onResume();
+        cm.saveConfigs(this);
         games.clear();
         populateGameList();
+        populateListView();
         adapter.notifyDataSetChanged();
     }
 
@@ -59,26 +64,33 @@ public class GameList extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         configPos = intent.getIntExtra(CONFIG_POS, 0);
-    }
-
-    // create Intent Portal
-    public static Intent makeIntent(Context context, int pos){
-        Intent intent = new Intent(context, AddGame.class);
-        intent.putExtra(CONFIG_POS, pos);
-        return intent;
+        Configs config = cm.getConfigById(configPos);
+        String configName = config.getGameConfigName();
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Configuration: " + configName);
     }
 
     // get the game list from singleton
     private void populateGameList() {
-        Configs config = cm.getConfigById(configPos);
-        if(config.getGameNum() == 0){
-            // empty state...
-        }else{
-            for(int i = 0; i < config.getGameNum(); i++){
-                games.add(config.searchGame(i));
+        try {
+            ListView gameList = findViewById(R.id.gameList);
+            Configs config = cm.getConfigById(configPos);
+            TextView txtEmpty = findViewById(R.id.gameTutorial);
+            if (config.getGameNum() == 0) {
+                txtEmpty.setVisibility(View.VISIBLE);
+                SpannableString spannableString = new SpannableString(getString(R.string.game_tutorial));
+                ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
+                spannableString.setSpan(teal, 34, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                txtEmpty.setText(spannableString);
+                gameList.setEmptyView(txtEmpty);
+            } else {
+                txtEmpty.setVisibility(View.GONE);
+                for (int i = 0; i < config.getGameNum(); i++) {
+                    games.add(config.searchGame(i));
+                }
             }
+        } catch (IndexOutOfBoundsException e){
+            finish();
         }
-
     }
 
     // create list view
@@ -102,7 +114,7 @@ public class GameList extends AppCompatActivity {
 
             // set game num txt
             TextView txtNum = itemView.findViewById(R.id.GameNum);
-            txtNum.setText(getString(R.string.game_num, position));
+            txtNum.setText(getString(R.string.game_num, position+1));
 
             // Set Player txt
             TextView txtPlayer = itemView.findViewById(R.id.txtPlayer);
@@ -112,36 +124,42 @@ public class GameList extends AppCompatActivity {
             TextView txtScore = itemView.findViewById(R.id.txtScore);
             txtScore.setText(getString(R.string.game_score, currentGame.getCombinedScore()));
 
+            TextView txtTime = itemView.findViewById(R.id.txtTime);
+            txtTime.setText(currentGame.getTime());
+
+            TextView txtLevel = itemView.findViewById(R.id.txtLevel);
+            int level = 0;
+            txtLevel.setText(getString(R.string.game_level, level));
+
             return itemView;
         }
-    }
-
-    //Set up switch activity for click game
-    private void registerCLickCallback() {
-        ListView list = findViewById(R.id.gameList);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Intent intent = AddGame.makeIntent(GameList.this, configPos, position);
-                startActivity(intent);
-            }
-        });
     }
 
     private void setupToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void setupAddGameBtn() {
         FloatingActionButton btn = findViewById(R.id.addGamebtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
-                startActivity(intent);
-            }
+        btn.setOnClickListener(v -> {
+            Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
+            startActivity(intent);
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.tool_bar_item, menu);
+        return true;
+    }
+
+    public void EditConfig(MenuItem menuItem) {
+        Intent intent = new Intent(GameList.this, GameConfig.class);
+        intent.putExtra("configIndex", configPos);
+        startActivity(intent);
     }
 
 }
