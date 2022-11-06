@@ -1,6 +1,7 @@
 package com.example.projectscandium;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.example.projectscandium.model.AchievementsManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AchievementsPage extends AppCompatActivity {
 
@@ -24,8 +26,14 @@ public class AchievementsPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(v -> finish());
+        getSupportActionBar().setTitle(R.string.config_ach_text);
+
         // Default mode a
-        setupBackButton();
         setUpAchievements(3, 0);
 
         // will change page according to config or game played mode
@@ -40,14 +48,12 @@ public class AchievementsPage extends AppCompatActivity {
 
         // Mode is game config
         if (type.equals("config")){
-            setupBackButton();
             // Needs to get score and player count somehow
             setUpAchievements(3,0);
         }
 
         // Mode is game play
         if (type.equals("play")){
-            setupBackButton2();
             // Needs to get score and player count somehow
             setUpAchievements(5,0);
 
@@ -99,39 +105,5 @@ public class AchievementsPage extends AppCompatActivity {
                 state.setText("Completion: " + status);
             });
         }
-    }
-
-    // Button to go to game configurations page
-    private void setupBackButton() {
-        Button btn = findViewById(R.id.backButton);
-        btn.setOnClickListener(view -> {
-
-            // Goes to game configurations page
-            returnToConfigPage();
-
-        });
-    }
-
-    // Goes to game configurations page activity
-    private void returnToConfigPage() {
-        Intent i = new Intent(AchievementsPage.this, GameConfig.class);
-        startActivity(i);
-    }
-
-    // Button to go to game play page
-    private void setupBackButton2() {
-        Button btn = findViewById(R.id.backButton);
-        btn.setOnClickListener(view -> {
-
-            // Goes to game configurations page
-            returnToGamePage();
-
-        });
-    }
-
-    // Goes to game configurations page activity
-    private void returnToGamePage() {
-        Intent i = new Intent(AchievementsPage.this, AddGame.class);
-        startActivity(i);
     }
 }

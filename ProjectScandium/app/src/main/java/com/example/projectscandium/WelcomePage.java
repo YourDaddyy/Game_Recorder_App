@@ -76,8 +76,8 @@ public class WelcomePage extends AppCompatActivity {
 
     // Goes to tutorial page activity
     private void startTutorialPage() {
-        Intent i = new Intent(WelcomePage.this, EmptyStateTutorial.class);
-//        Intent i = new Intent(EmptyState.this, GameConfigList.class);
+//        Intent i = new Intent(WelcomePage.this, EmptyStateTutorial.class);
+        Intent i = new Intent(WelcomePage.this, GameConfigList.class);
         startActivity(i);
     }
 }
