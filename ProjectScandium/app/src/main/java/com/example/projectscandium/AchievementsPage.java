@@ -5,21 +5,22 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.projectscandium.model.Achievements;
-import com.example.projectscandium.model.AchievementsInterface;
-import com.example.projectscandium.model.AchievementsList;
-import com.example.projectscandium.model.AchievementsManager;
+import com.example.projectscandium.model.ConfigManager;
+import com.example.projectscandium.model.Configs;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class AchievementsPage extends AppCompatActivity {
-
-    public static final String EXTRA_ACHIEVEMENT = "Extra check";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,77 +34,62 @@ public class AchievementsPage extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
         getSupportActionBar().setTitle(R.string.config_ach_text);
 
-        // Default mode a
-        setUpAchievements(3, 0);
+        // retrieve the value playerInput
+        EditText playerNum = findViewById(R.id.playerInput);
+        ListView achievementList = findViewById(R.id.achievementsList);
 
-        // will change page according to config or game played mode
-        //modeSetUp();
-    }
+        // on text changed listener for lower score box
+        playerNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    // Sets up the page according to mode (game config or game play)
-    private void modeSetUp() {
-        Intent intent = getIntent();
+            }
 
-        String type = intent.getStringExtra(EXTRA_ACHIEVEMENT);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-        // Mode is game config
-        if (type.equals("config")){
-            // Needs to get score and player count somehow
-            setUpAchievements(3,0);
-        }
+            }
 
-        // Mode is game play
-        if (type.equals("play")){
-            // Needs to get score and player count somehow
-            setUpAchievements(5,0);
-
-        }
-
-    }
-
-    // Get score and set up achievements
-    private void setUpAchievements(int playerCount, int score) {
-
-        List<Achievements> achievements;
-
-        AchievementsInterface manager = new AchievementsInterface(playerCount);
-        manager.checkAchievements(score);
-
-        // Grabs achievements from interface
-        achievements = manager.getAllAchievements();
-
-        ArrayList<Button> buttonList  = new ArrayList<Button>();
-
-        // Populates buttons array
-        buttonList.add(findViewById(R.id.achievement1));
-        buttonList.add(findViewById(R.id.achievement2));
-        buttonList.add(findViewById(R.id.achievement3));
-        buttonList.add(findViewById(R.id.achievement4));
-        buttonList.add(findViewById(R.id.achievement5));
-        buttonList.add(findViewById(R.id.achievement6));
-        buttonList.add(findViewById(R.id.achievement7));
-        buttonList.add(findViewById(R.id.achievement8));
-
-        // Sets the achievements to be displayed
-        TextView name = findViewById(R.id.achievement_name);
-        TextView rqd = findViewById(R.id.achievement_rqd);
-        TextView info = findViewById(R.id.achievement_info);
-        TextView state = findViewById(R.id.achievement_status);
-
-        // Iterates through achievements and buttons
-        for (int i = 0; i < 8; i++) {
-            int baseScore = achievements.get(i).getScore();
-            String achName = achievements.get(i).getName();
-            boolean status = achievements.get(i).isCompletion();
-
-            // Sets up buttons with achievements
-            buttonList.get(i).setOnClickListener(view -> {
-                // Updates info
-                name.setText(achName);
-                rqd.setText("Complete score of " + baseScore + " to complete!");
-                info.setText("0 / " + baseScore);
-                state.setText("Completion: " + status);
-            });
-        }
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    // if the playerNum is empty, set the list to be empty
+                    if (playerNum.getText().toString().isEmpty()) {
+                        achievementList.setAdapter(null);
+                    } else {
+                        // get the extra info from the intent
+                        int index = getIntent().getIntExtra("configIndex", 0);
+                        // get the config
+                        Configs config = ConfigManager.getInstance().getConfigById(index);
+                        // create a new achievements object
+                        Achievements achievements = new Achievements();
+                        int upperBound = config.getGreatExpectedScore();
+                        int lowerBound = config.getPoorExpectedScore();
+                        // get the number of players
+                        int numPlayers = Integer.parseInt(playerNum.getText().toString());
+                        // set the score bounds
+                        achievements.setScoreBounds(lowerBound, upperBound, numPlayers);
+                        // add the achievements name and the lower bound of the score to the list
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AchievementsPage.this,
+                                android.R.layout.simple_list_item_2, android.R.id.text1, achievements.achievements) {
+                            @Override
+                            public View getView(int position, View convertView, ViewGroup parent) {
+                                View view = super.getView(position, convertView, parent);
+                                TextView text1 = view.findViewById(android.R.id.text1);
+                                TextView text2 = view.findViewById(android.R.id.text2);
+                                text1.setText(achievements.getAchievementName(position));
+                                text2.setText("Minimum Score: " + achievements.getAchievementValue(position));
+                                return view;
+                            }
+                        };
+                        achievementList.setAdapter(adapter);
+                    }
+                } catch (NumberFormatException e) {
+                    // if the playerNum is empty, set the list to be empty
+                    achievementList.setAdapter(null);
+                    playerNum.setError("Please enter a number");
+                }
+            }
+        });
     }
 }

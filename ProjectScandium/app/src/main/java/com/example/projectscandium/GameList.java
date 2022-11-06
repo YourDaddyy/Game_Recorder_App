@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.projectscandium.model.Achievements;
 import com.example.projectscandium.model.ConfigManager;
 import com.example.projectscandium.model.Configs;
 import com.example.projectscandium.model.Game;
@@ -122,14 +123,16 @@ public class GameList extends AppCompatActivity {
 
             // Set Score txt
             TextView txtScore = itemView.findViewById(R.id.txtScore);
-            txtScore.setText(getString(R.string.game_score, currentGame.getCombinedScore()));
+            int gameScore = currentGame.getCombinedScore();
+            txtScore.setText(getString(R.string.game_score, gameScore));
 
             TextView txtTime = itemView.findViewById(R.id.txtTime);
             txtTime.setText(currentGame.getTime());
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
-            int level = 0;
-            txtLevel.setText(getString(R.string.game_level, level));
+            Achievements achievements = currentGame.getAchievements();
+            String achievement = achievements.getAchievement(gameScore);
+            txtLevel.setText(getString(R.string.game_level, achievement));
 
             return itemView;
         }

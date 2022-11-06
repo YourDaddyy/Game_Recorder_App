@@ -12,7 +12,7 @@
     <string name="game_num">Game: %1$d</string>
     <string name="game_player">Players: %1$d</string>
     <string name="game_score">Combined Score: %1$d</string>
-    <string name="game_level">LEVEL: %1$d</string>
+    <string name="game_level">LEVEL: %1$s</string>
     <string name="game_time">%1$d</string>
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
@@ -32,4 +32,9 @@
     <string name="edit_button_text">EDIT</string>
     <string name="time">Time</string>
     <string name="sep_3_15_20pm">Sep 3 @ 15:20PM</string>
+    <string name="achievement_base_score_requirements">Achievement Base Score Requirements</string>
+    <string name="current_score_rqd_score">Current Score / Rqd Score</string>
+    <string name="achievement_name">Achievement Name</string>
+    <string name="completion_status">Completion Status</string>
+    <string name="achievements_players">Enter Players:</string>
 </resources>

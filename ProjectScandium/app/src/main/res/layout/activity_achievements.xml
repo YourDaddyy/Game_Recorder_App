@@ -4,163 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/achievement_background"
     tools:context=".AchievementsPage">
+
+        <TextView
+            android:id="@+id/enter_players_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/achievements_players"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="4dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement1"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.207"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.436" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement2"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.436" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement3"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.396" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement4"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.207"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.295" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement5"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.295" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement6"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.233" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement7"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat7"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.156" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement8"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.207"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.156" />
-
-        <TextView
-            android:id="@+id/achievement_name"
+        <EditText
+            android:id="@+id/playerInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Achievement Name"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.786" />
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="numberSigned"
+            app:layout_constraintStart_toEndOf="@+id/enter_players_text"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <TextView
-            android:id="@+id/achievement_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current Score / Rqd Score"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ListView
+            android:id="@+id/achievementsList"
+            android:layout_width="382dp"
+            android:layout_height="523dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.897" />
-
-        <TextView
-            android:id="@+id/achievement_rqd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Achievement Base Score Requirements"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.842" />
-
-        <TextView
-            android:id="@+id/achievement_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Completion Status"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintTop_toBottomOf="@+id/playerInput" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

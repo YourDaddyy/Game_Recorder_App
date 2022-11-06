@@ -6,6 +6,7 @@ public class Game {
     private int combinedScore;
     private int playerNum;
     private String time;
+    private Achievements achievements;
 
     public Game(int playerNum, int combinedScore, String string) {
         this.combinedScore = combinedScore;
@@ -40,5 +41,13 @@ public class Game {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Achievements getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(Achievements achievements) {
+        this.achievements = achievements;
     }
 }
