@@ -1,6 +1,7 @@
 package com.example.projectscandium;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,23 +10,31 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projectscandium.model.ConfigManager;
 import com.example.projectscandium.model.Configs;
 import com.example.projectscandium.model.Game;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 public class AddGame extends AppCompatActivity {
 
     private int players, scores;
     private int gamePos, configPos;
     Button btnDelete, btnSave;
+    private String time;
 
     //Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -46,7 +55,9 @@ public class AddGame extends AppCompatActivity {
 
         // set title
         setTitle("Game: " + (config.getGameNum()+1));
-
+        time = setTime();
+        TextView tvTime = findViewById(R.id.Time);
+        tvTime.setText(time);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -143,10 +154,22 @@ public class AddGame extends AppCompatActivity {
                 String sScore = ((EditText)findViewById(R.id.score)).getText().toString();
                 scores = Integer.parseInt(sScore);
                 checkSave();
-                Game game = new Game(players, scores);
-                config.addGame(game);
             }
         });
+    }
+
+    //Set Game Created Time
+    private String setTime() {
+        LocalDate localDate = LocalDate.now();
+
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("MMM dd");
+        String Date = formatter1.format(localDate);
+
+        LocalTime localTime = LocalTime.now();
+
+        DateTimeFormatter formatter6 = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
+        String Time = formatter6.format(localTime);
+        return Date + " @ " + Time;
     }
 
     private void checkSave(){
@@ -155,13 +178,8 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle("Save Game?");
         builder.setMessage("Game will be saved.");
         builder.setPositiveButton("Yes", (dialog, which) -> {
-            Game newGame = new Game(players, scores);
-//            if(gamePos == -1) {
-//
-//                config.getGames().add(newGame);
-//            }else {
-//                config.getGames().get(gamePos).restoreGame(players, scores);
-//            }
+            Game game = new Game(players, scores, time);
+            config.addGame(game);
             finish();
         });
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();

@@ -13,6 +13,7 @@
     <string name="game_player">Players: %1$d</string>
     <string name="game_score">Combined Score: %1$d</string>
     <string name="game_level">LEVEL: %1$d</string>
+    <string name="game_time">%1$d</string>
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
     <string name="config_tutorial_text">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible achievement levels based configuration by clicking the view achievements button \n5. Enjoy the game! :)</string>
@@ -29,4 +30,6 @@
     <string name="addPlayer">%1$d</string>
     <string name="addScore">%1$d</string>
     <string name="edit_button_text">EDIT</string>
+    <string name="time">Time</string>
+    <string name="sep_3_15_20pm">Sep 3 @ 15:20PM</string>
 </resources>

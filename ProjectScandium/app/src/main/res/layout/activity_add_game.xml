@@ -61,6 +61,17 @@
         app:layout_constraintVertical_bias="0.257"
         android:autofillHints="" />
 
+    <TextView
+        android:id="@+id/Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/sep_3_15_20pm"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"

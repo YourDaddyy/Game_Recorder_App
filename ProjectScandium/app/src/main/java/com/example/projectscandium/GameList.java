@@ -124,6 +124,9 @@ public class GameList extends AppCompatActivity {
             TextView txtScore = itemView.findViewById(R.id.txtScore);
             txtScore.setText(getString(R.string.game_score, currentGame.getCombinedScore()));
 
+            TextView txtTime = itemView.findViewById(R.id.txtTime);
+            txtTime.setText(currentGame.getTime());
+
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
             int level = 0;
             txtLevel.setText(getString(R.string.game_level, level));
