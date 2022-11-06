@@ -29,6 +29,7 @@ public class GameList extends AppCompatActivity {
 
     private int configPos;
     private static final String CONFIG_POS = "com.example.projectscandium.GameList - the Config position";
+    private Configs config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +60,9 @@ public class GameList extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         configPos = intent.getIntExtra(CONFIG_POS, 0);
-    }
-
-    // create Intent Portal
-    public static Intent makeIntent(Context context, int pos){
-        Intent intent = new Intent(context, AddGame.class);
-        intent.putExtra(CONFIG_POS, pos);
-        return intent;
+        config = cm.getConfigById(configPos);
+        String configName = config.getGameConfigName();
+        getSupportActionBar().setTitle("Configuration: " + configName);
     }
 
     // get the game list from singleton

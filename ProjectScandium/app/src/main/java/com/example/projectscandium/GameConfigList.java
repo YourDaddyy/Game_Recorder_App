@@ -77,10 +77,8 @@ public class GameConfigList extends AppCompatActivity {
             // listen for clicks on the list
             ConfigList.setOnItemClickListener((parent, view, position, id) -> {
                 // create a new intent to start the new game activity
-                Intent intent = new Intent(GameConfigList.this, GameConfig.class);
-                // pass the position of the config to the new activity
-                intent.putExtra("configIndex", position);
-                intent.putExtra("mode", "EditConfig");
+                Intent intent = new Intent(GameConfigList.this, GameList.class);
+                intent.putExtra("com.example.projectscandium.GameList - the Config position", position);
                 startActivity(intent);
             });
         }

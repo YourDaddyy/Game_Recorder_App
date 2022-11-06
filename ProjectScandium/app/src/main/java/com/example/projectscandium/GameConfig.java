@@ -20,11 +20,11 @@ import java.util.Objects;
 public class GameConfig extends AppCompatActivity {
 
     // get the game config manager
-    ConfigManager configManager;
-    Configs config;
+    private ConfigManager configManager;
+    private Configs config;
 
-    String name, upperScore, lowerScore, mode;
-    boolean emptyName, upperScoreCheck, lowerScoreCheck;
+    private String name, upperScore, lowerScore, mode;
+    private boolean emptyName, upperScoreCheck, lowerScoreCheck;
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
 
