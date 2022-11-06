@@ -1,5 +1,7 @@
 package com.example.projectscandium.model;
 
+import java.util.ArrayList;
+
 public class Configs {
 
     // variable to store expected game scores
@@ -9,15 +11,14 @@ public class Configs {
     private String gameConfigName;
 
     // game list of config
-    private Game[] games;
+    private ArrayList<Game> games;
     private int gameNum;
-    private int MAX_LEN = 999;
 
     public Configs() {
         this.greatExpectedScore = 0;
         this.poorExpectedScore = 0;
         this.gameConfigName = "";
-        this.games = new Game[MAX_LEN];
+        this.games = new ArrayList<>();
         this.gameNum = 0;
     }
 
@@ -46,33 +47,25 @@ public class Configs {
     }
 
     public void addGame(Game game){
-        this.games[this.gameNum] = game;
+        this.games.add(game);
         this.gameNum ++;
     }
 
     public void deleteGame(int index){
         if(index == -1){return;}
-        int dest = index;
-        for(int i = index + 1; i < this.gameNum; i++){
-            games[dest] = games[i];
-            dest ++;
-        }
+        games.remove(index);
         this.gameNum --;
     }
 
-    public int calculateLevel(int players, int scores){
-        return 0;
-    }
-
     public Game searchGame(int index){
-        return this.games[index];
+        return this.games.get(index);
     }
 
-    public Game[] getGames() {
+    public ArrayList<Game> getGames() {
         return games;
     }
 
-    public void setGames(Game[] games) {
+    public void setGames(ArrayList<Game> games) {
         this.games = games;
     }
 

@@ -9,6 +9,10 @@
     <string name="config_colon_text">:</string>
     <string name="config_dash_text">-</string>
     <string name="add_new_configuration_text">Add new configuration</string>
+    <string name="game_num">Game: %1$d</string>
+    <string name="game_player">Players: %1$d</string>
+    <string name="game_score">Combined Score: %1$d</string>
+    <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
     <string name="config_tutorial_text">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible achievement levels based configuration by clicking the view achievements button \n5. Enjoy the game! :)</string>
 

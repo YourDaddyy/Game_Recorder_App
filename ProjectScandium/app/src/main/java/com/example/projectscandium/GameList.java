@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,9 +27,8 @@ public class GameList extends AppCompatActivity {
     private ArrayList<Game> games = new ArrayList<>();
     private ArrayAdapter<Game> adapter;
 
-    private int gamePos = -1;
-    private static final String GAME_POS = "com.example.projectscandium.GameList - the gamePos";
-
+    private int configPos;
+    private static final String CONFIG_POS = "com.example.projectscandium.GameList - the Config position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +42,47 @@ public class GameList extends AppCompatActivity {
 
         populateGameList();
         populateListView();
+
+        registerCLickCallback();
+    }
+
+    // reset game list page
+    @Override
+    public void onResume() {
+        super.onResume();
+        games.clear();
+        populateGameList();
+        adapter.notifyDataSetChanged();
     }
 
     // extract game index
     private void extractDataFromIntent() {
         Intent intent = getIntent();
-        gamePos = intent.getIntExtra(GAME_POS, -1);
+        configPos = intent.getIntExtra(CONFIG_POS, 0);
     }
 
     // create Intent Portal
     public static Intent makeIntent(Context context, int pos){
         Intent intent = new Intent(context, AddGame.class);
-        intent.putExtra(GAME_POS, pos);
+        intent.putExtra(CONFIG_POS, pos);
         return intent;
     }
 
-    private void populateListView() {
-        Configs config = cm.getConfigById(gamePos);
-        for(int i = 0; i < config.getGameNum(); i++){
-            games.add(config.searchGame(i));
+    // get the game list from singleton
+    private void populateGameList() {
+        Configs config = cm.getConfigById(configPos);
+        if(config.getGameNum() == 0){
+            // empty state...
+        }else{
+            for(int i = 0; i < config.getGameNum(); i++){
+                games.add(config.searchGame(i));
+            }
         }
+
     }
 
-    private void populateGameList() {
+    // create list view
+    private void populateListView() {
         adapter = new MyListAdapter();
         ListView list = findViewById(R.id.gameList);
         list.setAdapter(adapter);
@@ -82,23 +100,32 @@ public class GameList extends AppCompatActivity {
             }
             Game currentGame = games.get(position);
 
+            // set game num txt
             TextView txtNum = itemView.findViewById(R.id.GameNum);
-            txtNum.setText("Game " + position);
+            txtNum.setText(getString(R.string.game_num, position));
 
-            // Set Game Num
-            TextView txtWinner = itemView.findViewById(R.id.txtPlayer);
-            txtWinner.setText("Number Players: " + currentGame.getPlayerNum());
+            // Set Player txt
+            TextView txtPlayer = itemView.findViewById(R.id.txtPlayer);
+            txtPlayer.setText(getString(R.string.game_player, currentGame.getPlayerNum()));
 
-            // Set Player Num
-            TextView txtGame = itemView.findViewById(R.id.txtScore);
-            txtGame.setText("Combined Score: " + currentGame.getCombinedScore());
-
-            // Set Score
-            TextView txtTime = itemView.findViewById(R.id.txtLevel);
-            txtTime.setText("LEVEL: " + currentGame.getLevel());
+            // Set Score txt
+            TextView txtScore = itemView.findViewById(R.id.txtScore);
+            txtScore.setText(getString(R.string.game_score, currentGame.getCombinedScore()));
 
             return itemView;
         }
+    }
+
+    //Set up switch activity for click game
+    private void registerCLickCallback() {
+        ListView list = findViewById(R.id.gameList);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                Intent intent = AddGame.makeIntent(GameList.this, configPos, position);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupToolBar() {
@@ -111,7 +138,7 @@ public class GameList extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AddGame.makeIntent(GameList.this, -1);
+                Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
                 startActivity(intent);
             }
         });

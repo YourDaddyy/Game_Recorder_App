@@ -5,12 +5,10 @@ import com.example.projectscandium.model.Configs;
 public class Game {
     private int combinedScore;
     private int playerNum;
-    private int level;
 
-    public Game(int combinedScore, int playerNum, int level) {
+    public Game(int playerNum, int combinedScore) {
         this.combinedScore = combinedScore;
         this.playerNum = playerNum;
-        this.level = level;
     }
 
     public int getCombinedScore() {
@@ -29,11 +27,8 @@ public class Game {
         this.playerNum = playerNum;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
+    public void restoreGame(int players, int scores){
+        this.playerNum = players;
+        this.combinedScore = scores;
     }
 }
