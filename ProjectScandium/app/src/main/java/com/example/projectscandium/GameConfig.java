@@ -10,9 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.projectscandium.model.ConfigManager;
 import com.example.projectscandium.model.Configs;
+
+import java.util.Objects;
 
 public class GameConfig extends AppCompatActivity {
 
@@ -20,7 +23,7 @@ public class GameConfig extends AppCompatActivity {
     ConfigManager configManager;
     Configs config;
 
-    String name, upperScore, lowerScore;
+    String name, upperScore, lowerScore, mode;
     boolean emptyName, upperScoreCheck, lowerScoreCheck;
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
@@ -29,6 +32,23 @@ public class GameConfig extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_config);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        // listen to up button
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        // Get intent of the activity
+        Intent intent = getIntent();
+        // Get the game mode
+        mode = intent.getStringExtra("mode");
+
+        if (Objects.equals(mode, "NewConfig")) {
+            getSupportActionBar().setTitle("New Game Configuration");
+        } else if (Objects.equals(mode, "EditConfig")) {
+            getSupportActionBar().setTitle("Edit Game Configuration");
+        }
 
         emptyName = false;
         upperScoreCheck = false;
@@ -41,7 +61,6 @@ public class GameConfig extends AppCompatActivity {
         nameBox = findViewById(R.id.configNameBox);
         upperScoreBox = findViewById(R.id.UpperScoreBox);
         lowerScoreBox = findViewById(R.id.LowerScoreBox);
-
 
         // get the extra info from the intent
         int index = getIntent().getIntExtra("configIndex", -1);
@@ -165,8 +184,10 @@ public class GameConfig extends AppCompatActivity {
                         config.setGameConfigName(nameBox.getText().toString());
                         config.setGreatExpectedScore(Integer.parseInt(upperScoreBox.getText().toString()));
                         config.setPoorExpectedScore(Integer.parseInt(lowerScoreBox.getText().toString()));
-                        // add the config to the config manager
-                        configManager.addConfig(config);
+                        if (Objects.equals(mode, "NewConfig")) {
+                            // add the config to the config manager
+                            configManager.addConfig(config);
+                        }
                         // finish the activity
                         finish();
                     } catch (NumberFormatException e) {
@@ -211,10 +232,14 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
+        Button achievementButton = findViewById(R.id.achConfig);
+        // listener for the achievement button
+        achievementButton.setOnClickListener(view -> {
+            Intent new_intent = new Intent(this, AchievementsPage.class);
+            startActivity(new_intent);
+        });
+
     }
-
-
-
 
     private boolean checkEmpty(EditText BoxId) {
         if (BoxId.getText().toString().isEmpty()) {
