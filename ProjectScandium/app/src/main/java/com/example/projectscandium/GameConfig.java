@@ -36,20 +36,19 @@ public class GameConfig extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        // listen to up button
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         // Get intent of the activity
         Intent intent = getIntent();
         // Get the game mode
         mode = intent.getStringExtra("mode");
 
-        if (Objects.equals(mode, "NewConfig")){
+        if (Objects.equals(mode, "NewConfig")) {
             getSupportActionBar().setTitle("New Game Configuration");
-        }else if (Objects.equals(mode, "EditConfig")){
+        } else if (Objects.equals(mode, "EditConfig")) {
             getSupportActionBar().setTitle("Edit Game Configuration");
         }
-
-        // listen to up button
-        toolbar.setNavigationOnClickListener(v -> finish());
 
         emptyName = false;
         upperScoreCheck = false;
@@ -185,8 +184,10 @@ public class GameConfig extends AppCompatActivity {
                         config.setGameConfigName(nameBox.getText().toString());
                         config.setGreatExpectedScore(Integer.parseInt(upperScoreBox.getText().toString()));
                         config.setPoorExpectedScore(Integer.parseInt(lowerScoreBox.getText().toString()));
-                        // add the config to the config manager
-                        configManager.addConfig(config);
+                        if (Objects.equals(mode, "NewConfig")) {
+                            // add the config to the config manager
+                            configManager.addConfig(config);
+                        }
                         // finish the activity
                         finish();
                     } catch (NumberFormatException e) {
