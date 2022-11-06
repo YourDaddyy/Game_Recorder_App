@@ -79,5 +79,6 @@ public class WelcomePage extends AppCompatActivity {
 //        Intent i = new Intent(WelcomePage.this, EmptyStateTutorial.class);
         Intent i = new Intent(WelcomePage.this, GameConfigList.class);
         startActivity(i);
+        finish();
     }
 }

@@ -8,10 +8,10 @@ import androidx.annotation.NonNull;
 public class Achievements {
 
     private final String name;
-    private final int score;
+    private final double score;
     private boolean completion;
 
-    public Achievements(String name, int score) {
+    public Achievements(String name, double score) {
         this.name = name;
         this.score = score;
         this.completion = false;
@@ -29,7 +29,7 @@ public class Achievements {
         return name;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 

@@ -7,6 +7,31 @@
     android:background="@drawable/achievement_background"
     tools:context=".AchievementsPage">
 
+        <TextView
+            android:id="@+id/ach_list2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Achievement List"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.187" />
+
+        <TextView
+            android:id="@+id/ach_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Players:"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.105" />
+
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar"
@@ -15,40 +40,16 @@
             tools:layout_editor_absoluteY="4dp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement1"
+            android:id="@+id/achievement7"
             android:layout_width="63dp"
             android:layout_height="64dp"
-            android:background="@drawable/cat1"
+            android:background="@drawable/cat7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.207"
+            app:layout_constraintHorizontal_bias="0.632"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.436" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement2"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.436" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement3"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.396" />
+            app:layout_constraintVertical_bias="0.467" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/achievement4"
@@ -57,10 +58,22 @@
             android:background="@drawable/cat4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.207"
+            app:layout_constraintHorizontal_bias="0.867"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.295" />
+            app:layout_constraintVertical_bias="0.268" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/achievement3"
+            android:layout_width="63dp"
+            android:layout_height="64dp"
+            android:background="@drawable/cat3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.603"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.316" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/achievement5"
@@ -69,10 +82,34 @@
             android:background="@drawable/cat5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
+            app:layout_constraintHorizontal_bias="0.074"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.295" />
+            app:layout_constraintVertical_bias="0.467" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/achievement1"
+            android:layout_width="63dp"
+            android:layout_height="64dp"
+            android:background="@drawable/cat1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.074"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.316" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/achievement2"
+            android:layout_width="63dp"
+            android:layout_height="64dp"
+            android:background="@drawable/cat2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.336"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.316" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/achievement6"
@@ -81,22 +118,10 @@
             android:background="@drawable/cat6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.233" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/achievement7"
-            android:layout_width="63dp"
-            android:layout_height="64dp"
-            android:background="@drawable/cat7"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.795"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.156" />
+            app:layout_constraintVertical_bias="0.467" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/achievement8"
@@ -105,16 +130,16 @@
             android:background="@drawable/cat8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.207"
+            app:layout_constraintHorizontal_bias="0.867"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.156" />
+            app:layout_constraintVertical_bias="0.467" />
 
         <TextView
             android:id="@+id/achievement_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Achievement Name"
+            android:text="@string/achievement_name"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +152,7 @@
             android:id="@+id/achievement_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Score / Rqd Score"
+            android:text="@string/current_score_rqd_score"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -140,7 +165,7 @@
             android:id="@+id/achievement_rqd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Achievement Base Score Requirements"
+            android:text="@string/achievement_base_score_requirements"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +178,7 @@
             android:id="@+id/achievement_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Completion Status"
+            android:text="@string/completion_status"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -161,6 +186,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.95" />
+
+        <EditText
+            android:id="@+id/playerInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.766"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.096" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

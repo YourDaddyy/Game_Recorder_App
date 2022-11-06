@@ -15,4 +15,9 @@
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
     <string name="config_tutorial_text">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible achievement levels based configuration by clicking the view achievements button \n5. Enjoy the game! :)</string>
+    <string name="achievement_base_score_requirements">Achievement Base Score Requirements</string>
+    <string name="current_score_rqd_score">Current Score / Rqd Score</string>
+    <string name="achievement_name">Achievement Name</string>
+    <string name="completion_status">Completion Status</string>
+
 </resources>
