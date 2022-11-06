@@ -37,4 +37,8 @@
     <string name="achievement_name">Achievement Name</string>
     <string name="completion_status">Completion Status</string>
     <string name="achievements_players">Enter Players:</string>
+    <string name="by_ethan_ernest_and_sahaj">By Ethan, Ernest, and Sahaj</string>
+    <string name="welcome_to_team_scandium">Welcome to Team Scandium</string>
+    <string name="skip">Skip</string>
+    <string name="todo">TODO</string>
 </resources>
