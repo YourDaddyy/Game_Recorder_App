@@ -28,4 +28,5 @@
     <string name="score">Score</string>
     <string name="addPlayer">%1$d</string>
     <string name="addScore">%1$d</string>
+    <string name="edit_button_text">EDIT</string>
 </resources>

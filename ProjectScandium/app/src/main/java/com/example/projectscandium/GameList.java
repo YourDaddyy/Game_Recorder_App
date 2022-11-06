@@ -3,12 +3,16 @@ package com.example.projectscandium;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,14 +47,13 @@ public class GameList extends AppCompatActivity {
 
         populateGameList();
         populateListView();
-
-        registerCLickCallback();
     }
 
     // reset game list page
     @Override
     public void onResume() {
         super.onResume();
+        cm.saveConfigs(this);
         games.clear();
         populateGameList();
         populateListView();
@@ -68,15 +71,25 @@ public class GameList extends AppCompatActivity {
 
     // get the game list from singleton
     private void populateGameList() {
-        Configs config = cm.getConfigById(configPos);
-        TextView txtEmpty = findViewById(R.id.txtEmpty);
-        if(config.getGameNum() == 0){
-            txtEmpty.setVisibility(View.VISIBLE);
-        }else{
-            txtEmpty.setVisibility(View.GONE);
-            for(int i = 0; i < config.getGameNum(); i++){
-                games.add(config.searchGame(i));
+        try {
+            ListView gameList = findViewById(R.id.gameList);
+            Configs config = cm.getConfigById(configPos);
+            TextView txtEmpty = findViewById(R.id.gameTutorial);
+            if (config.getGameNum() == 0) {
+                txtEmpty.setVisibility(View.VISIBLE);
+                SpannableString spannableString = new SpannableString(getString(R.string.game_tutorial));
+                ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
+                spannableString.setSpan(teal, 34, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                txtEmpty.setText(spannableString);
+                gameList.setEmptyView(txtEmpty);
+            } else {
+                txtEmpty.setVisibility(View.GONE);
+                for (int i = 0; i < config.getGameNum(); i++) {
+                    games.add(config.searchGame(i));
+                }
             }
+        } catch (IndexOutOfBoundsException e){
+            finish();
         }
     }
 
@@ -119,18 +132,11 @@ public class GameList extends AppCompatActivity {
         }
     }
 
-    //Set up switch activity for click game
-    private void registerCLickCallback() {
-        ListView list = findViewById(R.id.gameList);
-        list.setOnItemClickListener((parent, viewClicked, position, id) -> {
-//                Intent intent = AddGame.makeIntent(GameList.this, configPos, position);
-//                startActivity(intent);
-        });
-    }
-
     private void setupToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void setupAddGameBtn() {
@@ -139,6 +145,18 @@ public class GameList extends AppCompatActivity {
             Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.tool_bar_item, menu);
+        return true;
+    }
+
+    public void EditConfig(MenuItem menuItem) {
+        Intent intent = new Intent(GameList.this, GameConfig.class);
+        intent.putExtra("configIndex", configPos);
+        startActivity(intent);
     }
 
 }

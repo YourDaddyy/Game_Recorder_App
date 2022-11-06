@@ -169,16 +169,18 @@ public class AddGame extends AppCompatActivity {
 
     //Check if the game is valid
     private boolean checkValid() {
-        EditText etP =findViewById(R.id.player);
+        EditText etP = findViewById(R.id.player);
         EditText etS = findViewById(R.id.score);
         if(etP.length() == 0){
-            Toast.makeText(AddGame.this, "Players should not be empty",
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(AddGame.this, "Players should not be empty",
+//                    Toast.LENGTH_LONG).show();
+            etP.setError("Players should not be empty");
             return false;
         }
         if(etS.length() == 0){
-            Toast.makeText(AddGame.this, "Scores should not be empty",
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(AddGame.this, "Scores should not be empty",
+//                    Toast.LENGTH_LONG).show();
+            etS.setError("Scores should not be empty");
             return false;
         }
         return true;

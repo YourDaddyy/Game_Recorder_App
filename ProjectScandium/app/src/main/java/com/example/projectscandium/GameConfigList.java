@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,10 +68,17 @@ public class GameConfigList extends AppCompatActivity {
         // get the size of the array list
         int size = configManager.getSize();
 
+        System.out.println("Size of the array list is: " + size);
+
         configEmptyState = findViewById(R.id.configTutorial);
         if (size == 0) {
             ConfigList.setAdapter(null);
             configEmptyState.setVisibility(TextView.VISIBLE);
+            SpannableString spannableString = new SpannableString(getString(R.string.config_tutorial_text));
+            ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
+            spannableString.setSpan(teal, 34, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            configEmptyState.setText(spannableString);
+            ConfigList.setEmptyView(configEmptyState);
         } else {
             configEmptyState.setVisibility(TextView.GONE);
             // set the adapter for the list view
