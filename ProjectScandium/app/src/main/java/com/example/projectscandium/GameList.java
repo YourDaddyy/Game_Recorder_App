@@ -70,7 +70,7 @@ public class GameList extends AppCompatActivity {
     private void populateGameList() {
         Configs config = cm.getConfigById(configPos);
         TextView txtEmpty = findViewById(R.id.txtEmpty);
-        if(config.getGameNum() == 0){
+        if(config.getGameNum() == 99){
             txtEmpty.setVisibility(View.VISIBLE);
         }else{
             txtEmpty.setVisibility(View.GONE);

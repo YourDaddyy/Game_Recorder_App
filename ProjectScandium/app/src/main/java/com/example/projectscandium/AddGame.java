@@ -24,8 +24,7 @@ import com.example.projectscandium.model.Game;
 public class AddGame extends AppCompatActivity {
 
     private int players, scores;
-    private int gamePos;
-    private int configPos;
+    private int gamePos, configPos;
     Button btnDelete, btnSave;
 
     //Singleton the game list
@@ -156,12 +155,13 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle("Save Game?");
         builder.setMessage("Game will be saved.");
         builder.setPositiveButton("Yes", (dialog, which) -> {
-            if(gamePos == -1) {
-                Game newGame = new Game(players, scores);
-                config.getGames().add(newGame);
-            }else {
-                config.getGames().get(gamePos).restoreGame(players, scores);
-            }
+            Game newGame = new Game(players, scores);
+//            if(gamePos == -1) {
+//
+//                config.getGames().add(newGame);
+//            }else {
+//                config.getGames().get(gamePos).restoreGame(players, scores);
+//            }
             finish();
         });
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
