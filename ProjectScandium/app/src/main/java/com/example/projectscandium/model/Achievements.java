@@ -11,10 +11,13 @@ public class Achievements {
             "Silly Cat", "Ktten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
 
     // aray of int values for each achievement
-    private final int[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private final double[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     private int lowerScoreBound;
     private int upperScoreBound;
+
+    // A score to include the worse possible games (lower than lowerScoreBound)
+    private final int worsePossibleScore = 0;
 
     // function to get the name of the achievement
     public String getAchievementName(int index) {
@@ -22,12 +25,12 @@ public class Achievements {
     }
 
     // function to get the value of the achievement
-    public int getAchievementValue(int index) {
+    public double getAchievementValue(int index) {
         return achievementValues[index];
     }
 
     // function to set the value of the achievement
-    public void setAchievementValue(int index, int value) {
+    public void setAchievementValue(int index, double value) {
         this.achievementValues[index] = value;
     }
 
@@ -36,10 +39,13 @@ public class Achievements {
         this.lowerScoreBound = lower * numPlayers;
         this.upperScoreBound = upper * numPlayers;
 
-        int range = upperScoreBound - lowerScoreBound;
-        int increment = range / 10;
-        for (int i = 0; i < 10; i++) {
-            int points = lowerScoreBound + (increment * i);
+        // Create worse possible lvl which always equals 0 points
+        setAchievementValue(0,worsePossibleScore);
+
+        int range = this.upperScoreBound - this.lowerScoreBound;
+        double increment = (double)range / (9 - 1);
+        for (int i = 1; i < 10; i++) {
+            double points = this.lowerScoreBound + (increment * (i - 1));
             setAchievementValue(i, points);
         }
     }
