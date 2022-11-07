@@ -79,7 +79,7 @@ public class GameConfigList extends AppCompatActivity {
             configEmptyState.setVisibility(TextView.VISIBLE);
             SpannableString spannableString = new SpannableString(getString(R.string.config_tutorial_text));
             ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
-            spannableString.setSpan(teal, 34, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(teal, 36, 41, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             configEmptyState.setText(spannableString);
             ConfigList.setEmptyView(configEmptyState);
         } else {

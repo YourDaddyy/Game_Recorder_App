@@ -16,8 +16,8 @@
     <string name="game_time">Created: %1$s</string>
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
-    <string name="config_tutorial_text">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible achievement levels based configuration by clicking the view achievements button \n5. Enjoy the game! :)</string>
-    <string name="game_tutorial">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the Players and Combined Score \n3. Press the Save Button. \n4. To edit the config. press Edit \n5. Enjoy the game! :)</string>
+    <string name="config_tutorial_text">\n\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible levels by clicking\n the achievements button in edit mode\n5. Enjoy the game! :)</string>
+    <string name="game_tutorial">\n\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the Number of Players\n and Combined Score \n3. Press the Save Button. \n4. To edit the config. press Edit \n5. Enjoy the game! :)</string>
     <string name="players">Players: ####</string>
     <string name="combined_score">Combined Score: ####</string>
     <string name="game_1">Game: 1</string>
@@ -45,4 +45,6 @@
     <string name="game_title">Cat Stat Combat</string>
     <string name="save_button_text">SAVE</string>
     <string name="fab">FAB</string>
+    <string name="NewConfigTitle">New Game Config.</string>
+    <string name="EditConfigTitle">Edit Game Config.</string>
 </resources>

@@ -102,7 +102,7 @@ public class AddGame extends AppCompatActivity {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
         builder1.setIcon(null);
         builder1.setTitle("Return to Game List?");
-        builder1.setMessage("Nothing is saved yet.\nIf you still wish to return press yes!");
+        builder1.setMessage("Nothing is saved yet.\nDo you still wish to return?");
         builder1.setPositiveButton("Yes", (dialog, which) -> finish());
         builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
     }

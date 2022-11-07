@@ -25,15 +25,15 @@
 
     <EditText
         android:id="@+id/configNameBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="85dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/configNameTxt"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints=""
         tools:ignore="LabelFor" />
 
     <TextView
@@ -48,15 +48,15 @@
 
     <EditText
         android:id="@+id/UpperScoreBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="numberSigned"
         app:layout_constraintStart_toEndOf="@+id/UpperScoreTxt"
         app:layout_constraintTop_toBottomOf="@+id/configNameBox"
-        android:autofillHints=""
         tools:ignore="LabelFor" />
 
     <TextView
@@ -71,21 +71,21 @@
 
     <EditText
         android:id="@+id/LowerScoreBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="numberSigned"
         app:layout_constraintStart_toEndOf="@+id/LowerScoreTxt"
         app:layout_constraintTop_toBottomOf="@+id/UpperScoreBox"
-        android:autofillHints=""
         tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/deleteConfig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
         android:text="@string/delete_config_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,8 +95,8 @@
 
     <Button
         android:id="@+id/achConfig"
-        android:layout_width="160dp"
-        android:layout_height="48dp"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
         android:layout_marginTop="25dp"
         android:text="@string/config_ach_text"
         app:layout_constraintEnd_toEndOf="parent"

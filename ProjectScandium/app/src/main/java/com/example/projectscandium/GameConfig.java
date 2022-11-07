@@ -50,9 +50,9 @@ public class GameConfig extends AppCompatActivity {
         mode = intent.getStringExtra("mode");
 
         if (Objects.equals(mode, "NewConfig")) {
-            getSupportActionBar().setTitle("New Game Configuration");
+            getSupportActionBar().setTitle(R.string.NewConfigTitle);
         } else if (Objects.equals(mode, "EditConfig")) {
-            getSupportActionBar().setTitle("Edit Game Configuration");
+            getSupportActionBar().setTitle(R.string.EditConfigTitle);
         }
 
         emptyName = false;
@@ -265,7 +265,7 @@ public class GameConfig extends AppCompatActivity {
         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(GameConfig.this);
         builder1.setIcon(null);
         builder1.setTitle("Return to Config List?");
-        builder1.setMessage("Nothing is saved yet.\nIf you still wish to return press yes!");
+        builder1.setMessage("Nothing is saved yet.\nDo you still wish to return?");
         builder1.setPositiveButton("Yes", (dialog, which) -> finish());
         builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
     }
