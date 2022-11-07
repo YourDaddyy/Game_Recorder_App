@@ -10,7 +10,7 @@ public class Achievements {
             "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
 
     // array of int values for each achievement
-    private final double[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private final int[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     // variable to store the lower bound and upper bound of the achievement scores
     private int lowerScoreBound;
@@ -25,15 +25,15 @@ public class Achievements {
 
     // getAchievementValue
     // Purpose: returns the value of the achievement at the given index
-    // Return: double
-    public double getAchievementValue(int index) {
+    // Return: int
+    public int getAchievementValue(int index) {
         return achievementValues[index];
     }
 
     // setAchievementValue
     // Purpose: sets the value of the achievement at the given index
     // Return: void
-    public void setAchievementValue(int index, double value) {
+    public void setAchievementValue(int index, int value) {
         this.achievementValues[index] = value;
     }
 
@@ -50,9 +50,9 @@ public class Achievements {
         setAchievementValue(0, worsePossibleScore);
 
         int range = this.upperScoreBound - this.lowerScoreBound;
-        double increment = (double) range / (9 - 1);
+        int increment = range / (9 - 1);
         for (int i = 1; i < 10; i++) {
-            double points = this.lowerScoreBound + (increment * (i - 1));
+            int points = this.lowerScoreBound + (increment * (i - 1));
             setAchievementValue(i, points);
         }
     }
