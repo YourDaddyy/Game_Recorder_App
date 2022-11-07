@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ public class GameConfig extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         // listen to up button
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> checkReturn());
 
         lowerScoreDiff = false;
 
@@ -130,10 +132,10 @@ public class GameConfig extends AppCompatActivity {
                             upperScoreBox.setError("Score cannot be negative");
                             upperScoreCheck = true;
                         } else if (lowerScoreDiff) {
-                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer.parseInt(upperScoreBox.getText().toString())){
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer
+                                    .parseInt(upperScoreBox.getText().toString())) {
                                 lowerScoreDiff = true;
                                 lowerScoreBox.setError("Lower Score can't be less than Upper Score");
-                                return;
                             } else {
                                 lowerScoreBox.setError(null);
                             }
@@ -174,10 +176,10 @@ public class GameConfig extends AppCompatActivity {
                             lowerScoreBox.setError("Score cannot be negative");
                             lowerScoreCheck = true;
                         } else if (lowerScoreDiff) {
-                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer.parseInt(upperScoreBox.getText().toString())){
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer
+                                    .parseInt(upperScoreBox.getText().toString())) {
                                 lowerScoreDiff = true;
                                 lowerScoreBox.setError("Lower Score can't be less than Upper Score");
-                                return;
                             } else {
                                 lowerScoreBox.setError(null);
                             }
@@ -191,56 +193,6 @@ public class GameConfig extends AppCompatActivity {
                     lowerScoreBox.setError("Please enter a valid number");
                     lowerScoreCheck = true;
                 }
-            }
-        });
-
-        // when the save button is clicked
-        Button saveButton = findViewById(R.id.saveConfig);
-        saveButton.setOnClickListener(view -> {
-
-            emptyName = checkEmpty(nameBox);
-            upperScoreCheck = checkEmpty(upperScoreBox);
-            lowerScoreCheck = checkEmpty(lowerScoreBox);
-
-            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer.parseInt(upperScoreBox.getText().toString())){
-                lowerScoreDiff = true;
-                lowerScoreBox.setError("Lower Score can't be less than Upper Score");
-                return;
-            }
-
-            if (emptyName && upperScoreCheck && lowerScoreCheck) {
-                // create a dialog box to confirm the save
-                AlertDialog.Builder confirmSaveDialog = new AlertDialog.Builder(this);
-                confirmSaveDialog.setTitle("Do you wish to save?");
-                confirmSaveDialog.setMessage("Are you sure you want to save these values?");
-                confirmSaveDialog.setCancelable(true);
-                confirmSaveDialog.setPositiveButton("Yes", (dialog, which) -> {
-                    try {
-                        // set the values of the config
-                        config.setGameConfigName(nameBox.getText().toString());
-                        config.setGreatExpectedScore(Integer.parseInt(upperScoreBox.getText().toString()));
-                        config.setPoorExpectedScore(Integer.parseInt(lowerScoreBox.getText().toString()));
-                        if (Objects.equals(mode, "NewConfig")) {
-                            // add the config to the config manager
-                            configManager.addConfig(config);
-                        }
-                        // finish the activity
-                        finish();
-                    } catch (NumberFormatException e) {
-                        // set an error message based on the exception
-                        lowerScoreBox.setError("Please enter a valid number");
-                        lowerScoreCheck = true;
-                    }
-                });
-                confirmSaveDialog.setNegativeButton("No", (dialog, which) -> {
-                    // do nothing
-                });
-                AlertDialog dialog = confirmSaveDialog.create();
-                dialog.show();
-            } else {
-                // display toast
-                Toast toast = Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT);
-                toast.show();
             }
         });
 
@@ -301,6 +253,81 @@ public class GameConfig extends AppCompatActivity {
             return false;
         } else {
             return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        checkReturn();
+    }
+
+    private void checkReturn() {
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(GameConfig.this);
+        builder1.setIcon(null);
+        builder1.setTitle("Return to Config List?");
+        builder1.setMessage("Nothing is saved yet.\nIf you still wish to return press yes!");
+        builder1.setPositiveButton("Yes", (dialog, which) -> finish());
+        builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_bar_item, menu);
+        // on click listener for the save button
+        MenuItem saveButton = menu.findItem(R.id.saveButton);
+        // on click listener for the save button
+        saveButton.setOnMenuItemClickListener(item -> {
+            SaveConfig();
+            return true;
+        });
+        return true;
+    }
+
+    public void SaveConfig() {
+        emptyName = checkEmpty(nameBox);
+        upperScoreCheck = checkEmpty(upperScoreBox);
+        lowerScoreCheck = checkEmpty(lowerScoreBox);
+
+        if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer
+                .parseInt(upperScoreBox.getText().toString())) {
+            lowerScoreDiff = true;
+            lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+            return;
+        }
+
+        if (emptyName && upperScoreCheck && lowerScoreCheck) {
+            // create a dialog box to confirm the save
+            AlertDialog.Builder confirmSaveDialog = new AlertDialog.Builder(this);
+            confirmSaveDialog.setTitle("Do you wish to save?");
+            confirmSaveDialog.setMessage("Are you sure you want to save these values?");
+            confirmSaveDialog.setCancelable(true);
+            confirmSaveDialog.setPositiveButton("Yes", (dialog, which) -> {
+                try {
+                    // set the values of the config
+                    config.setGameConfigName(nameBox.getText().toString());
+                    config.setGreatExpectedScore(Integer.parseInt(upperScoreBox.getText().toString()));
+                    config.setPoorExpectedScore(Integer.parseInt(lowerScoreBox.getText().toString()));
+                    if (Objects.equals(mode, "NewConfig")) {
+                        // add the config to the config manager
+                        configManager.addConfig(config);
+                    }
+                    // finish the activity
+                    finish();
+                } catch (NumberFormatException e) {
+                    // set an error message based on the exception
+                    lowerScoreBox.setError("Please enter a valid number");
+                    lowerScoreCheck = true;
+                }
+            });
+            confirmSaveDialog.setNegativeButton("No", (dialog, which) -> {
+                // do nothing
+            });
+            AlertDialog dialog = confirmSaveDialog.create();
+            dialog.show();
+        } else {
+            // display toast
+            Toast toast = Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }

@@ -35,7 +35,7 @@ public class AddGame extends AppCompatActivity {
 
     private int players, scores;
     private int gamePos, configPos;
-    Button btnDelete, btnSave;
+    Button btnDelete;
     private String time;
 
     // Singleton the game list
@@ -63,8 +63,6 @@ public class AddGame extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        // listen to up button
-        toolbar.setNavigationOnClickListener(v -> finish());
 
         if (gamePos != -1) {
             setTitle(getString(R.string.editGame_title));
@@ -103,14 +101,13 @@ public class AddGame extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         checkReturn();
-        // super.onBackPressed();
     }
 
     private void checkReturn() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
         builder1.setIcon(null);
         builder1.setTitle("Return to Game List?");
-        builder1.setMessage("Nothing is saved");
+        builder1.setMessage("Nothing is saved yet.\nIf you still wish to return press yes!");
         builder1.setPositiveButton("Yes", (dialog, which) -> finish());
         builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
     }
@@ -129,7 +126,6 @@ public class AddGame extends AppCompatActivity {
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             setupDeleteBtn();
         }
-        setupSaveBtn();
     }
 
     // set up delete button
@@ -147,21 +143,6 @@ public class AddGame extends AppCompatActivity {
             });
             // Cancel
             builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss()).show();
-        });
-    }
-
-    // set up save button
-    private void setupSaveBtn() {
-        btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(v -> {
-            if (checkValid()) {
-                // Save data into class
-                String sPlayer = ((EditText) findViewById(R.id.player)).getText().toString();
-                players = Integer.parseInt(sPlayer);
-                String sScore = ((EditText) findViewById(R.id.score)).getText().toString();
-                scores = Integer.parseInt(sScore);
-                checkSave();
-            }
         });
     }
 
@@ -214,6 +195,26 @@ public class AddGame extends AppCompatActivity {
             etS.setError("Scores should not be empty");
             return false;
         }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_bar_item, menu);
+        // on click listener for the save button
+        MenuItem saveButton = menu.findItem(R.id.saveButton);
+        // on click listener for the save button
+        saveButton.setOnMenuItemClickListener(item -> {
+            if (checkValid()) {
+                // Save data into class
+                String sPlayer = ((EditText) findViewById(R.id.player)).getText().toString();
+                players = Integer.parseInt(sPlayer);
+                String sScore = ((EditText) findViewById(R.id.score)).getText().toString();
+                scores = Integer.parseInt(sScore);
+                checkSave();
+            }
+            return true;
+        });
         return true;
     }
 

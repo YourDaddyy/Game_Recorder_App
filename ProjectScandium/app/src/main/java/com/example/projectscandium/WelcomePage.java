@@ -15,14 +15,39 @@ import android.widget.ImageView;
  */
 public class WelcomePage extends AppCompatActivity {
 
-    private static final int SECONDS = 4000;
+    private static final int SECONDS = 5000;
     Animation animation, animationGame;
+    Thread timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
-        setUpAnimation();
+
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
+        animation.setDuration(1500);
+
+        animationGame = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
+        animationGame.setDuration(2500);
+
+        // Set animation of image
+        ImageView img = findViewById(R.id.welcome_icon);
+        ImageView gameImage = findViewById(R.id.game_icon);
+        img.setAnimation(animation);
+        gameImage.setAnimation(animationGame);
+
+        timer = new Thread(() -> {
+            try {
+                Thread.sleep(SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                Intent intent = new Intent(WelcomePage.this, GameConfigList.class);
+                startActivity(intent);
+            }
+        });
+        timer.start();
+
         // listen for skip button press
         Button skipButton = findViewById(R.id.skip_button);
         skipButton.setOnClickListener(view -> {
@@ -36,48 +61,11 @@ public class WelcomePage extends AppCompatActivity {
         });
     }
 
-    // Goes to main menu automatically 4 seconds after animation
-    private void setUpAnimation() {
-        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
-        animation.setDuration(1500);
-
-        animationGame = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
-        animationGame.setDuration(2500);
-
-        // Set animation of image
-        ImageView img = findViewById(R.id.welcome_icon);
-        ImageView gameImage = findViewById(R.id.game_icon);
-        img.setAnimation(animation);
-        gameImage.setAnimation(animationGame);
-
-        // Animation listener
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // Starts main menu after 4 seconds
-                Handler handle = new Handler();
-                handle.postDelayed(() -> {
-
-                    // Goes to main menu
-                    startTutorialPage();
-
-                }, SECONDS);
-            }
-        });
-    }
-
     // Goes to tutorial page activity
     private void startTutorialPage() {
+        // cancel the timer
+        timer.interrupt();
+        timer = null;
         Intent i = new Intent(WelcomePage.this, GameConfigList.class);
         startActivity(i);
         finish();
