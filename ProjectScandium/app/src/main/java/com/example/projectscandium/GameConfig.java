@@ -132,10 +132,10 @@ public class GameConfig extends AppCompatActivity {
                             upperScoreBox.setError("Score cannot be negative");
                             upperScoreCheck = true;
                         } else if (lowerScoreDiff) {
-                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
                                     .parseInt(upperScoreBox.getText().toString())) {
                                 lowerScoreDiff = true;
-                                lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+                                lowerScoreBox.setError("Lower Score can't be less/equal to Upper Score");
                             } else {
                                 lowerScoreBox.setError(null);
                             }
@@ -176,10 +176,10 @@ public class GameConfig extends AppCompatActivity {
                             lowerScoreBox.setError("Score cannot be negative");
                             lowerScoreCheck = true;
                         } else if (lowerScoreDiff) {
-                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
                                     .parseInt(upperScoreBox.getText().toString())) {
                                 lowerScoreDiff = true;
-                                lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+                                lowerScoreBox.setError("Lower Score can't be less/equal to Upper Score");
                             } else {
                                 lowerScoreBox.setError(null);
                             }
@@ -288,10 +288,10 @@ public class GameConfig extends AppCompatActivity {
         upperScoreCheck = checkEmpty(upperScoreBox);
         lowerScoreCheck = checkEmpty(lowerScoreBox);
 
-        if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer
+        if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
                 .parseInt(upperScoreBox.getText().toString())) {
             lowerScoreDiff = true;
-            lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+            lowerScoreBox.setError("Lower Score can't be less/equal to Upper Score");
             return;
         }
 
