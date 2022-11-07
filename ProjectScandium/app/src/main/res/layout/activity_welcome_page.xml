@@ -74,14 +74,16 @@
 
     <ImageView
         android:id="@+id/game_icon"
-        android:layout_width="379dp"
+        android:layout_width="344dp"
         android:layout_height="440dp"
         android:layout_marginTop="5dp"
+        android:background="@drawable/catcombat"
+        android:backgroundTint="@color/scandium"
+        android:backgroundTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Title"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/catcombat" />
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

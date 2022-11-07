@@ -16,36 +16,32 @@ import android.widget.ImageView;
 public class WelcomePage extends AppCompatActivity {
 
     private static final int SECONDS = 4000;
+    Animation animation, animationGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
-
-        setupSkipButton();
         setUpAnimation();
-    }
+        // listen for skip button press
+        Button skipButton = findViewById(R.id.skip_button);
+        skipButton.setOnClickListener(view -> {
 
-    // Button to go to tutorial page
-    private void setupSkipButton() {
-        Button btn = findViewById(R.id.skip_button);
-        btn.setOnClickListener(view -> {
+            // end the animation
+            animation.cancel();
+            animationGame.cancel();
 
-            // Goes to tutorial page
             startTutorialPage();
-
-            // Ends all processes of activity
-            finish();
 
         });
     }
 
     // Goes to main menu automatically 4 seconds after animation
     private void setUpAnimation() {
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade);
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
         animation.setDuration(1500);
 
-        Animation animationGame = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade);
+        animationGame = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
         animationGame.setDuration(2500);
 
         // Set animation of image
