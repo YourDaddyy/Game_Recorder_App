@@ -49,4 +49,27 @@
     <string name="EditConfigTitle">Edit Game Config.</string>
     <string name="ConfigurationListTitle">Game Configurations</string>
     <string name="GameNumberText">Game: </string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="SaveGameTitle">Save Game?</string>
+    <string name="SaveGameMessage">Are You Sure Want to Save This Game?</string>
+    <string name="SaveConfigTitle">Save Config?</string>
+    <string name="SaveConfigMessage">Are You Sure Want to Save This Configuration?</string>
+    <string name="DeleteGameTitle">Delete Game?</string>
+    <string name="DeleteGameMessage">Are You Sure Want to Delete This Game?</string>
+    <string name="DeleteConfigTitle">Delete Config?</string>
+    <string name="DeleteConfigMessage">Are You Sure Want to Delete This Configuration?</string>
+    <string name="ReturnToGameListTitle">Return to Game List?</string>
+    <string name="ReturnToConfigListTitle">Return to Config List?</string>
+    <string name="ReturnMessage">Nothing is saved yet.\nDo you still wish to return?</string>
+    <string name="EmptyFieldToast">Please fill in all fields</string>
+    <string name="ExitAppMessage">Are you sure you want to exit the app?</string>
+    <string name="configTitle">Config: </string>
+    <string name="greatText">Great: </string>
+    <string name="poorText">Poor: </string>
+    <string name="minScoreText">Minimum Score: </string>
+    <string name="ErrorNum">Please enter a valid number</string>
+    <string name="ErrorNegativeScore">Score cannot be negative</string>
+    <string name="ErrorLowerNum">"Lower Score can't be less/equal to Upper Score"</string>
+    <string name="EmptyField">This field should not be empty</string>
 </resources>

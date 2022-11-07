@@ -80,7 +80,7 @@ public class GameList extends AppCompatActivity {
         configPos = intent.getIntExtra(CONFIG_POS, 0);
         Configs config = cm.getConfigById(configPos);
         String configName = config.getGameConfigName();
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Configuration: " + configName);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.configTitle) + "  " + configName);
     }
 
     // populateGameList method

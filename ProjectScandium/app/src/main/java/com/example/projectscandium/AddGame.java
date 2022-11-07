@@ -122,10 +122,10 @@ public class AddGame extends AppCompatActivity {
     private void checkReturn() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
         builder1.setIcon(null);
-        builder1.setTitle("Return to Game List?");
-        builder1.setMessage("Nothing is saved yet.\nDo you still wish to return?");
-        builder1.setPositiveButton("Yes", (dialog, which) -> finish());
-        builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+        builder1.setTitle(R.string.ReturnToGameListTitle);
+        builder1.setMessage(R.string.ReturnMessage);
+        builder1.setPositiveButton(R.string.Yes, (dialog, which) -> finish());
+        builder1.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
 
     // setupPage method
@@ -154,15 +154,15 @@ public class AddGame extends AppCompatActivity {
             // create dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
             builder.setIcon(null);
-            builder.setTitle("Delete?");
-            builder.setMessage("Are You Sure Want to Delete This Game?");
+            builder.setTitle(R.string.DeleteGameTitle);
+            builder.setMessage(R.string.DeleteGameMessage);
             // make Sure
-            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            builder.setPositiveButton(R.string.Yes, (dialogInterface, i) -> {
                 config.deleteGame(gamePos);
                 finish();
             });
             // Cancel
-            builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss()).show();
+            builder.setNegativeButton(R.string.No, (dialogInterface, i) -> dialogInterface.dismiss()).show();
         });
     }
 
@@ -189,9 +189,9 @@ public class AddGame extends AppCompatActivity {
     private void checkSave() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
-        builder.setTitle("Save Game?");
-        builder.setMessage("Game will be saved.");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(R.string.SaveGameTitle);
+        builder.setMessage(R.string.SaveGameMessage);
+        builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
             Game game = new Game(players, scores, time);
             Achievements achievements = new Achievements();
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
@@ -206,7 +206,7 @@ public class AddGame extends AppCompatActivity {
             }
             finish();
         });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+        builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
 
     // checkValid method
@@ -216,11 +216,11 @@ public class AddGame extends AppCompatActivity {
         EditText etP = findViewById(R.id.player);
         EditText etS = findViewById(R.id.score);
         if (etP.length() == 0) {
-            etP.setError("Players should not be empty");
+            etP.setError(getString(R.string.EmptyField));
             return false;
         }
         if (etS.length() == 0) {
-            etS.setError("Scores should not be empty");
+            etS.setError(getString(R.string.EmptyField));
             return false;
         }
         return true;

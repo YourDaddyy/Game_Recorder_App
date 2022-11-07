@@ -117,10 +117,10 @@ public class GameConfigList extends AppCompatActivity {
     public void onBackPressed() {
         // create dialog box to confirm exit
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to exit the app?");
+        builder.setMessage(R.string.ExitAppMessage);
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes", (dialog, id) -> finishAffinity());
-        builder.setNegativeButton("No", (dialog, id) -> dialog.cancel());
+        builder.setPositiveButton(R.string.Yes, (dialog, id) -> finishAffinity());
+        builder.setNegativeButton(R.string.No, (dialog, id) -> dialog.cancel());
         builder.show();
     }
 }

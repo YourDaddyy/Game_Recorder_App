@@ -90,8 +90,9 @@ public class AchievementsPage extends AppCompatActivity {
                                 TextView text1 = view.findViewById(android.R.id.text1);
                                 TextView text2 = view.findViewById(android.R.id.text2);
                                 text1.setText(achievements.getAchievementName(position));
+                                String minText = getString(R.string.minScoreText);
                                 text2.setText(
-                                        String.format("Minimum Score: %s", achievements.getAchievementValue(position)));
+                                        String.format("%s  %s", minText, achievements.getAchievementValue(position)));
                                 return view;
                             }
                         };
@@ -100,7 +101,7 @@ public class AchievementsPage extends AppCompatActivity {
                 } catch (NumberFormatException e) {
                     // if the playerNum is empty, set the list to be empty
                     achievementList.setAdapter(null);
-                    playerNum.setError("Please enter a number");
+                    playerNum.setError(getString(R.string.ErrorNum));
                 }
             }
         });
