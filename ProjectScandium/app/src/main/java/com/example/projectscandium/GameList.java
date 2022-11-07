@@ -151,7 +151,7 @@ public class GameList extends AppCompatActivity {
     }
 
     private void setupAddGameBtn() {
-        FloatingActionButton btn = findViewById(R.id.addGamebtn);
+        FloatingActionButton btn = findViewById(R.id.addGameButton);
         btn.setOnClickListener(v -> {
             Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
             startActivity(intent);

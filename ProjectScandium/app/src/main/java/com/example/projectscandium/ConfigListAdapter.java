@@ -35,9 +35,9 @@ public class ConfigListAdapter extends ArrayAdapter<Configs> {
         TextView greatExpectedScore = convertView.findViewById(R.id.upper_value);
         TextView poorExpectedScore = convertView.findViewById(R.id.lower_value);
 
-        configName.setText(getItem(position).getGameConfigName());
-        greatExpectedScore.setText(String.valueOf(getItem(position).getGreatExpectedScore()));
-        poorExpectedScore.setText(String.valueOf(getItem(position).getPoorExpectedScore()));
+        configName.setText(String.format("Config:  %s", getItem(position).getGameConfigName()));
+        greatExpectedScore.setText(String.format("Great: %s", getItem(position).getGreatExpectedScore()));
+        poorExpectedScore.setText(String.format("Poor: %s", getItem(position).getPoorExpectedScore()));
 
         return convertView;
     }

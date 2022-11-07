@@ -32,7 +32,8 @@
             android:inputType="numberSigned"
             app:layout_constraintStart_toEndOf="@+id/enter_players_text"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            android:autofillHints="" />
+            android:autofillHints=""
+            tools:ignore="LabelFor" />
 
         <ListView
             android:id="@+id/achievementsList"

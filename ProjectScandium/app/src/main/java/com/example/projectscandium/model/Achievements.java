@@ -1,7 +1,5 @@
 package com.example.projectscandium.model;
 
-import androidx.annotation.NonNull;
-
 /**
  * Represents the possible achievements that a game configuration can have.
  */
@@ -15,9 +13,6 @@ public class Achievements {
 
     private int lowerScoreBound;
     private int upperScoreBound;
-
-    // A score to include the worse possible games (lower than lowerScoreBound)
-    private final int worsePossibleScore = 0;
 
     // function to get the name of the achievement
     public String getAchievementName(int index) {
@@ -40,7 +35,9 @@ public class Achievements {
         this.upperScoreBound = upper * numPlayers;
 
         // Create worse possible lvl which always equals 0 points
-        setAchievementValue(0,worsePossibleScore);
+        // A score to include the worse possible games (lower than lowerScoreBound)
+        int worsePossibleScore = 0;
+        setAchievementValue(0, worsePossibleScore);
 
         int range = this.upperScoreBound - this.lowerScoreBound;
         double increment = (double)range / (9 - 1);

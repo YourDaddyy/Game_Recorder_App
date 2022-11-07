@@ -1,7 +1,5 @@
 package com.example.projectscandium.model;
 
-import com.example.projectscandium.model.Configs;
-
 public class Game {
     private int combinedScore;
     private int playerNum;

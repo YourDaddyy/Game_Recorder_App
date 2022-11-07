@@ -2,8 +2,8 @@
     <string name="app_name">Project Scandium</string>
     <string name="title_activity_achievements">Achievements</string>
     <string name="config_name_text">Config. Name:</string>
-    <string name="upper_score_text">Upper Score:</string>
-    <string name="lower_score_text">Lower Score:</string>
+    <string name="upper_score_text">Great Score:</string>
+    <string name="lower_score_text">Poor Score:</string>
     <string name="save_config_text">Save</string>
     <string name="delete_config_text">Delete</string>
     <string name="config_colon_text">:</string>
@@ -23,7 +23,7 @@
     <string name="game_1">Game: 1</string>
     <string name="level">Level: ###</string>
     <string name="player">Player</string>
-    <string name="player_number_ncombined_score">Player Number\nCombined Score</string>
+    <string name="player_number_combined_score">Player Number\nCombined Score</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="score">Score</string>
@@ -44,4 +44,5 @@
     <string name="add_game_text">To add a new game please press a config. from the list above</string>
     <string name="game_title">Cat Stat Combat</string>
     <string name="save_button_text">SAVE</string>
+    <string name="fab">FAB</string>
 </resources>

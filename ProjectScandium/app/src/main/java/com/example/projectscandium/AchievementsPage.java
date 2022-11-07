@@ -3,7 +3,6 @@ package com.example.projectscandium;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -78,7 +77,7 @@ public class AchievementsPage extends AppCompatActivity {
                                 TextView text1 = view.findViewById(android.R.id.text1);
                                 TextView text2 = view.findViewById(android.R.id.text2);
                                 text1.setText(achievements.getAchievementName(position));
-                                text2.setText("Minimum Score: " + achievements.getAchievementValue(position));
+                                text2.setText(String.format("Minimum Score: %s", achievements.getAchievementValue(position)));
                                 return view;
                             }
                         };
