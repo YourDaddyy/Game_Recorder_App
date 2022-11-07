@@ -19,10 +19,18 @@ import com.example.projectscandium.model.Configs;
 
 import java.util.Objects;
 
+/*Class AchievementsPage
+ * Purpose: This class is the activity that displays the achievements of the user
+ * and allows the user to search for a specific achievement level based on the number of players
+ */
 public class AchievementsPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // onCreate method
+        // Purpose: creates the activity, set the toolbar. It populate the list with achievements
+        // and the minimum score required based on the num of players
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
 
@@ -37,7 +45,9 @@ public class AchievementsPage extends AppCompatActivity {
         EditText playerNum = findViewById(R.id.playerInput);
         ListView achievementList = findViewById(R.id.achievementsList);
 
-        // on text changed listener for lower score box
+        // addTestListener
+        // Purpose: adds a listener to the playerNum EditText. Updates the list of
+        // achievements when the number of players is changed
         playerNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -49,6 +59,9 @@ public class AchievementsPage extends AppCompatActivity {
 
             }
 
+            // afterTextChanged
+            // Purpose: updates the list of achievements when the number of players is changed
+            // Return: void
             @Override
             public void afterTextChanged(Editable s) {
                 try {
@@ -77,7 +90,8 @@ public class AchievementsPage extends AppCompatActivity {
                                 TextView text1 = view.findViewById(android.R.id.text1);
                                 TextView text2 = view.findViewById(android.R.id.text2);
                                 text1.setText(achievements.getAchievementName(position));
-                                text2.setText(String.format("Minimum Score: %s", achievements.getAchievementValue(position)));
+                                text2.setText(
+                                        String.format("Minimum Score: %s", achievements.getAchievementValue(position)));
                                 return view;
                             }
                         };

@@ -9,15 +9,20 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
-/**
- * The welcome page.
+/*Class WelcomePage
+ * Purpose: This class is the activity that displays the welcome page of the app
  */
 public class WelcomePage extends AppCompatActivity {
 
+    // private variables to store the necessary information
     private static final int SECONDS = 5000;
-    Animation animation, animationGame;
-    Thread timer;
+    private Animation animation, animationGame;
+    private Thread timer;
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Add the animation to the logos.
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,7 @@ public class WelcomePage extends AppCompatActivity {
         img.setAnimation(animation);
         gameImage.setAnimation(animationGame);
 
+        // Set timer for the welcome page
         timer = new Thread(() -> {
             try {
                 Thread.sleep(SECONDS);
@@ -60,7 +66,10 @@ public class WelcomePage extends AppCompatActivity {
         });
     }
 
-    // Goes to tutorial page activity
+    // startTutorialPage method
+    // Purpose: starts the tutorial page activity if the user presses the skip
+    // button
+    // Returns: void
     private void startTutorialPage() {
         // cancel the timer
         timer.interrupt();

@@ -20,9 +20,12 @@ import com.example.projectscandium.model.Configs;
 
 import java.util.Objects;
 
+/*Class GameConfig
+ * Purpose: This class is the activity that allows the user to create a new config. It also allows the user to edit an existing config
+ */
 public class GameConfig extends AppCompatActivity {
 
-    // get the game config manager
+    // private variables to store the necessary information
     private ConfigManager configManager;
     private Configs config;
 
@@ -31,6 +34,10 @@ public class GameConfig extends AppCompatActivity {
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Extracts the user's input and stores it in the private variables
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +88,9 @@ public class GameConfig extends AppCompatActivity {
             lowerScoreBox.setText(String.valueOf(config.getPoorExpectedScore()));
         }
 
-        // on text changed listener for name box
+        // TextWatcher
+        // Purpose: listens to the text in the name box and checks if it is empty
+        // Returns: void
         nameBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -107,7 +116,9 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
-        // on text changed listener for upper score box
+        // TextWatcher
+        // Purpose: listens to the text in the upper score box and checks if the value is valid
+        // Returns: void
         upperScoreBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -151,7 +162,9 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
-        // on text changed listener for lower score box
+        // TextWatcher
+        // Purpose: listens to the text in the lower score box and checks if the value is valid
+        // Returns: void
         lowerScoreBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -196,7 +209,8 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
-        // when the delete button is clicked
+        // When the delete button is clicked ask the user if they are sure
+        // if yes, delete the config and return to the main activity otherwise do nothing
         Button deleteButton = findViewById(R.id.deleteConfig);
         if (Objects.equals(mode, "NewConfig")) {
             deleteButton.setVisibility(View.GONE);
@@ -225,6 +239,7 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
+        // View possible achievements list by calling the activity if the button is pressed
         Button achievementButton = findViewById(R.id.achConfig);
         if (Objects.equals(mode, "NewConfig")) {
             achievementButton.setVisibility(View.GONE);
@@ -237,9 +252,11 @@ public class GameConfig extends AppCompatActivity {
             new_intent.putExtra("configIndex", index);
             startActivity(new_intent);
         });
-
     }
 
+    // checkEmpty method
+    // Purpose: checks if the boxes are empty and sets the error message
+    // Returns: boolean
     private boolean checkEmpty(EditText BoxId) {
         if (BoxId.getText().toString().isEmpty()) {
             // if any of the boxes are empty, throw an error
@@ -256,11 +273,17 @@ public class GameConfig extends AppCompatActivity {
         }
     }
 
+    // onBackPress method
+    // Purpose: call the checkReturn method when the back button is pressed to confirm return
+    // Returns: void
     @Override
     public void onBackPressed() {
         checkReturn();
     }
 
+    // checkReturn method
+    // Purpose: check if the user wants to return to the main activity without saving the changes
+    // Returns: void
     private void checkReturn() {
         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(GameConfig.this);
         builder1.setIcon(null);
@@ -270,6 +293,9 @@ public class GameConfig extends AppCompatActivity {
         builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
     }
 
+    // onCreateOptionsMenu method
+    // Purpose: create the menu for the activity and inflate the menu with the save button
+    // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.save_bar_item, menu);
@@ -283,6 +309,10 @@ public class GameConfig extends AppCompatActivity {
         return true;
     }
 
+    // SaveConfig method
+    // Purpose: save the config to the config manager when the save button is pressed,
+    // and the values are valid
+    // Returns: void
     public void SaveConfig() {
         emptyName = checkEmpty(nameBox);
         upperScoreCheck = checkEmpty(upperScoreBox);

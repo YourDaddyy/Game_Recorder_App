@@ -19,11 +19,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+/*Class GameConfigList
+ * Purpose: This class is the activity that allows the user to view the list of configs
+ */
 public class GameConfigList extends AppCompatActivity {
 
+    // private variables to store the necessary information
     ListView ConfigList;
     TextView configEmptyState, addGameTextValue;
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Loads the list of configs from the config manager(shared preferences)
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +41,7 @@ public class GameConfigList extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // set the title of the activity
-        setTitle("Game Configurations");
+        setTitle(R.string.ConfigurationListTitle);
 
         // get the game config manager
         ConfigManager.getInstance().loadConfigs(this);
@@ -53,6 +61,11 @@ public class GameConfigList extends AppCompatActivity {
         });
     }
 
+    // onResume method
+    // Purpose: saves the list of configs to the config manager(shared preferences).
+    // Also sets the empty state text if there are no configs and populates the list
+    // with the custom adapter if there are configs.
+    // Returns: void
     @Override
     protected void onResume() {
         super.onResume();
@@ -68,8 +81,6 @@ public class GameConfigList extends AppCompatActivity {
 
         // get the size of the array list
         int size = configManager.getSize();
-
-        System.out.println("Size of the array list is: " + size);
 
         configEmptyState = findViewById(R.id.configTutorial);
         addGameTextValue = findViewById(R.id.addGameText);
@@ -99,7 +110,9 @@ public class GameConfigList extends AppCompatActivity {
         }
     }
 
-    // when back button is pressed, exit the app
+    // onBackPressed method
+    // Purpose: creates an alert to confirm exiting the app when the back button is pressed
+    // Returns: void
     @Override
     public void onBackPressed() {
         // create dialog box to confirm exit

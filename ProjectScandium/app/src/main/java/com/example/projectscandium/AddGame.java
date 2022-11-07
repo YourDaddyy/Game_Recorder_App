@@ -26,8 +26,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Objects;
 
+/*Class AddGame
+ * Purpose: This class is the activity that allows the user to add a game to the list of games
+ * in the config
+ */
 public class AddGame extends AppCompatActivity {
 
+    // private variables to store the necessary information
     private int players, scores;
     private int gamePos, configPos;
     Button btnDelete;
@@ -39,6 +44,10 @@ public class AddGame extends AppCompatActivity {
     private static final String CONFIG_POS = "com.example.projectscandium.AddGame - the config pos";
     private static final String GAME_POS = "com.example.projectscandium.AddGame - the gamePos";
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Extracts the config position and game position.
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +60,7 @@ public class AddGame extends AppCompatActivity {
         config = cm.getConfigById(configPos);
 
         // set title
-        setTitle("Game: " + (config.getGameNum() + 1));
+        setTitle(R.string.GameNumberText + (config.getGameNum() + 1));
         time = setTime();
         TextView tvTime = findViewById(R.id.Time);
         tvTime.setText(time);
@@ -64,17 +73,20 @@ public class AddGame extends AppCompatActivity {
         }
 
         setupPage();
-
     }
 
-    // extract edit game index
+    // extractDataFromIntent method
+    // Purpose: extracts the config position and game position from the intent
+    // Returns: void
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         configPos = intent.getIntExtra(CONFIG_POS, 0);
         gamePos = intent.getIntExtra(GAME_POS, -1);
     }
 
-    // Create Intent Portal
+    // makeIntent method
+    // Purpose: creates an intent to start the AddGame activity
+    // returns: Intent
     public static Intent makeIntent(Context context, int configPos, int gamePos) {
         Intent intent = new Intent(context, AddGame.class);
         intent.putExtra(CONFIG_POS, configPos);
@@ -82,7 +94,9 @@ public class AddGame extends AppCompatActivity {
         return intent;
     }
 
-    // App Bar Controller, setup function of save and return btn
+    // onCreateOptionsMenu method
+    // Purpose: creates the menu
+    // Returns: boolean
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // setup return button
@@ -93,11 +107,18 @@ public class AddGame extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // onBackPress method
+    // Purpose: checks if the user presses the back button
+    // Returns: void
     @Override
     public void onBackPressed() {
         checkReturn();
     }
 
+    // checkReturn method
+    // Purpose: checks if the user wants to return to the previous activity.
+    // In this case: the GameList activity.
+    // Returns: void
     private void checkReturn() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
         builder1.setIcon(null);
@@ -107,7 +128,9 @@ public class AddGame extends AppCompatActivity {
         builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
     }
 
-    // set up Game Page
+    // setupPage method
+    // Purpose: sets up the page, including the buttons and the text fields
+    // Returns: void
     private void setupPage() {
         btnDelete = findViewById(R.id.btnDelete);
         if (gamePos == -1) {
@@ -123,7 +146,9 @@ public class AddGame extends AppCompatActivity {
         }
     }
 
-    // set up delete button
+    // setupDeleteBtn method
+    // Purpose: sets up the delete button to delete the game from the list of games
+    // Returns: void
     private void setupDeleteBtn() {
         btnDelete.setOnClickListener(view -> {
             // create dialog
@@ -141,7 +166,9 @@ public class AddGame extends AppCompatActivity {
         });
     }
 
-    // Set Game Created Time
+    // setTime method
+    // Purpose: sets the time of the game creation
+    // Returns: String
     private String setTime() {
         LocalDate localDate = LocalDate.now();
 
@@ -155,6 +182,10 @@ public class AddGame extends AppCompatActivity {
         return Date + " @ " + Time;
     }
 
+    // checkSave method
+    // Purpose: checks if the user wants to save the game and if they do,
+    // then saves the game to the game list.
+    // Returns: void
     private void checkSave() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
@@ -167,9 +198,9 @@ public class AddGame extends AppCompatActivity {
             // set the achievement for the game
             game.setAchievements(achievements);
             config = cm.getConfigById(configPos);
-            if(gamePos == -1){// get the config instance
+            if (gamePos == -1) {// get the config instance
                 config.addGame(game);
-            }else{
+            } else {
                 config.getGames().set(gamePos, game);
                 game.setAchievements(achievements);
             }
@@ -178,7 +209,9 @@ public class AddGame extends AppCompatActivity {
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
     }
 
-    // Check if the game is valid
+    // checkValid method
+    // Purpose: checks if the user has entered valid data into the text fields
+    // Returns: boolean
     private boolean checkValid() {
         EditText etP = findViewById(R.id.player);
         EditText etS = findViewById(R.id.score);
@@ -193,6 +226,9 @@ public class AddGame extends AppCompatActivity {
         return true;
     }
 
+    // onCreateOptionsMenu method
+    // Purpose: creates the menu and adds functionality to the save button
+    // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.save_bar_item, menu);

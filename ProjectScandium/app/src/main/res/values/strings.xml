@@ -47,4 +47,6 @@
     <string name="fab">FAB</string>
     <string name="NewConfigTitle">New Game Config.</string>
     <string name="EditConfigTitle">Edit Game Config.</string>
+    <string name="ConfigurationListTitle">Game Configurations</string>
+    <string name="GameNumberText">Game: </string>
 </resources>
