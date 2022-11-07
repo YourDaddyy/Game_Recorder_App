@@ -40,6 +40,7 @@
         app:layout_constraintStart_toEndOf="@+id/creatorTitle"
         app:layout_constraintTop_toBottomOf="@+id/game_icon" />
 
+    <!-- Scandium Icon Source: https://sciencenotes.org/scandium-facts/ -->
     <ImageView
         android:id="@+id/welcome_icon"
         android:layout_width="96dp"
@@ -68,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teamTitle" />
 
+    <!-- Game Image Source: https://www.freepik.com/free-vector/illustration-animal-adult-coloring-page_2614622.htm#query=cat%20art&position=2&from_view=search&track=sph -->
     <ImageView
         android:id="@+id/game_icon"
         android:layout_width="300dp"

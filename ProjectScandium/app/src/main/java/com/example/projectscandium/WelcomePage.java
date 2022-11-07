@@ -27,6 +27,9 @@ public class WelcomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
+        // Scandium Icon Source: https://sciencenotes.org/scandium-facts/
+        // Application Icon Source: https://pixabay.com/illustrations/cat-art-illustration-2907936/
+        // Game Image Source: https://www.freepik.com/free-vector/illustration-animal-adult-coloring-page_2614622.htm#query=cat%20art&position=2&from_view=search&track=sph
 
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
         animation.setDuration(1500);
