@@ -138,8 +138,8 @@ public class AddGame extends AppCompatActivity {
             builder.setMessage("Are You Sure Want to Delete This Game?");
             // make Sure
             builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                config.deleteGame(gamePos);
                 finish();
-                config.getGames().remove(gamePos);
             });
             // Cancel
             builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss()).show();
@@ -151,7 +151,7 @@ public class AddGame extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> {
             if (checkValid()) {
-                // Save data, calculate level and save into class
+                // Save data into class
                 String sPlayer = ((EditText) findViewById(R.id.player)).getText().toString();
                 players = Integer.parseInt(sPlayer);
                 String sScore = ((EditText) findViewById(R.id.score)).getText().toString();
@@ -183,12 +183,16 @@ public class AddGame extends AppCompatActivity {
         builder.setPositiveButton("Yes", (dialog, which) -> {
             Game game = new Game(players, scores, time);
             Achievements achievements = new Achievements();
-            // get the config instance
-            config = cm.getConfigById(configPos);
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
             // set the achievement for the game
             game.setAchievements(achievements);
-            config.addGame(game);
+            config = cm.getConfigById(configPos);
+            if(gamePos == -1){// get the config instance
+                config.addGame(game);
+            }else{
+                config.getGames().set(gamePos, game);
+                game.setAchievements(achievements);
+            }
             finish();
         });
         builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();

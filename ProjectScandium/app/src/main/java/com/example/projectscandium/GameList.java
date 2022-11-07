@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class GameList extends AppCompatActivity {
 
         populateGameList();
         populateListView();
+        registerCLickCallback();
     }
 
     // reset game list page
@@ -127,12 +129,12 @@ public class GameList extends AppCompatActivity {
             txtScore.setText(getString(R.string.game_score, gameScore));
 
             TextView txtTime = itemView.findViewById(R.id.txtTime);
-            txtTime.setText(currentGame.getTime());
+            txtTime.setText(getString(R.string.game_time, currentGame.getTime()));
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
             Achievements achievements = currentGame.getAchievements();
             String achievement = achievements.getAchievement(gameScore);
-            txtLevel.setText(getString(R.string.game_level, achievement));
+            txtLevel.setText(getString(R.string.game_level, achievements.getAchievementIndex(gameScore), achievement));
 
             return itemView;
         }
@@ -149,6 +151,15 @@ public class GameList extends AppCompatActivity {
         FloatingActionButton btn = findViewById(R.id.addGamebtn);
         btn.setOnClickListener(v -> {
             Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
+            startActivity(intent);
+        });
+    }
+
+    //Set up switch activity for click game
+    private void registerCLickCallback() {
+        ListView list = findViewById(R.id.gameList);
+        list.setOnItemClickListener((parent, viewClicked, position, id) -> {
+            Intent intent = AddGame.makeIntent(GameList.this, configPos, position);
             startActivity(intent);
         });
     }
