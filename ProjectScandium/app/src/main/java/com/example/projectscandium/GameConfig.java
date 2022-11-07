@@ -92,6 +92,7 @@ public class GameConfig extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 // get the value of the name box
                 name = nameBox.getText().toString();
+
                 // if empty throw an error
                 if (name.isEmpty()) {
                     nameBox.setError("Name cannot be empty");
@@ -119,12 +120,16 @@ public class GameConfig extends AppCompatActivity {
                 // get the value of the upper score box
                 try {
                     upperScore = upperScoreBox.getText().toString();
+                    lowerScore = lowerScoreBox.getText().toString();
                     if (upperScore.isEmpty()) {
                         upperScoreBox.setError("Score cannot be empty");
                         upperScoreCheck = true;
                     } else {
                         if (Integer.parseInt(upperScore) < 0) {
                             upperScoreBox.setError("Score cannot be negative");
+                            upperScoreCheck = true;
+                        } else if (Integer.parseInt(upperScore) < Integer.parseInt(lowerScore)) {
+                            upperScoreBox.setError("Score cannot lower than lower score");
                             upperScoreCheck = true;
                         } else {
                             upperScoreBox.setError(null);
@@ -154,6 +159,7 @@ public class GameConfig extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 // get the value of the lower score box
                 try {
+                    upperScore = upperScoreBox.getText().toString();
                     lowerScore = lowerScoreBox.getText().toString();
                     if (lowerScore.isEmpty()) {
                         lowerScoreBox.setError("Score cannot be empty");
@@ -162,6 +168,10 @@ public class GameConfig extends AppCompatActivity {
                         if (Integer.parseInt(lowerScore) < 0) {
                             lowerScoreBox.setError("Score cannot be negative");
                             lowerScoreCheck = true;
+                        }
+                        else if (Integer.parseInt(lowerScore) > Integer.parseInt(upperScore)) {
+                            upperScoreBox.setError("Score cannot higher than upper score");
+                            upperScoreCheck = true;
                         } else {
                             lowerScoreBox.setError(null);
                             lowerScoreCheck = false;
