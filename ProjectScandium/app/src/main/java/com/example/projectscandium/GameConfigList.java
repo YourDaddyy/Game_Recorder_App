@@ -1,5 +1,6 @@
 package com.example.projectscandium;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class GameConfigList extends AppCompatActivity {
 
     ListView ConfigList;
-    TextView configEmptyState;
+    TextView configEmptyState, addGameTextValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,9 @@ public class GameConfigList extends AppCompatActivity {
         System.out.println("Size of the array list is: " + size);
 
         configEmptyState = findViewById(R.id.configTutorial);
+        addGameTextValue = findViewById(R.id.addGameText);
         if (size == 0) {
+            addGameTextValue.setVisibility(TextView.GONE);
             ConfigList.setAdapter(null);
             configEmptyState.setVisibility(TextView.VISIBLE);
             SpannableString spannableString = new SpannableString(getString(R.string.config_tutorial_text));
@@ -81,6 +84,7 @@ public class GameConfigList extends AppCompatActivity {
             ConfigList.setEmptyView(configEmptyState);
         } else {
             configEmptyState.setVisibility(TextView.GONE);
+            addGameTextValue.setVisibility(TextView.VISIBLE);
             // set the adapter for the list view
             ConfigListAdapter adapter = new ConfigListAdapter(this, R.layout.config_list_layout, configs);
             ConfigList.setAdapter(adapter);
@@ -93,5 +97,17 @@ public class GameConfigList extends AppCompatActivity {
                 startActivity(intent);
             });
         }
+    }
+
+    // when back button is pressed, exit the app
+    @Override
+    public void onBackPressed() {
+        // create dialog box to confirm exit
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit the app?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", (dialog, id) -> finishAffinity());
+        builder.setNegativeButton("No", (dialog, id) -> dialog.cancel());
+        builder.show();
     }
 }

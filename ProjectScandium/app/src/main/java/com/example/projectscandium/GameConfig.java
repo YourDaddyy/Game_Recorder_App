@@ -25,7 +25,7 @@ public class GameConfig extends AppCompatActivity {
     private Configs config;
 
     private String name, upperScore, lowerScore, mode;
-    private boolean emptyName, upperScoreCheck, lowerScoreCheck;
+    private boolean emptyName, upperScoreCheck, lowerScoreCheck, lowerScoreDiff;
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
 
@@ -39,6 +39,8 @@ public class GameConfig extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         // listen to up button
         toolbar.setNavigationOnClickListener(v -> finish());
+
+        lowerScoreDiff = false;
 
         // Get intent of the activity
         Intent intent = getIntent();
@@ -120,7 +122,6 @@ public class GameConfig extends AppCompatActivity {
                 // get the value of the upper score box
                 try {
                     upperScore = upperScoreBox.getText().toString();
-                    lowerScore = lowerScoreBox.getText().toString();
                     if (upperScore.isEmpty()) {
                         upperScoreBox.setError("Score cannot be empty");
                         upperScoreCheck = true;
@@ -128,16 +129,21 @@ public class GameConfig extends AppCompatActivity {
                         if (Integer.parseInt(upperScore) < 0) {
                             upperScoreBox.setError("Score cannot be negative");
                             upperScoreCheck = true;
-                        } else if (Integer.parseInt(upperScore) < Integer.parseInt(lowerScore)) {
-                            upperScoreBox.setError("Score cannot lower than lower score");
-                            upperScoreCheck = true;
+                        } else if (lowerScoreDiff) {
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer.parseInt(upperScoreBox.getText().toString())){
+                                lowerScoreDiff = true;
+                                lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+                                return;
+                            } else {
+                                lowerScoreBox.setError(null);
+                            }
                         } else {
                             upperScoreBox.setError(null);
                             upperScoreCheck = false;
                         }
                     }
                 } catch (NumberFormatException e) {
-                    upperScoreBox.setError("Score must be a number");
+                    upperScoreBox.setError("Please enter a valid number");
                     upperScoreCheck = true;
                 }
             }
@@ -159,7 +165,6 @@ public class GameConfig extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 // get the value of the lower score box
                 try {
-                    upperScore = upperScoreBox.getText().toString();
                     lowerScore = lowerScoreBox.getText().toString();
                     if (lowerScore.isEmpty()) {
                         lowerScoreBox.setError("Score cannot be empty");
@@ -168,10 +173,14 @@ public class GameConfig extends AppCompatActivity {
                         if (Integer.parseInt(lowerScore) < 0) {
                             lowerScoreBox.setError("Score cannot be negative");
                             lowerScoreCheck = true;
-                        }
-                        else if (Integer.parseInt(lowerScore) > Integer.parseInt(upperScore)) {
-                            upperScoreBox.setError("Score cannot higher than upper score");
-                            upperScoreCheck = true;
+                        } else if (lowerScoreDiff) {
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer.parseInt(upperScoreBox.getText().toString())){
+                                lowerScoreDiff = true;
+                                lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+                                return;
+                            } else {
+                                lowerScoreBox.setError(null);
+                            }
                         } else {
                             lowerScoreBox.setError(null);
                             lowerScoreCheck = false;
@@ -192,6 +201,12 @@ public class GameConfig extends AppCompatActivity {
             emptyName = checkEmpty(nameBox);
             upperScoreCheck = checkEmpty(upperScoreBox);
             lowerScoreCheck = checkEmpty(lowerScoreBox);
+
+            if (Integer.parseInt(lowerScoreBox.getText().toString()) > Integer.parseInt(upperScoreBox.getText().toString())){
+                lowerScoreDiff = true;
+                lowerScoreBox.setError("Lower Score can't be less than Upper Score");
+                return;
+            }
 
             if (emptyName && upperScoreCheck && lowerScoreCheck) {
                 // create a dialog box to confirm the save

@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Objects;
 
 public class AddGame extends AppCompatActivity {
 
@@ -61,6 +62,9 @@ public class AddGame extends AppCompatActivity {
         tvTime.setText(time);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        // listen to up button
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         if (gamePos != -1) {
             setTitle(getString(R.string.editGame_title));

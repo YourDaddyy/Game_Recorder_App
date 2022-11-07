@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:text="@string/upper_score_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/configNameTxt" />
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="35dp"
         android:text="@string/lower_score_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpperScoreTxt" />
@@ -80,30 +80,31 @@
         android:id="@+id/saveConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="50dp"
         android:text="@string/save_config_text"
-        app:layout_constraintStart_toEndOf="@+id/deleteConfig"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LowerScoreBox" />
 
     <Button
         android:id="@+id/deleteConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="10dp"
         android:text="@string/delete_config_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LowerScoreTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/saveConfig" />
 
     <Button
         android:id="@+id/achConfig"
         android:layout_width="160dp"
         android:layout_height="48dp"
-        android:layout_marginStart="195dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="25dp"
         android:text="@string/config_ach_text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveConfig" />
+        app:layout_constraintTop_toBottomOf="@+id/deleteConfig" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

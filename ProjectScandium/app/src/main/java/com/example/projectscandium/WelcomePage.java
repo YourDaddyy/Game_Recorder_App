@@ -20,7 +20,7 @@ public class WelcomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_empty_state);
+        setContentView(R.layout.activity_welcome_page);
 
         setupSkipButton();
         setUpAnimation();
@@ -43,10 +43,16 @@ public class WelcomePage extends AppCompatActivity {
     // Goes to main menu automatically 4 seconds after animation
     private void setUpAnimation() {
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade);
+        animation.setDuration(1500);
+
+        Animation animationGame = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade);
+        animationGame.setDuration(2500);
 
         // Set animation of image
         ImageView img = findViewById(R.id.welcome_icon);
+        ImageView gameImage = findViewById(R.id.game_icon);
         img.setAnimation(animation);
+        gameImage.setAnimation(animationGame);
 
         // Animation listener
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -76,7 +82,6 @@ public class WelcomePage extends AppCompatActivity {
 
     // Goes to tutorial page activity
     private void startTutorialPage() {
-//        Intent i = new Intent(WelcomePage.this, EmptyStateTutorial.class);
         Intent i = new Intent(WelcomePage.this, GameConfigList.class);
         startActivity(i);
         finish();

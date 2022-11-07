@@ -17,7 +17,7 @@
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
     <string name="config_tutorial_text">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the name of the configuration \n3. Choose set the expected scores \n4. View possible achievement levels based configuration by clicking the view achievements button \n5. Enjoy the game! :)</string>
-    <string name="game_tutorial">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the Players and Combined Score \n3. Press the Save Button. \n4. Enjoy the game! :)</string>
+    <string name="game_tutorial">\n\nGetting Started: \n \n1. Press the plus button \n2. Enter the Players and Combined Score \n3. Press the Save Button. \n4. To edit the config. press Edit \n5. Enjoy the game! :)</string>
     <string name="players">Players: ####</string>
     <string name="combined_score">Combined Score: ####</string>
     <string name="game_1">Game: 1</string>
@@ -38,7 +38,9 @@
     <string name="completion_status">Completion Status</string>
     <string name="achievements_players">Enter Players:</string>
     <string name="by_ethan_ernest_and_sahaj">By Ethan, Ernest, and Sahaj</string>
-    <string name="welcome_to_team_scandium">Welcome to Team Scandium</string>
+    <string name="welcome_to_team_scandium">Team Scandium Presents</string>
     <string name="skip">Skip</string>
     <string name="todo">TODO</string>
+    <string name="add_game_text">To add a new game please press a config. from the list above</string>
+    <string name="game_title">Cat Stat Combat</string>
 </resources>

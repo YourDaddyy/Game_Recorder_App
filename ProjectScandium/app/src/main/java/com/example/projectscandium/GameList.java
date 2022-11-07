@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,9 +27,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameList extends AppCompatActivity {
-    //Singleton the game list
+    // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
-    //Setup local game list
+    // Setup local game list
     private final ArrayList<Game> games = new ArrayList<>();
     private ArrayAdapter<Game> adapter;
 
@@ -49,7 +48,7 @@ public class GameList extends AppCompatActivity {
 
         populateGameList();
         populateListView();
-        registerCLickCallback();
+//        registerCLickCallback();
     }
 
     // reset game list page
@@ -90,8 +89,11 @@ public class GameList extends AppCompatActivity {
                 for (int i = 0; i < config.getGameNum(); i++) {
                     games.add(config.searchGame(i));
                 }
+                for (Game game : games) {
+                    updateGame(game);
+                }
             }
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             finish();
         }
     }
@@ -102,22 +104,23 @@ public class GameList extends AppCompatActivity {
         ListView list = findViewById(R.id.gameList);
         list.setAdapter(adapter);
     }
+
     private class MyListAdapter extends ArrayAdapter<Game> {
-        public MyListAdapter(){
+        public MyListAdapter() {
             super(GameList.this, R.layout.game_list_view, games);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
-            if(itemView == null){
+            if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.game_list_view, parent, false);
             }
             Game currentGame = games.get(position);
 
             // set game num txt
             TextView txtNum = itemView.findViewById(R.id.GameNum);
-            txtNum.setText(getString(R.string.game_num, position+1));
+            txtNum.setText(getString(R.string.game_num, position + 1));
 
             // Set Player txt
             TextView txtPlayer = itemView.findViewById(R.id.txtPlayer);
@@ -155,7 +158,7 @@ public class GameList extends AppCompatActivity {
         });
     }
 
-    //Set up switch activity for click game
+    // Set up switch activity for click game
     private void registerCLickCallback() {
         ListView list = findViewById(R.id.gameList);
         list.setOnItemClickListener((parent, viewClicked, position, id) -> {
@@ -174,6 +177,19 @@ public class GameList extends AppCompatActivity {
         Intent intent = new Intent(GameList.this, GameConfig.class);
         intent.putExtra("configIndex", configPos);
         startActivity(intent);
+    }
+
+    private void updateGame(Game game) {
+        // update the achievement level of the game
+        Achievements achievements = new Achievements();
+        // get the upper and lower bound of the achievement level
+        int upperBound = cm.getConfigById(configPos).getGreatExpectedScore();
+        int lowerBound = cm.getConfigById(configPos).getPoorExpectedScore();
+        // get the number of players
+        int playerNum = game.getPlayerNum();
+        // update the achievement level of the game
+        achievements.setScoreBounds(lowerBound, upperBound, playerNum);
+        game.setAchievements(achievements);
     }
 
 }
