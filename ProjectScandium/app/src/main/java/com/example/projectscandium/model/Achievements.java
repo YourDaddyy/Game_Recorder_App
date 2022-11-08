@@ -13,8 +13,8 @@ public class Achievements {
     private final double[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     // variable to store the lower bound and upper bound of the achievement scores
-    private int lowerScoreBound;
-    private int upperScoreBound;
+    private double lowerScoreBound;
+    private double upperScoreBound;
 
     // getAchievementName
     // Purpose: returns the name of the achievement at the given index
@@ -45,10 +45,10 @@ public class Achievements {
         // set worse score possible
         setAchievementValue(0, 0);
 
-        this.lowerScoreBound = lower * numPlayers;
-        this.upperScoreBound = upper * numPlayers;
+        this.lowerScoreBound = (double)lower * numPlayers;
+        this.upperScoreBound = (double)upper * numPlayers;
 
-        int range = upperScoreBound - lowerScoreBound;
+        double range = upperScoreBound - lowerScoreBound;
         double increment = (double)range / (9 - 1);
         for (int i = 1; i < 10; i++) {
             double points = lowerScoreBound + (increment * (i - 1));
@@ -60,15 +60,15 @@ public class Achievements {
 
     // getLowerScoreBound
     // Purpose: returns the lower bound of the achievement scores
-    // Return: int
-    public int getLowerScoreBound() {
+    // Return: double
+    public double getLowerScoreBound() {
         return lowerScoreBound;
     }
 
     // getUpperScoreBound
     // Purpose: returns the upper bound of the achievement scores
-    // Return: int
-    public int getUpperScoreBound() {
+    // Return: double
+    public double getUpperScoreBound() {
         return upperScoreBound;
     }
 
@@ -78,7 +78,7 @@ public class Achievements {
     public String getAchievement(int score) {
         double doubleScore = score;
 
-        if (doubleScore < (double)lowerScoreBound) {
+        if (doubleScore < lowerScoreBound) {
             return achievements[0];
         }
         // if the score is greater than the upper bound, return the last achievement
@@ -88,7 +88,7 @@ public class Achievements {
         // if the score is between the lower and upper bound, return the achievement
         // that corresponds to the score
         for (int i = 0; i < 10; i++) {
-            if (score < achievementValues[i]) {
+            if (doubleScore <= achievementValues[i]) {
                 return achievements[i];
             }
         }
@@ -99,21 +99,19 @@ public class Achievements {
     // Purpose: returns the index of the achievement that the given score belongs to
     // Return: int
     public int getAchievementIndex(int score) {
-        double doubleScore = (double)score;
-        double doubleLower = lowerScoreBound;
-        double doubleUpper = upperScoreBound;
+        double doubleScore = score;
 
-        if (doubleScore < doubleLower) {
+        if (doubleScore < lowerScoreBound) {
             return 0;
         }
         // if the score is greater than the upper bound, return the last achievement
-        if (doubleScore > doubleUpper) {
+        if (doubleScore > upperScoreBound) {
             return 9;
         }
         // if the score is between the lower and upper bound, return the achievement
         // that corresponds to the score
         for (int i = 0; i < 10; i++) {
-            if (doubleScore < achievementValues[i]) {
+            if (doubleScore <= achievementValues[i]) {
                 return i;
             }
         }
