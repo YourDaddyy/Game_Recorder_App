@@ -9,12 +9,23 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * ConfigManager (Singleton Class)
+ * Purpose: Represents the possible achievements that a game configuration can have. Stores the
+ * achievements in a shared preferences file.
+ */
 public class ConfigManager {
     private static ConfigManager instance = null;
 
+    // ConfigManager constructor
+    // Purpose: creates a new ConfigManager object
+    // Return: void
     private ConfigManager() {
     }
 
+    // getInstance
+    // Purpose: returns the instance of the ConfigManager object
+    // Return: ConfigManager
     public static ConfigManager getInstance() {
         if (instance == null) {
             instance = new ConfigManager();
@@ -22,15 +33,19 @@ public class ConfigManager {
         return instance;
     }
 
-    // Array list to store configs
+    // Private Array list variable to store configs
     private ArrayList<Configs> configs = new ArrayList<>();
 
-    // add a config to the array list
+    // addConfig
+    // Purpose: adds a new config to the configs array list
+    // Return: void
     public void addConfig(Configs config) {
         configs.add(config);
     }
 
-    // get a config from the array list
+    // getConfig
+    // Purpose: returns the config at the given index
+    // Return: Configs
     public Configs getConfigById(int id) {
         if (id < 0 || id >= configs.size()) {
             throw new IndexOutOfBoundsException();
@@ -39,7 +54,9 @@ public class ConfigManager {
         }
     }
 
-    // remove a config from the array list
+    // removeConfig
+    // Purpose: removes the config at the given index
+    // Return: void
     public void removeConfigById(int id) {
         if (id < 0 || id >= configs.size()) {
             throw new IndexOutOfBoundsException();
@@ -48,17 +65,23 @@ public class ConfigManager {
         }
     }
 
-    // function to get the size of the array list
+    // getSize
+    // Purpose: returns the size of the configs array list
+    // Return: int
     public int getSize() {
         return configs.size();
     }
 
-    // function to return the array list
+    // getConfigs
+    // Purpose: returns the configs array list
+    // Return: ArrayList<Configs>
     public ArrayList<Configs> getConfigs() {
         return configs;
     }
 
-    // function to set the array list values
+    // saveConfigs
+    // Purpose: saves the configs array list to a shared preferences file
+    // Return: void
     public void saveConfigs(Context mContext) {
         SharedPreferences.Editor editor = mContext.getSharedPreferences("Configs", Context.MODE_PRIVATE).edit();
         Gson gson = new Gson();
@@ -67,7 +90,10 @@ public class ConfigManager {
         editor.apply();
     }
 
-    // function to get the array list values
+    // loadConfigs
+    // Purpose: loads the configs array list from a shared preferences file and populates
+    // the configs instance
+    // Return: void
     public void loadConfigs(Context mContext) {
         SharedPreferences prefs = mContext.getSharedPreferences("Configs", Context.MODE_PRIVATE);
         Gson gson = new Gson();

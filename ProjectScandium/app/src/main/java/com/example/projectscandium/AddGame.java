@@ -1,16 +1,12 @@
 package com.example.projectscandium;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.projectscandium.model.Achievements;
 import com.example.projectscandium.model.ConfigManager;
@@ -29,12 +24,18 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Objects;
 
+/*Class AddGame
+ * Purpose: This class is the activity that allows the user to add a game to the list of games
+ * in the config
+ */
 public class AddGame extends AppCompatActivity {
 
+    // private variables to store the necessary information
     private int players, scores;
     private int gamePos, configPos;
-    Button btnDelete, btnSave;
+    Button btnDelete;
     private String time;
 
     // Singleton the game list
@@ -43,6 +44,10 @@ public class AddGame extends AppCompatActivity {
     private static final String CONFIG_POS = "com.example.projectscandium.AddGame - the config pos";
     private static final String GAME_POS = "com.example.projectscandium.AddGame - the gamePos";
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Extracts the config position and game position.
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,29 +60,33 @@ public class AddGame extends AppCompatActivity {
         config = cm.getConfigById(configPos);
 
         // set title
-        setTitle("Game: " + (config.getGameNum() + 1));
+        setTitle(R.string.GameNumberText + (config.getGameNum() + 1));
         time = setTime();
         TextView tvTime = findViewById(R.id.Time);
         tvTime.setText(time);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (gamePos != -1) {
             setTitle(getString(R.string.editGame_title));
         }
 
         setupPage();
-
     }
 
-    // extract edit game index
+    // extractDataFromIntent method
+    // Purpose: extracts the config position and game position from the intent
+    // Returns: void
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         configPos = intent.getIntExtra(CONFIG_POS, 0);
         gamePos = intent.getIntExtra(GAME_POS, -1);
     }
 
-    // Create Intent Portal
+    // makeIntent method
+    // Purpose: creates an intent to start the AddGame activity
+    // returns: Intent
     public static Intent makeIntent(Context context, int configPos, int gamePos) {
         Intent intent = new Intent(context, AddGame.class);
         intent.putExtra(CONFIG_POS, configPos);
@@ -85,7 +94,9 @@ public class AddGame extends AppCompatActivity {
         return intent;
     }
 
-    // App Bar Controller, setup function of save and return btn
+    // onCreateOptionsMenu method
+    // Purpose: creates the menu
+    // Returns: boolean
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // setup return button
@@ -96,22 +107,30 @@ public class AddGame extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // onBackPress method
+    // Purpose: checks if the user presses the back button
+    // Returns: void
     @Override
     public void onBackPressed() {
         checkReturn();
-        // super.onBackPressed();
     }
 
+    // checkReturn method
+    // Purpose: checks if the user wants to return to the previous activity.
+    // In this case: the GameList activity.
+    // Returns: void
     private void checkReturn() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
         builder1.setIcon(null);
-        builder1.setTitle("Return to Game List?");
-        builder1.setMessage("Nothing is saved");
-        builder1.setPositiveButton("Yes", (dialog, which) -> finish());
-        builder1.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+        builder1.setTitle(R.string.ReturnToGameListTitle);
+        builder1.setMessage(R.string.ReturnMessage);
+        builder1.setPositiveButton(R.string.Yes, (dialog, which) -> finish());
+        builder1.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
 
-    // set up Game Page
+    // setupPage method
+    // Purpose: sets up the page, including the buttons and the text fields
+    // Returns: void
     private void setupPage() {
         btnDelete = findViewById(R.id.btnDelete);
         if (gamePos == -1) {
@@ -125,43 +144,31 @@ public class AddGame extends AppCompatActivity {
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             setupDeleteBtn();
         }
-        setupSaveBtn();
     }
 
-    // set up delete button
+    // setupDeleteBtn method
+    // Purpose: sets up the delete button to delete the game from the list of games
+    // Returns: void
     private void setupDeleteBtn() {
         btnDelete.setOnClickListener(view -> {
             // create dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
             builder.setIcon(null);
-            builder.setTitle("Delete?");
-            builder.setMessage("Are You Sure Want to Delete This Game?");
+            builder.setTitle(R.string.DeleteGameTitle);
+            builder.setMessage(R.string.DeleteGameMessage);
             // make Sure
-            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            builder.setPositiveButton(R.string.Yes, (dialogInterface, i) -> {
                 config.deleteGame(gamePos);
                 finish();
             });
             // Cancel
-            builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss()).show();
+            builder.setNegativeButton(R.string.No, (dialogInterface, i) -> dialogInterface.dismiss()).show();
         });
     }
 
-    // set up save button
-    private void setupSaveBtn() {
-        btnSave = findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(v -> {
-            if (checkValid()) {
-                // Save data into class
-                String sPlayer = ((EditText) findViewById(R.id.player)).getText().toString();
-                players = Integer.parseInt(sPlayer);
-                String sScore = ((EditText) findViewById(R.id.score)).getText().toString();
-                scores = Integer.parseInt(sScore);
-                checkSave();
-            }
-        });
-    }
-
-    // Set Game Created Time
+    // setTime method
+    // Purpose: sets the time of the game creation
+    // Returns: String
     private String setTime() {
         LocalDate localDate = LocalDate.now();
 
@@ -175,41 +182,70 @@ public class AddGame extends AppCompatActivity {
         return Date + " @ " + Time;
     }
 
+    // checkSave method
+    // Purpose: checks if the user wants to save the game and if they do,
+    // then saves the game to the game list.
+    // Returns: void
     private void checkSave() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
-        builder.setTitle("Save Game?");
-        builder.setMessage("Game will be saved.");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+        builder.setTitle(R.string.SaveGameTitle);
+        builder.setMessage(R.string.SaveGameMessage);
+        builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
             Game game = new Game(players, scores, time);
             Achievements achievements = new Achievements();
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
             // set the achievement for the game
             game.setAchievements(achievements);
             config = cm.getConfigById(configPos);
-            if(gamePos == -1){// get the config instance
+            if (gamePos == -1) {// get the config instance
                 config.addGame(game);
-            }else{
+            } else {
                 config.getGames().set(gamePos, game);
                 game.setAchievements(achievements);
             }
             finish();
         });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+        builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
 
-    // Check if the game is valid
+    // checkValid method
+    // Purpose: checks if the user has entered valid data into the text fields
+    // Returns: boolean
     private boolean checkValid() {
         EditText etP = findViewById(R.id.player);
         EditText etS = findViewById(R.id.score);
         if (etP.length() == 0) {
-            etP.setError("Players should not be empty");
+            etP.setError(getString(R.string.EmptyField));
             return false;
         }
         if (etS.length() == 0) {
-            etS.setError("Scores should not be empty");
+            etS.setError(getString(R.string.EmptyField));
             return false;
         }
+        return true;
+    }
+
+    // onCreateOptionsMenu method
+    // Purpose: creates the menu and adds functionality to the save button
+    // Returns: boolean
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_bar_item, menu);
+        // on click listener for the save button
+        MenuItem saveButton = menu.findItem(R.id.saveButton);
+        // on click listener for the save button
+        saveButton.setOnMenuItemClickListener(item -> {
+            if (checkValid()) {
+                // Save data into class
+                String sPlayer = ((EditText) findViewById(R.id.player)).getText().toString();
+                players = Integer.parseInt(sPlayer);
+                String sScore = ((EditText) findViewById(R.id.score)).getText().toString();
+                scores = Integer.parseInt(sScore);
+                checkSave();
+            }
+            return true;
+        });
         return true;
     }
 

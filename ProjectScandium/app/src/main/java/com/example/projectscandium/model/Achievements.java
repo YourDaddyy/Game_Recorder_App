@@ -1,67 +1,79 @@
 package com.example.projectscandium.model;
 
-import androidx.annotation.NonNull;
-
 /**
- * Represents the possible achievements that a game configuration can have.
+ * Achievement (Class)
+ * Purpose: Represents the possible achievements that a game configuration can have.
  */
 public class Achievements {
     // array of achievements names
     public String[] achievements = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
-            "Silly Cat", "Ktten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
+            "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
 
-    // aray of int values for each achievement
-    private final double[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    // array of int values for each achievement
+    private final int[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+    // variable to store the lower bound and upper bound of the achievement scores
     private int lowerScoreBound;
     private int upperScoreBound;
 
-    // A score to include the worse possible games (lower than lowerScoreBound)
-    private final int worsePossibleScore = 0;
-
-    // function to get the name of the achievement
+    // getAchievementName
+    // Purpose: returns the name of the achievement at the given index
+    // Return: String
     public String getAchievementName(int index) {
         return achievements[index];
     }
 
-    // function to get the value of the achievement
-    public double getAchievementValue(int index) {
+    // getAchievementValue
+    // Purpose: returns the value of the achievement at the given index
+    // Return: int
+    public int getAchievementValue(int index) {
         return achievementValues[index];
     }
 
-    // function to set the value of the achievement
-    public void setAchievementValue(int index, double value) {
+    // setAchievementValue
+    // Purpose: sets the value of the achievement at the given index
+    // Return: void
+    public void setAchievementValue(int index, int value) {
         this.achievementValues[index] = value;
     }
 
-    // function to set the lower and upper bounds of the score
+    // getLowerScoreBound
+    // Purpose: returns the lower bound of the achievement scores
+    // Return: int
     public void setScoreBounds(int lower, int upper, int numPlayers) {
         this.lowerScoreBound = lower * numPlayers;
         this.upperScoreBound = upper * numPlayers;
 
         // Create worse possible lvl which always equals 0 points
-        setAchievementValue(0,worsePossibleScore);
+        // A score to include the worse possible games (lower than lowerScoreBound)
+        int worsePossibleScore = 0;
+        setAchievementValue(0, worsePossibleScore);
 
         int range = this.upperScoreBound - this.lowerScoreBound;
-        double increment = (double)range / (9 - 1);
+        int increment = range / (9 - 1);
         for (int i = 1; i < 10; i++) {
-            double points = this.lowerScoreBound + (increment * (i - 1));
+            int points = this.lowerScoreBound + (increment * (i - 1));
             setAchievementValue(i, points);
         }
     }
 
-    // function to get the lower bound of the score
+    // getLowerScoreBound
+    // Purpose: returns the lower bound of the achievement scores
+    // Return: int
     public int getLowerScoreBound() {
         return lowerScoreBound;
     }
 
-    // function to get the upper bound of the score
+    // getUpperScoreBound
+    // Purpose: returns the upper bound of the achievement scores
+    // Return: int
     public int getUpperScoreBound() {
         return upperScoreBound;
     }
 
-    // function to get achievement based on the score. If the score is less than the
-    // lower bound, return the first achievement
+    // getAchievement
+    // Purpose: returns the achievement name based on the score
+    // Return: String
     public String getAchievement(int score) {
         if (score < lowerScoreBound) {
             return achievements[0];
@@ -80,6 +92,9 @@ public class Achievements {
         return achievements[9];
     }
 
+    // getAchievementIndex
+    // Purpose: returns the index of the achievement that the given score belongs to
+    // Return: int
     public int getAchievementIndex(int score) {
         if (score < lowerScoreBound) {
             return 0;

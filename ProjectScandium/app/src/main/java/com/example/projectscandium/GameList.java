@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,16 +26,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/*Class GameList
+ * Purpose: This class is the activity that allows the user to view the list of games
+ */
 public class GameList extends AppCompatActivity {
-    //Singleton the game list
+
+    // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
-    //Setup local game list
+    // Setup local game list
     private final ArrayList<Game> games = new ArrayList<>();
     private ArrayAdapter<Game> adapter;
 
     private int configPos;
     private static final String CONFIG_POS = "com.example.projectscandium.GameList - the Config position";
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Extracts the config from the intent and populates the list of games
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +56,12 @@ public class GameList extends AppCompatActivity {
 
         populateGameList();
         populateListView();
-        registerCLickCallback();
+        // registerCLickCallback();
     }
 
-    // reset game list page
+    // onResume method
+    // Purpose: refreshes the list of games and populates the list view
+    // Returns: void
     @Override
     public void onResume() {
         super.onResume();
@@ -63,16 +72,21 @@ public class GameList extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    // extract game index
+    // extractDataFromIntent method
+    // Purpose: extracts the config position from the intent
+    // Returns: void
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         configPos = intent.getIntExtra(CONFIG_POS, 0);
         Configs config = cm.getConfigById(configPos);
         String configName = config.getGameConfigName();
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Configuration: " + configName);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.configTitle) + "  " + configName);
     }
 
-    // get the game list from singleton
+    // populateGameList method
+    // Purpose: populates the local game list with the games from the config manager
+    // and updates the necessary games.
+    // Returns: void
     private void populateGameList() {
         try {
             ListView gameList = findViewById(R.id.gameList);
@@ -82,7 +96,7 @@ public class GameList extends AppCompatActivity {
                 txtEmpty.setVisibility(View.VISIBLE);
                 SpannableString spannableString = new SpannableString(getString(R.string.game_tutorial));
                 ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
-                spannableString.setSpan(teal, 34, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(teal, 36, 41, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 txtEmpty.setText(spannableString);
                 gameList.setEmptyView(txtEmpty);
             } else {
@@ -90,34 +104,50 @@ public class GameList extends AppCompatActivity {
                 for (int i = 0; i < config.getGameNum(); i++) {
                     games.add(config.searchGame(i));
                 }
+                for (Game game : games) {
+                    updateGame(game);
+                }
             }
-        } catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             finish();
         }
     }
 
-    // create list view
+    // populateListView method
+    // Purpose: populates the list view with the games from the local game list
+    // Returns: void
     private void populateListView() {
         adapter = new MyListAdapter();
         ListView list = findViewById(R.id.gameList);
         list.setAdapter(adapter);
     }
+
+    /*
+     * Class MyListAdapter
+     * Purpose: This class is the adapter for the list view for the games
+     */
     private class MyListAdapter extends ArrayAdapter<Game> {
-        public MyListAdapter(){
+        // Constructor for MyListAdapter
+        // Purpose: calls the super constructor for ArrayAdapter
+        // Returns: none
+        public MyListAdapter() {
             super(GameList.this, R.layout.game_list_view, games);
         }
 
+        // getView method
+        // Purpose: gets the view for the list view and sets the appropriate text views
+        // Returns: View
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
-            if(itemView == null){
+            if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.game_list_view, parent, false);
             }
             Game currentGame = games.get(position);
 
             // set game num txt
             TextView txtNum = itemView.findViewById(R.id.GameNum);
-            txtNum.setText(getString(R.string.game_num, position+1));
+            txtNum.setText(getString(R.string.game_num, position + 1));
 
             // Set Player txt
             TextView txtPlayer = itemView.findViewById(R.id.txtPlayer);
@@ -140,6 +170,9 @@ public class GameList extends AppCompatActivity {
         }
     }
 
+    // setupToolBar method
+    // Purpose: sets up the toolbar for the activity to listen for the up button
+    // Returns: void
     private void setupToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -147,15 +180,20 @@ public class GameList extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    // setupAddGameBtn method
+    // Purpose: sets up the FAB add game button to listen for clicks
+    // Returns: void
     private void setupAddGameBtn() {
-        FloatingActionButton btn = findViewById(R.id.addGamebtn);
+        FloatingActionButton btn = findViewById(R.id.addGameButton);
         btn.setOnClickListener(v -> {
             Intent intent = AddGame.makeIntent(GameList.this, configPos, -1);
             startActivity(intent);
         });
     }
 
-    //Set up switch activity for click game
+    // registerCLickCallback method
+    // Purpose: registers the click callback for the list view to go to the clicked game
+    // Returns: void
     private void registerCLickCallback() {
         ListView list = findViewById(R.id.gameList);
         list.setOnItemClickListener((parent, viewClicked, position, id) -> {
@@ -164,16 +202,38 @@ public class GameList extends AppCompatActivity {
         });
     }
 
+    // onCreateOptionsMenu method
+    // Purpose: creates the options menu for the activity and adds the edit config button
+    // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tool_bar_item, menu);
         return true;
     }
 
+    // editConfig method
+    // Purpose: Calls the edit config activity if the edit config button is clicked from the toolbar
+    // Returns: boolean
     public void EditConfig(MenuItem menuItem) {
         Intent intent = new Intent(GameList.this, GameConfig.class);
         intent.putExtra("configIndex", configPos);
         startActivity(intent);
     }
 
+    // updateGame method
+    // Purpose: updates the game in the config manager and the local game list, specifically
+    // the Achievements, if the game is configuration values have changed
+    // Returns: void
+    private void updateGame(Game game) {
+        // update the achievement level of the game
+        Achievements achievements = new Achievements();
+        // get the upper and lower bound of the achievement level
+        int upperBound = cm.getConfigById(configPos).getGreatExpectedScore();
+        int lowerBound = cm.getConfigById(configPos).getPoorExpectedScore();
+        // get the number of players
+        int playerNum = game.getPlayerNum();
+        // update the achievement level of the game
+        achievements.setScoreBounds(lowerBound, upperBound, playerNum);
+        game.setAchievements(achievements);
+    }
 }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,17 +20,24 @@ import com.example.projectscandium.model.Configs;
 
 import java.util.Objects;
 
+/*Class GameConfig
+ * Purpose: This class is the activity that allows the user to create a new config. It also allows the user to edit an existing config
+ */
 public class GameConfig extends AppCompatActivity {
 
-    // get the game config manager
+    // private variables to store the necessary information
     private ConfigManager configManager;
     private Configs config;
 
     private String name, upperScore, lowerScore, mode;
-    private boolean emptyName, upperScoreCheck, lowerScoreCheck;
+    private boolean emptyName, upperScoreCheck, lowerScoreCheck, lowerScoreDiff;
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Extracts the user's input and stores it in the private variables
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +47,9 @@ public class GameConfig extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         // listen to up button
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> checkReturn());
+
+        lowerScoreDiff = false;
 
         // Get intent of the activity
         Intent intent = getIntent();
@@ -46,9 +57,9 @@ public class GameConfig extends AppCompatActivity {
         mode = intent.getStringExtra("mode");
 
         if (Objects.equals(mode, "NewConfig")) {
-            getSupportActionBar().setTitle("New Game Configuration");
-        } else if (Objects.equals(mode, "EditConfig")) {
-            getSupportActionBar().setTitle("Edit Game Configuration");
+            getSupportActionBar().setTitle(R.string.NewConfigTitle);
+        } else {
+            getSupportActionBar().setTitle(R.string.EditConfigTitle);
         }
 
         emptyName = false;
@@ -77,7 +88,9 @@ public class GameConfig extends AppCompatActivity {
             lowerScoreBox.setText(String.valueOf(config.getPoorExpectedScore()));
         }
 
-        // on text changed listener for name box
+        // TextWatcher
+        // Purpose: listens to the text in the name box and checks if it is empty
+        // Returns: void
         nameBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,7 +108,7 @@ public class GameConfig extends AppCompatActivity {
 
                 // if empty throw an error
                 if (name.isEmpty()) {
-                    nameBox.setError("Name cannot be empty");
+                    nameBox.setError(getString(R.string.EmptyField));
                     emptyName = true;
                 } else {
                     emptyName = false;
@@ -103,7 +116,9 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
-        // on text changed listener for upper score box
+        // TextWatcher
+        // Purpose: listens to the text in the upper score box and checks if the value is valid
+        // Returns: void
         upperScoreBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,30 +135,36 @@ public class GameConfig extends AppCompatActivity {
                 // get the value of the upper score box
                 try {
                     upperScore = upperScoreBox.getText().toString();
-                    lowerScore = lowerScoreBox.getText().toString();
                     if (upperScore.isEmpty()) {
-                        upperScoreBox.setError("Score cannot be empty");
+                        upperScoreBox.setError(getString(R.string.EmptyField));
                         upperScoreCheck = true;
                     } else {
                         if (Integer.parseInt(upperScore) < 0) {
-                            upperScoreBox.setError("Score cannot be negative");
+                            upperScoreBox.setError(getString(R.string.ErrorNegativeScore));
                             upperScoreCheck = true;
-                        } else if (Integer.parseInt(upperScore) < Integer.parseInt(lowerScore)) {
-                            upperScoreBox.setError("Score cannot lower than lower score");
-                            upperScoreCheck = true;
+                        } else if (lowerScoreDiff) {
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
+                                    .parseInt(upperScoreBox.getText().toString())) {
+                                lowerScoreDiff = true;
+                                lowerScoreBox.setError(getString(R.string.ErrorLowerNum));
+                            } else {
+                                lowerScoreBox.setError(null);
+                            }
                         } else {
                             upperScoreBox.setError(null);
                             upperScoreCheck = false;
                         }
                     }
                 } catch (NumberFormatException e) {
-                    upperScoreBox.setError("Score must be a number");
+                    upperScoreBox.setError(getString(R.string.ErrorNum));
                     upperScoreCheck = true;
                 }
             }
         });
 
-        // on text changed listener for lower score box
+        // TextWatcher
+        // Purpose: listens to the text in the lower score box and checks if the value is valid
+        // Returns: void
         lowerScoreBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -159,19 +180,22 @@ public class GameConfig extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 // get the value of the lower score box
                 try {
-                    upperScore = upperScoreBox.getText().toString();
                     lowerScore = lowerScoreBox.getText().toString();
                     if (lowerScore.isEmpty()) {
-                        lowerScoreBox.setError("Score cannot be empty");
+                        lowerScoreBox.setError(getString(R.string.EmptyField));
                         lowerScoreCheck = true;
                     } else {
                         if (Integer.parseInt(lowerScore) < 0) {
-                            lowerScoreBox.setError("Score cannot be negative");
+                            lowerScoreBox.setError(getString(R.string.ErrorNegativeScore));
                             lowerScoreCheck = true;
-                        }
-                        else if (Integer.parseInt(lowerScore) > Integer.parseInt(upperScore)) {
-                            upperScoreBox.setError("Score cannot higher than upper score");
-                            upperScoreCheck = true;
+                        } else if (lowerScoreDiff) {
+                            if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
+                                    .parseInt(upperScoreBox.getText().toString())) {
+                                lowerScoreDiff = true;
+                                lowerScoreBox.setError(getString(R.string.ErrorLowerNum));
+                            } else {
+                                lowerScoreBox.setError(null);
+                            }
                         } else {
                             lowerScoreBox.setError(null);
                             lowerScoreCheck = false;
@@ -179,76 +203,33 @@ public class GameConfig extends AppCompatActivity {
                     }
                 } catch (NumberFormatException ex) {
                     // set an error message based on the exception
-                    lowerScoreBox.setError("Please enter a valid number");
+                    lowerScoreBox.setError(getString(R.string.ErrorNum));
                     lowerScoreCheck = true;
                 }
             }
         });
 
-        // when the save button is clicked
-        Button saveButton = findViewById(R.id.saveConfig);
-        saveButton.setOnClickListener(view -> {
-
-            emptyName = checkEmpty(nameBox);
-            upperScoreCheck = checkEmpty(upperScoreBox);
-            lowerScoreCheck = checkEmpty(lowerScoreBox);
-
-            if (emptyName && upperScoreCheck && lowerScoreCheck) {
-                // create a dialog box to confirm the save
-                AlertDialog.Builder confirmSaveDialog = new AlertDialog.Builder(this);
-                confirmSaveDialog.setTitle("Do you wish to save?");
-                confirmSaveDialog.setMessage("Are you sure you want to save these values?");
-                confirmSaveDialog.setCancelable(true);
-                confirmSaveDialog.setPositiveButton("Yes", (dialog, which) -> {
-                    try {
-                        // set the values of the config
-                        config.setGameConfigName(nameBox.getText().toString());
-                        config.setGreatExpectedScore(Integer.parseInt(upperScoreBox.getText().toString()));
-                        config.setPoorExpectedScore(Integer.parseInt(lowerScoreBox.getText().toString()));
-                        if (Objects.equals(mode, "NewConfig")) {
-                            // add the config to the config manager
-                            configManager.addConfig(config);
-                        }
-                        // finish the activity
-                        finish();
-                    } catch (NumberFormatException e) {
-                        // set an error message based on the exception
-                        lowerScoreBox.setError("Please enter a valid number");
-                        lowerScoreCheck = true;
-                    }
-                });
-                confirmSaveDialog.setNegativeButton("No", (dialog, which) -> {
-                    // do nothing
-                });
-                AlertDialog dialog = confirmSaveDialog.create();
-                dialog.show();
-            } else {
-                // display toast
-                Toast toast = Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-
-        // when the delete button is clicked
+        // When the delete button is clicked ask the user if they are sure
+        // if yes, delete the config and return to the main activity otherwise do nothing
         Button deleteButton = findViewById(R.id.deleteConfig);
         if (Objects.equals(mode, "NewConfig")) {
             deleteButton.setVisibility(View.GONE);
-        } else if (Objects.equals(mode, "EditConfig")) {
+        } else {
             deleteButton.setVisibility(View.VISIBLE);
         }
         deleteButton.setOnClickListener(view -> {
             if (index != -1) {
                 // create a dialog box to confirm the delete
                 AlertDialog.Builder confirmDeleteDialog = new AlertDialog.Builder(this);
-                confirmDeleteDialog.setTitle("Do you wish to delete?");
-                confirmDeleteDialog.setMessage("Are you sure you want to delete this configuration?");
+                confirmDeleteDialog.setTitle(R.string.DeleteConfigTitle);
+                confirmDeleteDialog.setMessage(R.string.DeleteConfigMessage);
                 confirmDeleteDialog.setCancelable(true);
-                confirmDeleteDialog.setPositiveButton("Yes", (dialog, which) -> {
+                confirmDeleteDialog.setPositiveButton(R.string.Yes, (dialog, which) -> {
                     // remove the config from the config manager
                     configManager.removeConfigById(index);
                     finish();
                 });
-                confirmDeleteDialog.setNegativeButton("No", (dialog, which) -> {
+                confirmDeleteDialog.setNegativeButton(R.string.No, (dialog, which) -> {
                     // do nothing
                 });
                 AlertDialog dialog = confirmDeleteDialog.create();
@@ -258,10 +239,11 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
+        // View possible achievements list by calling the activity if the button is pressed
         Button achievementButton = findViewById(R.id.achConfig);
         if (Objects.equals(mode, "NewConfig")) {
             achievementButton.setVisibility(View.GONE);
-        } else if (Objects.equals(mode, "EditConfig")) {
+        } else {
             achievementButton.setVisibility(View.VISIBLE);
         }
         // listener for the achievement button
@@ -270,22 +252,116 @@ public class GameConfig extends AppCompatActivity {
             new_intent.putExtra("configIndex", index);
             startActivity(new_intent);
         });
-
     }
 
+    // checkEmpty method
+    // Purpose: checks if the boxes are empty and sets the error message
+    // Returns: boolean
     private boolean checkEmpty(EditText BoxId) {
         if (BoxId.getText().toString().isEmpty()) {
             // if any of the boxes are empty, throw an error
             if (BoxId == nameBox) {
-                nameBox.setError("Name cannot be empty");
+                nameBox.setError(getString(R.string.EmptyField));
             } else if (BoxId == upperScoreBox) {
-                upperScoreBox.setError("Score cannot be empty");
+                upperScoreBox.setError(getString(R.string.EmptyField));
             } else if (BoxId == lowerScoreBox) {
-                lowerScoreBox.setError("Score cannot be empty");
+                lowerScoreBox.setError(getString(R.string.EmptyField));
             }
             return false;
         } else {
             return true;
+        }
+    }
+
+    // onBackPress method
+    // Purpose: call the checkReturn method when the back button is pressed to confirm return
+    // Returns: void
+    @Override
+    public void onBackPressed() {
+        checkReturn();
+    }
+
+    // checkReturn method
+    // Purpose: check if the user wants to return to the main activity without saving the changes
+    // Returns: void
+    private void checkReturn() {
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(GameConfig.this);
+        builder1.setIcon(null);
+        builder1.setTitle(R.string.ReturnToConfigListTitle);
+        builder1.setMessage(R.string.ReturnMessage);
+        builder1.setPositiveButton(R.string.Yes, (dialog, which) -> finish());
+        builder1.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
+    }
+
+    // onCreateOptionsMenu method
+    // Purpose: create the menu for the activity and inflate the menu with the save button
+    // Returns: boolean
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_bar_item, menu);
+        // on click listener for the save button
+        MenuItem saveButton = menu.findItem(R.id.saveButton);
+        // on click listener for the save button
+        saveButton.setOnMenuItemClickListener(item -> {
+            SaveConfig();
+            return true;
+        });
+        return true;
+    }
+
+    // SaveConfig method
+    // Purpose: save the config to the config manager when the save button is pressed,
+    // and the values are valid
+    // Returns: void
+    public void SaveConfig() {
+        emptyName = checkEmpty(nameBox);
+        upperScoreCheck = checkEmpty(upperScoreBox);
+        lowerScoreCheck = checkEmpty(lowerScoreBox);
+
+        try{
+            if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
+                    .parseInt(upperScoreBox.getText().toString())) {
+                lowerScoreDiff = true;
+                lowerScoreBox.setError(getString(R.string.ErrorLowerNum));
+                return;
+            }
+        } catch (NumberFormatException e){
+            return;
+        }
+
+        if (emptyName && upperScoreCheck && lowerScoreCheck) {
+            // create a dialog box to confirm the save
+            AlertDialog.Builder confirmSaveDialog = new AlertDialog.Builder(this);
+            confirmSaveDialog.setTitle(R.string.SaveConfigTitle);
+            confirmSaveDialog.setMessage(R.string.SaveConfigMessage);
+            confirmSaveDialog.setCancelable(true);
+            confirmSaveDialog.setPositiveButton(R.string.Yes, (dialog, which) -> {
+                try {
+                    // set the values of the config
+                    config.setGameConfigName(nameBox.getText().toString());
+                    config.setGreatExpectedScore(Integer.parseInt(upperScoreBox.getText().toString()));
+                    config.setPoorExpectedScore(Integer.parseInt(lowerScoreBox.getText().toString()));
+                    if (Objects.equals(mode, "NewConfig")) {
+                        // add the config to the config manager
+                        configManager.addConfig(config);
+                    }
+                    // finish the activity
+                    finish();
+                } catch (NumberFormatException e) {
+                    // set an error message based on the exception
+                    lowerScoreBox.setError(getString(R.string.ErrorNum));
+                    lowerScoreCheck = true;
+                }
+            });
+            confirmSaveDialog.setNegativeButton(R.string.No, (dialog, which) -> {
+                // do nothing
+            });
+            AlertDialog dialog = confirmSaveDialog.create();
+            dialog.show();
+        } else {
+            // display toast
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.EmptyFieldToast, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }

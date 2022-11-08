@@ -1,5 +1,6 @@
 package com.example.projectscandium;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,11 +19,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+/*Class GameConfigList
+ * Purpose: This class is the activity that allows the user to view the list of configs
+ */
 public class GameConfigList extends AppCompatActivity {
 
+    // private variables to store the necessary information
     ListView ConfigList;
-    TextView configEmptyState;
+    TextView configEmptyState, addGameTextValue;
 
+    // onCreate method
+    // Purpose: creates the activity, set the toolbar (including the title).
+    // Loads the list of configs from the config manager(shared preferences)
+    // Returns: void
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +41,7 @@ public class GameConfigList extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // set the title of the activity
-        setTitle("Game Configurations");
+        setTitle(R.string.ConfigurationListTitle);
 
         // get the game config manager
         ConfigManager.getInstance().loadConfigs(this);
@@ -52,6 +61,11 @@ public class GameConfigList extends AppCompatActivity {
         });
     }
 
+    // onResume method
+    // Purpose: saves the list of configs to the config manager(shared preferences).
+    // Also sets the empty state text if there are no configs and populates the list
+    // with the custom adapter if there are configs.
+    // Returns: void
     @Override
     protected void onResume() {
         super.onResume();
@@ -68,19 +82,20 @@ public class GameConfigList extends AppCompatActivity {
         // get the size of the array list
         int size = configManager.getSize();
 
-        System.out.println("Size of the array list is: " + size);
-
         configEmptyState = findViewById(R.id.configTutorial);
+        addGameTextValue = findViewById(R.id.addGameText);
         if (size == 0) {
+            addGameTextValue.setVisibility(TextView.GONE);
             ConfigList.setAdapter(null);
             configEmptyState.setVisibility(TextView.VISIBLE);
             SpannableString spannableString = new SpannableString(getString(R.string.config_tutorial_text));
             ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
-            spannableString.setSpan(teal, 34, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(teal, 36, 41, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             configEmptyState.setText(spannableString);
             ConfigList.setEmptyView(configEmptyState);
         } else {
             configEmptyState.setVisibility(TextView.GONE);
+            addGameTextValue.setVisibility(TextView.VISIBLE);
             // set the adapter for the list view
             ConfigListAdapter adapter = new ConfigListAdapter(this, R.layout.config_list_layout, configs);
             ConfigList.setAdapter(adapter);
@@ -93,5 +108,19 @@ public class GameConfigList extends AppCompatActivity {
                 startActivity(intent);
             });
         }
+    }
+
+    // onBackPressed method
+    // Purpose: creates an alert to confirm exiting the app when the back button is pressed
+    // Returns: void
+    @Override
+    public void onBackPressed() {
+        // create dialog box to confirm exit
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.ExitAppMessage);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.Yes, (dialog, id) -> finishAffinity());
+        builder.setNegativeButton(R.string.No, (dialog, id) -> dialog.cancel());
+        builder.show();
     }
 }
