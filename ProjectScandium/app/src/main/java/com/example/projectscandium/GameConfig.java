@@ -318,10 +318,14 @@ public class GameConfig extends AppCompatActivity {
         upperScoreCheck = checkEmpty(upperScoreBox);
         lowerScoreCheck = checkEmpty(lowerScoreBox);
 
-        if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
-                .parseInt(upperScoreBox.getText().toString())) {
-            lowerScoreDiff = true;
-            lowerScoreBox.setError(getString(R.string.ErrorLowerNum));
+        try{
+            if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
+                    .parseInt(upperScoreBox.getText().toString())) {
+                lowerScoreDiff = true;
+                lowerScoreBox.setError(getString(R.string.ErrorLowerNum));
+                return;
+            }
+        } catch (NumberFormatException e){
             return;
         }
 

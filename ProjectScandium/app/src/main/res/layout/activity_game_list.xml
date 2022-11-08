@@ -8,8 +8,12 @@
 
     <TextView
         android:id="@+id/gameTutorial"
-        android:layout_width="414dp"
-        android:layout_height="674dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/game_tutorial"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -42,14 +46,12 @@
 
     <ListView
         android:id="@+id/gameList"
-        android:layout_width="wrap_content"
-        android:layout_height="600dp"
-        android:layout_marginStart="1dp"
+        android:layout_width="320dp"
+        android:layout_height="0dp"
         android:layout_marginTop="55dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/addGameButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.013" />
