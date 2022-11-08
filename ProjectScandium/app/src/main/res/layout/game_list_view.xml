@@ -22,25 +22,25 @@
         android:layout_marginTop="34dp"
         android:text="@string/players"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold|italic" />
 
     <TextView
         android:id="@+id/txtScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
+        android:layout_marginStart="160dp"
         android:layout_marginTop="34dp"
         android:text="@string/combined_score"
         android:textStyle="bold"
         android:textColor="#3F51B5"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
+        android:layout_marginStart="160dp"
         android:layout_marginTop="14dp"
         android:text="@string/time"
         android:textColor="@color/black"
@@ -55,6 +55,6 @@
         android:layout_marginTop="58dp"
         android:text="@string/level"
         android:textColor="#3F51B5"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 </RelativeLayout>
