@@ -238,10 +238,24 @@ public class AddGame extends AppCompatActivity {
         saveButton.setOnMenuItemClickListener(item -> {
             if (checkValid()) {
                 // Save data into class
-                String sPlayer = ((EditText) findViewById(R.id.player)).getText().toString();
-                players = Integer.parseInt(sPlayer);
-                String sScore = ((EditText) findViewById(R.id.score)).getText().toString();
-                scores = Integer.parseInt(sScore);
+                EditText etP = findViewById(R.id.player);
+                EditText etS = findViewById(R.id.score);
+                try {
+                    String sPlayer = (etP).getText().toString();
+                    players = Integer.parseInt(sPlayer);
+                } catch (NumberFormatException e){
+                    etP.setError(getString(R.string.ErrorNum));
+                    return false;
+                }
+
+                try {
+                    // Save data into class
+                    String sScore = (etS).getText().toString();
+                    scores = Integer.parseInt(sScore);
+                } catch (NumberFormatException e){
+                    etS.setError(getString(R.string.ErrorNum));
+                    return false;
+                }
                 checkSave();
             }
             return true;
