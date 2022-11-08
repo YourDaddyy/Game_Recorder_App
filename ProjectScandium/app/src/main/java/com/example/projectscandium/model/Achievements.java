@@ -25,7 +25,7 @@ public class Achievements {
 
     // getAchievementValue
     // Purpose: returns the value of the achievement at the given index
-    // Return: int
+    // Return: double
     public double getAchievementValue(int index) {
         return achievementValues[index];
     }
