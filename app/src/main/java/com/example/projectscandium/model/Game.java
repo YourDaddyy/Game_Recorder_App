@@ -13,15 +13,18 @@ public class Game {
     private String time;
     private Achievements achievements;
     private int difficulty;
+    private int[] playerScore;
 
     // Game constructor
     // Purpose: creates a new Game object
     // Return: void
-    public Game(int playerNum, int combinedScore, String string, int difflevel) {
+    public Game(int playerNum, int combinedScore, String string, int difflevel, int[]playerScores) {
         this.combinedScore = combinedScore;
         this.playerNum = playerNum;
         this.time = string;
         this.difficulty = difflevel;
+        this.playerScore = new int[playerNum];
+        this.playerScore = playerScores;
     }
 
     // getCombinedScore

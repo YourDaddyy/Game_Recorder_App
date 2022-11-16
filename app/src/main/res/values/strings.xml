@@ -27,7 +27,9 @@
     <string name="game_1">Game: 1</string>
     <string name="level">Level: ###</string>
     <string name="player">Player</string>
-    <string name="player_number_combined_score">Player Number\nCombined Score</string>
+    <string name="total_score">Combined Score: %1$d</string>
+    <string name="player_score">Player Score:</string>
+    <string name="player_number_combined_score">Player Number</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="score">Score</string>

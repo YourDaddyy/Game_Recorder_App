@@ -18,11 +18,13 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
         android:text="Game Difficulty"
+        android:textSize="16sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Time" />
 
     <RadioGroup
-        android:id="@+id/radio_mines"
+        android:id="@+id/radio_diffLvl"
         android:layout_width="179dp"
         android:layout_height="100dp"
         android:layout_marginTop="4dp"
@@ -33,38 +35,24 @@
 
     <TextView
         android:id="@+id/input_Info"
-        android:layout_width="0dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         android:lineSpacingExtra="30sp"
         android:text="@string/player_number_combined_score"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_mines" />
-
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
-        android:gravity="center"
-        android:text="@string/delete"
-        android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_Info" />
+        app:layout_constraintTop_toBottomOf="@+id/radio_diffLvl" />
 
     <EditText
         android:id="@+id/player"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_width="140dp"
+        android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="212dp"
+        android:layout_marginTop="168dp"
         android:layout_marginEnd="20dp"
         android:autofillHints=""
         android:ems="10"
@@ -73,16 +61,30 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.301"
         app:layout_constraintStart_toEndOf="@+id/input_Info"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/combined_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="332dp"
+        android:lineSpacingExtra="30sp"
+        android:text="@string/total_score"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_diffLvl" />
 
     <EditText
         android:id="@+id/score"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="272dp"
         android:layout_marginEnd="20dp"
         android:autofillHints=""
         android:ems="10"
@@ -91,8 +93,8 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/input_Info"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/combined_score"
         app:layout_constraintTop_toBottomOf="@+id/player" />
 
     <TextView
@@ -106,6 +108,20 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="340dp"
+        android:gravity="center"
+        android:text="@string/delete"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_Info" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

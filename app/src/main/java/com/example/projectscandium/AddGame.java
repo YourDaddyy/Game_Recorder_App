@@ -8,19 +8,25 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projectscandium.model.Achievements;
 import com.example.projectscandium.model.ConfigManager;
 import com.example.projectscandium.model.Configs;
 import com.example.projectscandium.model.Game;
+
+import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,10 +41,13 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores, diffLevel;
+    private int players, scores, diffLevel = 0, changeStatus = -1;
     private int gamePos, configPos;
-    Button btnDelete;
+    private int[] playerScore;
+    private Button btnDelete;
     private String time;
+    private TextView etPlayer;
+    ArrayAdapter<String> adapter;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -58,49 +67,63 @@ public class AddGame extends AppCompatActivity {
         // get config and game data
         extractDataFromIntent();
 
-        // get config instance
-        config = cm.getConfigById(configPos);
+        setupPage();
 
-        // set title
-        setTitle(R.string.GameNumberText + (config.getGameNum() + 1));
-        time = setTime();
-        TextView tvTime = findViewById(R.id.Time);
-        tvTime.setText(time);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         createRadioButtons();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        if (gamePos != -1) {
-            setTitle(getString(R.string.editGame_title));
-        }
+        setupTxtWatcher();
+    }
 
-        setupPage();
+    // Set up TxtWatcher Method
+    // Purpose: Watch Player Num changed
+    // Returns: void
+    private void setupTxtWatcher() {
+        etPlayer = findViewById(R.id.player);
+        TextChange tcPlayer = new TextChange();
+        etPlayer.addTextChangedListener(tcPlayer);
+    }
+
+    // TxtWatcher class
+    // Purpose: default create txt watcher
+    // Returns: void
+    class TextChange implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            changeStatus = 1;
+            if(etPlayer.length() > 0){
+                players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
+                playerScore = new int[players];
+
+            }else{
+                etPlayer.setError(getString(R.string.EmptyField));
+            }
+        }
     }
 
     // createRadioButtons method
     // Purpose: set up radio button for the difficulty level
     // Returns: void
     private void createRadioButtons() {
-        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_mines);
+        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
 
         String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
 
-        for (int i = 0; i < 3; i ++) {
+        for (int i = 0; i < 3; i++) {
             RadioButton button1 = new RadioButton(this);
-            button1.setTextColor(0xFFFFFFFF);
             button1.setTextSize(16);
             button1.setText(diff_level[i]);
-
             final int level = i;
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    diffLevel = level;
-                }
-            });
+            button1.setOnClickListener(v -> diffLevel = level);
             group1.addView(button1);
-
             if (gamePos == -1 && i == 0) {
                 button1.setChecked(true);
             }else if(gamePos != -1 && i == config.getGames().get(gamePos).getDifficulty()){
@@ -166,10 +189,19 @@ public class AddGame extends AppCompatActivity {
     // Purpose: sets up the page, including the buttons and the text fields
     // Returns: void
     private void setupPage() {
+        config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
         if (gamePos == -1) {
+            // set up add title
+            setTitle(R.string.GameNumberText + (config.getGameNum() + 1));
+            // set up time
+            time = setTime();
+            TextView tvTime = findViewById(R.id.Time);
+            tvTime.setText(time);
             btnDelete.setVisibility(View.GONE);
         } else {
+            // set up edit tile
+            setTitle(getString(R.string.editGame_title));
             btnDelete.setVisibility(View.VISIBLE);
             Game game = config.getGames().get(gamePos);
             EditText etPlayer = findViewById(R.id.player);
@@ -226,7 +258,7 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle(R.string.SaveGameTitle);
         builder.setMessage(R.string.SaveGameMessage);
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
-            Game game = new Game(players, scores, time, diffLevel);
+            Game game = new Game(players, scores, time, diffLevel, playerScore);
             Achievements achievements = new Achievements();
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
             // set the achievement for the game
@@ -236,7 +268,6 @@ public class AddGame extends AppCompatActivity {
                 config.addGame(game);
             } else {
                 config.getGames().set(gamePos, game);
-                game.setAchievements(achievements);
             }
             finish();
         });
@@ -281,7 +312,6 @@ public class AddGame extends AppCompatActivity {
                     etP.setError(getString(R.string.ErrorNum));
                     return false;
                 }
-
                 try {
                     // Save data into class
                     String sScore = (etS).getText().toString();
