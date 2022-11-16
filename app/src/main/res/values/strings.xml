@@ -13,6 +13,10 @@
     <string name="game_player">Players: %1$d</string>
     <string name="game_score">Combined Score: %1$d</string>
     <string name="game_level">Achievenment Level %1$d: %2$s</string>
+    <string name="diff_lvl">Difficulty Level: %1$s</string>
+    <string name="normal">Normal</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
     <string name="game_time">Created: %1$s</string>
     <string name="editGame_title">Edit Game</string>
     <string name="config_ach_text">Achievements</string>
@@ -23,7 +27,9 @@
     <string name="game_1">Game: 1</string>
     <string name="level">Level: ###</string>
     <string name="player">Player</string>
-    <string name="player_number_combined_score">Player Number\nCombined Score</string>
+    <string name="total_score">Combined Score: %1$d</string>
+    <string name="player_score">Player Score:</string>
+    <string name="player_number_combined_score">Player Number</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="score">Score</string>
