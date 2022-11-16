@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginTop="10dp"
-        android:text="@string/game_1"
+        android:text="@string/game_num"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginTop="34dp"
-        android:text="@string/players"
+        android:text="@string/game_player"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold|italic" />
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="34dp"
-        android:text="@string/combined_score"
+        android:text="@string/game_score"
         android:textStyle="bold"
         android:textColor="#3F51B5"
         android:textSize="14sp" />
@@ -52,8 +52,19 @@
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="58dp"
-        android:text="@string/level"
+        android:layout_marginTop="76dp"
+        android:text="@string/game_level"
+        android:textColor="#3F51B5"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDiffLvl"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/diff_lvl"
         android:textColor="#3F51B5"
         android:textSize="14sp"
         android:textStyle="bold" />

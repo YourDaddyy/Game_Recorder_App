@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.projectscandium.model.Achievements;
@@ -33,7 +35,7 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores;
+    private int players, scores, diffLevel;
     private int gamePos, configPos;
     Button btnDelete;
     private String time;
@@ -66,6 +68,7 @@ public class AddGame extends AppCompatActivity {
         tvTime.setText(time);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        createRadioButtons();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (gamePos != -1) {
@@ -73,6 +76,37 @@ public class AddGame extends AppCompatActivity {
         }
 
         setupPage();
+    }
+
+    // createRadioButtons method
+    // Purpose: set up radio button for the difficulty level
+    // Returns: void
+    private void createRadioButtons() {
+        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_mines);
+
+        String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
+
+        for (int i = 0; i < 3; i ++) {
+            RadioButton button1 = new RadioButton(this);
+            button1.setTextColor(0xFFFFFFFF);
+            button1.setTextSize(16);
+            button1.setText(diff_level[i]);
+
+            final int level = i;
+            button1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    diffLevel = level;
+                }
+            });
+            group1.addView(button1);
+
+            if (gamePos == -1 && i == 0) {
+                button1.setChecked(true);
+            }else if(gamePos != -1 && i == config.getGames().get(gamePos).getDifficulty()){
+                button1.setChecked(true);
+            }
+        }
     }
 
     // extractDataFromIntent method
@@ -192,7 +226,7 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle(R.string.SaveGameTitle);
         builder.setMessage(R.string.SaveGameMessage);
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
-            Game game = new Game(players, scores, time);
+            Game game = new Game(players, scores, time, diffLevel);
             Achievements achievements = new Achievements();
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
             // set the achievement for the game
