@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,6 +77,8 @@ public class AddGame extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         setupTxtWatcher();
+        setUpPlayBtn();
+
     }
 
     // Set up TxtWatcher Method
@@ -191,6 +195,8 @@ public class AddGame extends AppCompatActivity {
     private void setupPage() {
         config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
+        Button playButton = findViewById(R.id.btnPlay);
+
         if (gamePos == -1) {
             // set up add title
             setTitle(R.string.GameNumberText + (config.getGameNum() + 1));
@@ -199,6 +205,7 @@ public class AddGame extends AppCompatActivity {
             TextView tvTime = findViewById(R.id.Time);
             tvTime.setText(time);
             btnDelete.setVisibility(View.GONE);
+            playButton.setVisibility(View.GONE);
         } else {
             // set up edit tile
             setTitle(getString(R.string.editGame_title));
@@ -325,6 +332,34 @@ public class AddGame extends AppCompatActivity {
             return true;
         });
         return true;
+    }
+
+    // setUpPlayBtn method
+    // Purpose: starts a game play
+    // Returns: void
+    private void setUpPlayBtn() {
+        Button playBtn = findViewById(R.id.btnPlay);
+        playBtn.setOnClickListener(view -> {
+
+            checkAchievement();
+
+        });
+    }
+
+    // checkAchievement method
+    // Purpose: shows the achievement level for user
+    // Returns: void
+    private void checkAchievement() {
+        Animation animation;
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
+        animation.setDuration(1500);
+
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(AddGame.this);
+        builder1.setIcon(R.drawable.cat_combat);
+        builder1.setTitle("Achievement level Earned!");
+        builder1.setMessage("Congratulations little one!!!");
+        builder1.setPositiveButton("OK", (dialog, which) -> dialog.dismiss()).show();
+
     }
 
 }

@@ -78,4 +78,5 @@
     <string name="ErrorNegativeScore">Score cannot be negative</string>
     <string name="ErrorLowerNum">"Lower Score can't be less/equal to Upper Score"</string>
     <string name="EmptyField">This field should not be empty</string>
+    <string name="play_game">Play Game</string>
 </resources>
