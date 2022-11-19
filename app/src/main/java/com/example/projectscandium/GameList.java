@@ -259,6 +259,7 @@ public class GameList extends AppCompatActivity {
     private void updateGame(Game game) {
         // update the achievement level of the game
         Achievements achievements = new Achievements();
+        achievements.setAchievementName(game.getTheme());
 
 //        String theme = getAchievementTheme();
 //        achievements.setAchievementName(theme);

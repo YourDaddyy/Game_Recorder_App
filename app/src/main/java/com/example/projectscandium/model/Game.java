@@ -14,6 +14,7 @@ public class Game {
     private Achievements achievements;
     private int difficulty;
     private int[] playerScore;
+    private String theme;
 
     // Game constructor
     // Purpose: creates a new Game object
@@ -97,5 +98,13 @@ public class Game {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
