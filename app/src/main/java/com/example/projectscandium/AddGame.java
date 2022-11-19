@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -259,14 +260,14 @@ public class AddGame extends AppCompatActivity {
     // Purpose: checks if the user wants to save the game and if they do,
     // then saves the game to the game list.
     // Returns: void
-    private void checkSave() {
+    private void checkSave(Achievements achievements) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
         builder.setTitle(R.string.SaveGameTitle);
         builder.setMessage(R.string.SaveGameMessage);
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
             Game game = new Game(players, scores, time, diffLevel, playerScore);
-            Achievements achievements = new Achievements();
+
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
             // set the achievement for the game
             game.setAchievements(achievements);
@@ -303,6 +304,9 @@ public class AddGame extends AppCompatActivity {
     // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Achievements achievements = new Achievements();
+        createAchThemeButtons(achievements);
+
         getMenuInflater().inflate(R.menu.save_bar_item, menu);
         // on click listener for the save button
         MenuItem saveButton = menu.findItem(R.id.saveButton);
@@ -327,7 +331,7 @@ public class AddGame extends AppCompatActivity {
                     etS.setError(getString(R.string.ErrorNum));
                     return false;
                 }
-                checkSave();
+                checkSave(achievements);
             }
             return true;
         });
@@ -350,16 +354,45 @@ public class AddGame extends AppCompatActivity {
     // Purpose: shows the achievement level for user
     // Returns: void
     private void checkAchievement() {
-        Animation animation;
-        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
-        animation.setDuration(1500);
 
-        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(AddGame.this);
-        builder1.setIcon(R.drawable.cat_combat);
-        builder1.setTitle("Achievement level Earned!");
-        builder1.setMessage("Congratulations little one!!!");
-        builder1.setPositiveButton("OK", (dialog, which) -> dialog.dismiss()).show();
+        // Need to get Achievement lvl somehow
+        //  *******************************************************************
 
+        // Create sound
+        MediaPlayer sound;
+        sound = MediaPlayer.create(getApplicationContext(), R.raw.winner);
+        sound.start();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setIcon(R.drawable.cat_combat);
+        builder.setTitle(R.string.congrats_msg);
+
+        builder.setPositiveButton(R.string.ok_select,null);
+
+        // Set dialog animation
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.show();
+
+    }
+
+    // createAchThemeButtons method
+    // Purpose: set up radio button for the achievement themes
+    // Returns: void
+    private void createAchThemeButtons(Achievements obj) {
+        RadioGroup group = (RadioGroup) findViewById(R.id.radioAchTheme);
+
+        String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
+
+        for (final String ach_theme : ach_themes) {
+            RadioButton button = new RadioButton(this);
+            button.setTextSize(16);
+            button.setText(ach_theme + getString(R.string.button_txt_theme));
+            button.setOnClickListener(v -> obj.setAchievementName(ach_theme));
+            group.addView(button);
+        }
     }
 
 }

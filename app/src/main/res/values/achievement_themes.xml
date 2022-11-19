@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="achievement_themes">
+        <item>Dog</item>
+        <item>Cat</item>
+        <item>Bird</item>
+    </string-array>
+    <string name = "default_theme">Cat</string>
+</resources>

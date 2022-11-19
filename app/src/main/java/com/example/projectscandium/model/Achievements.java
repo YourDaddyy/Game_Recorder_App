@@ -23,6 +23,27 @@ public class Achievements {
         return achievements[index];
     }
 
+    // setAchievementName
+    // Purpose: sets the name of the achievement name based on theme
+    // Return: void
+    public void setAchievementName(String theme) {
+        String[] catTheme = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
+                "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
+        String[] dogTheme = { "Novice Dog", "Average Joe Dog", "Daddy Dog", "Momma Dog", "Puppy Prodigy",
+                "Silly Dog", "Puppy Army", "Flabbergast Dog", "Nyan Doggy", "Aye Aye Dog-tain" };
+        String[] birdTheme = { "Novice Bird", "Average Joe Bird", "Daddy Bird", "Momma Bird", "Bird Prodigy",
+                "Silly Bird", "Bird Army", "Flabbergast Bird", "Nyan Birdie", "Aye Aye Bird-tain" };
+        if (theme.equals("Dog")){
+            this.achievements = dogTheme;
+        }
+        if (theme.equals("Cat")){
+            this.achievements = catTheme;
+        }
+        if (theme.equals("Bird")){
+            this.achievements = birdTheme;
+        }
+    }
+
     // getAchievementValue
     // Purpose: returns the value of the achievement at the given index
     // Return: double
