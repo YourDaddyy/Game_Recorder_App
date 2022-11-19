@@ -3,6 +3,7 @@ package com.example.projectscandium;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class GameList extends AppCompatActivity {
 
     private int configPos;
     private static final String CONFIG_POS = "com.example.projectscandium.GameList - the Config position";
+    private static final String ACH_THEME = "com.example.projectscandium.AddGame - the achTheme";
 
     // onCreate method
     // Purpose: creates the activity, set the toolbar (including the title).
@@ -231,6 +233,25 @@ public class GameList extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // getAchievementTheme method
+    // Purpose: Gets the achievement theme from the AddGame class
+    // Returns: String
+    public String getAchievementTheme() {
+        Intent intent = getIntent();
+        String theme = intent.getStringExtra(ACH_THEME);
+        return theme;
+    }
+
+    // makeIntent method
+    // Purpose: creates an intent to start the GameList activity
+    // returns: Intent
+    public static Intent makeIntent(Context context, String theme) {
+        Intent intent = new Intent(context, GameList.class);
+        intent.putExtra(ACH_THEME, theme);
+        return intent;
+    }
+
+
     // updateGame method
     // Purpose: updates the game in the config manager and the local game list, specifically
     // the Achievements, if the game is configuration values have changed
@@ -238,6 +259,10 @@ public class GameList extends AppCompatActivity {
     private void updateGame(Game game) {
         // update the achievement level of the game
         Achievements achievements = new Achievements();
+
+//        String theme = getAchievementTheme();
+//        achievements.setAchievementName(theme);
+
         // get the upper and lower bound of the achievement level
         int upperBound = cm.getConfigById(configPos).getGreatExpectedScore();
         int lowerBound = cm.getConfigById(configPos).getPoorExpectedScore();
@@ -247,4 +272,5 @@ public class GameList extends AppCompatActivity {
         achievements.setScoreBounds(lowerBound, upperBound, playerNum);
         game.setAchievements(achievements);
     }
+
 }

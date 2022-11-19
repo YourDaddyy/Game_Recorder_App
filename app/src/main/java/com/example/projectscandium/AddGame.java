@@ -48,7 +48,7 @@ public class AddGame extends AppCompatActivity {
     private int gamePos, configPos;
     private int[] playerScore;
     private Button btnDelete;
-    private String time;
+    private String time, ach_themes;
     private TextView etPlayer;
     ArrayAdapter<String> adapter;
 
@@ -57,6 +57,7 @@ public class AddGame extends AppCompatActivity {
     private Configs config;
     private static final String CONFIG_POS = "com.example.projectscandium.AddGame - the config pos";
     private static final String GAME_POS = "com.example.projectscandium.AddGame - the gamePos";
+    private static final String ACH_THEME = "com.example.projectscandium.AddGame - the achTheme";
 
     // onCreate method
     // Purpose: creates the activity, set the toolbar (including the title).
@@ -79,6 +80,7 @@ public class AddGame extends AppCompatActivity {
 
         setupTxtWatcher();
         setUpPlayBtn();
+        GameList.makeIntent(AddGame.this,ach_themes);
 
     }
 
@@ -260,14 +262,14 @@ public class AddGame extends AppCompatActivity {
     // Purpose: checks if the user wants to save the game and if they do,
     // then saves the game to the game list.
     // Returns: void
-    private void checkSave(Achievements achievements) {
+    private void checkSave() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
         builder.setTitle(R.string.SaveGameTitle);
         builder.setMessage(R.string.SaveGameMessage);
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
             Game game = new Game(players, scores, time, diffLevel, playerScore);
-
+            Achievements achievements = new Achievements();
             achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
             // set the achievement for the game
             game.setAchievements(achievements);
@@ -304,8 +306,7 @@ public class AddGame extends AppCompatActivity {
     // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Achievements achievements = new Achievements();
-        createAchThemeButtons(achievements);
+        createAchThemeButtons();
 
         getMenuInflater().inflate(R.menu.save_bar_item, menu);
         // on click listener for the save button
@@ -331,7 +332,7 @@ public class AddGame extends AppCompatActivity {
                     etS.setError(getString(R.string.ErrorNum));
                     return false;
                 }
-                checkSave(achievements);
+                checkSave();
             }
             return true;
         });
@@ -381,7 +382,7 @@ public class AddGame extends AppCompatActivity {
     // createAchThemeButtons method
     // Purpose: set up radio button for the achievement themes
     // Returns: void
-    private void createAchThemeButtons(Achievements obj) {
+    private void createAchThemeButtons() {
         RadioGroup group = (RadioGroup) findViewById(R.id.radioAchTheme);
 
         String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
@@ -390,7 +391,7 @@ public class AddGame extends AppCompatActivity {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
             button.setText(ach_theme + getString(R.string.button_txt_theme));
-            button.setOnClickListener(v -> obj.setAchievementName(ach_theme));
+            button.setOnClickListener(v -> this.ach_themes = ach_theme);
             group.addView(button);
         }
     }
