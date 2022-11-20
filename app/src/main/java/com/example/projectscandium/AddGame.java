@@ -180,12 +180,16 @@ public class AddGame extends AppCompatActivity {
             setTitle(getString(R.string.editGame_title));
             btnDelete.setVisibility(View.VISIBLE);
             Game game = config.getGames().get(gamePos);
-            time = game.getTime();
             EditText etPlayer = findViewById(R.id.player);
             EditText etScore = findViewById(R.id.score);
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             setupDeleteBtn();
+            time = game.getTime();
+            scores = game.getCombinedScore();
+            players = game.getPlayerNum();
+            diff_Level = game.getDifficulty();
+            ach_themes = game.getTheme();
         }
         TextView tvTime = findViewById(R.id.Time);
         tvTime.setText(time);
@@ -345,7 +349,7 @@ public class AddGame extends AppCompatActivity {
     private void checkAchievement() {
 
         // Need to get Achievement lvl somehow
-        //  *******************************************************************
+        Achievements ach = setupAchievement();
 
         // Create sound
         MediaPlayer sound;
@@ -355,7 +359,7 @@ public class AddGame extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setIcon(R.drawable.cat_combat);
-        builder.setTitle(R.string.congrats_msg);
+        builder.setTitle(getString(R.string.congrats_msg, ach.getAchievementIndex(scores), ach.getAchievement(scores)));
 
         builder.setPositiveButton(R.string.ok_select,null);
 
