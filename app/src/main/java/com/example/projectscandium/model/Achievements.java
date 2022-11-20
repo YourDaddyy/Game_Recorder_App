@@ -13,7 +13,8 @@ public class Achievements {
             "Silly Bird", "Bird Army", "Flabbergast Bird", "Nyan Birdie", "Aye Aye Bird-tain" };
 
     // array of achievements names
-    public String[] achievements;
+    public String[] achievements = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
+            "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
     private String theme;
 
     // array of int values for each achievement

@@ -14,11 +14,13 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -50,7 +52,7 @@ public class AddGame extends AppCompatActivity {
     private Button btnDelete;
     private String time, ach_themes;
     private TextView etPlayer;
-    ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -90,7 +92,29 @@ public class AddGame extends AppCompatActivity {
     private void setupTxtWatcher() {
         etPlayer = findViewById(R.id.player);
         TextChange tcPlayer = new TextChange();
-        etPlayer.addTextChangedListener(tcPlayer);
+        etPlayer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                changeStatus = 1;
+                if(etPlayer.length() > 0){
+                    players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
+                    playerScore = new int[players];
+                    populateListView();
+                }else{
+                    etPlayer.setError(getString(R.string.EmptyField));
+                }
+            }
+        });
+    }
+
+    private void populateListView() {
+        // adapter = new MyListAdapter();
+        ListView list = findViewById(R.id.gameList);
+        list.setAdapter(adapter);
     }
 
     // TxtWatcher class
@@ -105,14 +129,7 @@ public class AddGame extends AppCompatActivity {
         }
         @Override
         public void afterTextChanged(Editable s) {
-            changeStatus = 1;
-            if(etPlayer.length() > 0){
-                players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
-                playerScore = new int[players];
 
-            }else{
-                etPlayer.setError(getString(R.string.EmptyField));
-            }
         }
     }
 
