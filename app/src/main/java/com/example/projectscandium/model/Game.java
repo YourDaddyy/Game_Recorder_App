@@ -12,20 +12,22 @@ public class Game {
     private int playerNum;
     private String time;
     private Achievements achievements;
-    private int difficulty;
+    private String difficulty;     // 0: Normal    1: Easy     2:Hard
     private int[] playerScore;
     private String theme;
 
     // Game constructor
     // Purpose: creates a new Game object
     // Return: void
-    public Game(int playerNum, int combinedScore, String string, int difflevel, int[]playerScores) {
+    public Game(int playerNum, int combinedScore, String string, String difflevel, int[]playerScores, Achievements ach, String theme) {
         this.combinedScore = combinedScore;
         this.playerNum = playerNum;
         this.time = string;
         this.difficulty = difflevel;
         this.playerScore = new int[playerNum];
         this.playerScore = playerScores;
+        this.achievements = ach;
+        this.theme = theme;
     }
 
     // getCombinedScore
@@ -92,11 +94,11 @@ public class Game {
         this.achievements = achievements;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 

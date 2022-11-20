@@ -164,14 +164,14 @@ public class GameList extends AppCompatActivity {
             txtTime.setText(getString(R.string.game_time, currentGame.getTime()));
 
             TextView txtDiff = itemView.findViewById(R.id.txtDiffLvl);
-            int diffLevel = currentGame.getDifficulty();
-            String diff = "";
-            switch(diffLevel){
-                case 0: diff = getString(R.string.normal); break;
-                case 1: diff = getString(R.string.easy); break;
-                case 2: diff = getString(R.string.hard);break;
-            }
-            txtDiff.setText(getString(R.string.diff_lvl, diff));
+            String diffLevel = currentGame.getDifficulty();
+//            String diff = "";
+//            switch(diffLevel){
+//                case 0: diff = getString(R.string.normal); break;
+//                case 1: diff = getString(R.string.easy); break;
+//                case 2: diff = getString(R.string.hard);break;
+//            }
+            txtDiff.setText(getString(R.string.diff_lvl, diffLevel));
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
             Achievements achievements = currentGame.getAchievements();

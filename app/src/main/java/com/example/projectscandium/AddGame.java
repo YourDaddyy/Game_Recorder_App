@@ -50,7 +50,7 @@ public class AddGame extends AppCompatActivity {
     private int gamePos, configPos;
     private int[] playerScore;
     private Button btnDelete;
-    private String time, ach_themes;
+    private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
     private ArrayAdapter<String> adapter;
 
@@ -199,8 +199,6 @@ public class AddGame extends AppCompatActivity {
             setTitle(getString(R.string.Add_Game));
             // set up time
             time = setTime();
-            TextView tvTime = findViewById(R.id.Time);
-            tvTime.setText(time);
             btnDelete.setVisibility(View.GONE);
             playButton.setVisibility(View.GONE);
         } else {
@@ -208,12 +206,15 @@ public class AddGame extends AppCompatActivity {
             setTitle(getString(R.string.editGame_title));
             btnDelete.setVisibility(View.VISIBLE);
             Game game = config.getGames().get(gamePos);
+            time = game.getTime();
             EditText etPlayer = findViewById(R.id.player);
             EditText etScore = findViewById(R.id.score);
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             setupDeleteBtn();
         }
+        TextView tvTime = findViewById(R.id.Time);
+        tvTime.setText(time);
     }
 
     // onCreateOptionsMenu method
@@ -235,16 +236,16 @@ public class AddGame extends AppCompatActivity {
     private void createRadioButtons() {
         RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
         String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
-        for (int i = 0; i < 3; i++) {
+
+        for (final String level: diff_level) {
             RadioButton button1 = new RadioButton(this);
             button1.setTextSize(16);
-            button1.setText(diff_level[i]);
-            final int level = i;
-            button1.setOnClickListener(v -> diffLevel = level);
+            button1.setText(level);
+            button1.setOnClickListener(v -> diff_Level = level);
             group1.addView(button1);
-            if (gamePos == -1 && i == 0) {
+            if (gamePos == -1 && level.equals("Normal")) {
                 button1.setChecked(true);
-            }else if(gamePos != -1 && i == config.getGames().get(gamePos).getDifficulty()){
+            }else if(gamePos != -1 && level.equals(config.getGames().get(gamePos).getDifficulty())){
                 button1.setChecked(true);
             }
         }
@@ -281,13 +282,9 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle(R.string.SaveGameTitle);
         builder.setMessage(R.string.SaveGameMessage);
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
-            Game game = new Game(players, scores, time, diffLevel, playerScore);
-            Achievements achievements = new Achievements();
-            achievements.setAchievementName(ach_themes);
-            achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
-            // set the achievement for the game
-            game.setAchievements(achievements);
-            game.setTheme(ach_themes);
+            Achievements ach = setupAchievement();
+            Game game = new Game(players, scores, time, diff_Level, playerScore, ach, ach_themes);
+
             config = cm.getConfigById(configPos);
             if (gamePos == -1) {// get the config instance
                 config.addGame(game);
@@ -297,6 +294,13 @@ public class AddGame extends AppCompatActivity {
             finish();
         });
         builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
+    }
+
+    private Achievements setupAchievement() {
+        Achievements ach = new Achievements();
+        ach.setAchievementName(ach_themes);
+        ach.setDiffLevel(diff_Level, config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
+        return ach;
     }
 
     // checkValid method
