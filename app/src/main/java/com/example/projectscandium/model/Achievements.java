@@ -35,14 +35,16 @@ public class Achievements {
     // Purpose: sets the name of the achievement name based on theme
     // Return: void
     public void setAchievementName(String theme) {
-        if (theme.equals("Dog")){
-            this.achievements = dogTheme;
-        }
-        if (theme.equals("Cat")){
-            this.achievements = catTheme;
-        }
-        if (theme.equals("Bird")){
-            this.achievements = birdTheme;
+        if (theme != null){
+            if (theme.equals("Dog")){
+                this.achievements = dogTheme;
+            }
+            if (theme.equals("Cat")){
+                this.achievements = catTheme;
+            }
+            if (theme.equals("Bird")){
+                this.achievements = birdTheme;
+            }
         }
     }
 
@@ -51,15 +53,12 @@ public class Achievements {
     // Return: void
     public void setDiffLevel(String diffLevel, int lower, int upper, int numPlayers) {
         double score = 1;
-        if (diffLevel.equals("Easy")){
+        if (diffLevel.equals("Easy"))
             score = 0.75;
-        }
-        if (diffLevel.equals("Normal")){
+        if (diffLevel.equals("Normal"))
             score = 1;
-        }
-        if (diffLevel.equals("Hard")){
+        if (diffLevel.equals("Hard"))
             score = 1.25;
-        }
         // set worse score possible
         setAchievementValue(0, 0);
 
