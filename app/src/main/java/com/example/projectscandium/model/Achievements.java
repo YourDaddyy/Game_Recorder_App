@@ -104,11 +104,11 @@ public class Achievements {
     // Purpose: returns the achievement name based on the score
     // Return: String
     public String getAchievement(int score) {
-        if ((double)score < lowerScoreBound) {
+        if ((double)score < achievementValues[1]) {
             return achievements[0];
         }
         // if the score is greater than the upper bound, return the last achievement
-        if ((double)score > (double)upperScoreBound) {
+        if ((double)score > (double)achievementValues[9]) {
             return achievements[9];
         }
         // if the score is between the lower and upper bound, return the achievement
@@ -125,11 +125,11 @@ public class Achievements {
     // Purpose: returns the index of the achievement that the given score belongs to
     // Return: int
     public int getAchievementIndex(int score) {
-        if ((double)score < lowerScoreBound) {
+        if ((double)score < achievementValues[1]) {
             return 0;
         }
         // if the score is greater than the upper bound, return the last achievement
-        if ((double)score > upperScoreBound) {
+        if ((double)score > achievementValues[9]) {
             return 9;
         }
         // if the score is between the lower and upper bound, return the achievement

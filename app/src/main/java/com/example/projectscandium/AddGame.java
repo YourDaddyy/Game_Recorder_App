@@ -337,11 +337,7 @@ public class AddGame extends AppCompatActivity {
     // Returns: void
     private void setUpPlayBtn() {
         Button playBtn = findViewById(R.id.btnPlay);
-        playBtn.setOnClickListener(view -> {
-
-            checkAchievement();
-
-        });
+        playBtn.setOnClickListener(view -> checkAchievement());
     }
 
     // checkAchievement method
@@ -383,18 +379,17 @@ public class AddGame extends AppCompatActivity {
         for (final String ach_theme : ach_themes) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
-            button.setText(ach_theme + getString(R.string.button_txt_theme));
+            button.setText(String.format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
             button.setOnClickListener(v -> this.ach_themes = ach_theme);
             group.addView(button);
 
-            if (gamePos == -1 && ach_theme.equals("Dog")) {
+            if (gamePos == -1 && ach_theme.equals("Cat")) {
                 button.setChecked(true);
-                this.ach_themes = "Dog";
+                this.ach_themes = "Cat";
             }else if(gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())){
                 button.setChecked(true);
                 this.ach_themes = ach_theme;
             }
         }
     }
-
 }

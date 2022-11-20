@@ -12,5 +12,5 @@
     <color name="Transparent">#00FFFFFF</color>
     <color name="Azure">#F0FFFF</color>
     <color name="BabyBlue">	#89CFF0</color>
-
+    <color name="Red">#FF0000</color>
 </resources>

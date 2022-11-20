@@ -10,15 +10,15 @@
         android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="@string/play_game"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/combined_score" />
+        app:layout_constraintTop_toBottomOf="@+id/score" />
 
     <include
         android:id="@+id/toolbar"
@@ -74,7 +74,7 @@
         android:id="@+id/input_Info"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="12dp"
         android:lineSpacingExtra="30sp"
         android:text="@string/player_number_combined_score"
@@ -104,24 +104,25 @@
 
     <TextView
         android:id="@+id/combined_score"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="324dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
         android:lineSpacingExtra="30sp"
         android:text="@string/total_score"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_diffLvl" />
+        app:layout_constraintTop_toBottomOf="@+id/input_Info" />
 
     <EditText
         android:id="@+id/score"
         android:layout_width="140dp"
         android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/score"
@@ -129,7 +130,7 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintHorizontal_bias="0.645"
         app:layout_constraintStart_toEndOf="@+id/combined_score"
         app:layout_constraintTop_toBottomOf="@+id/player" />
 
@@ -149,14 +150,15 @@
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="@string/delete"
         android:textColor="@color/white"
+        android:backgroundTint="@color/Red"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/combined_score" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
