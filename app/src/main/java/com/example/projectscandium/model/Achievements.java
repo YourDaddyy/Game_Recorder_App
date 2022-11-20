@@ -2,7 +2,8 @@ package com.example.projectscandium.model;
 
 /**
  * Achievement (Class)
- * Purpose: Represents the possible achievements that a game configuration can have.
+ * Purpose: Represents the possible achievements that a game configuration can
+ * have.
  */
 public class Achievements {
     private final String[] catTheme = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
@@ -34,14 +35,17 @@ public class Achievements {
     // Purpose: sets the name of the achievement name based on theme
     // Return: void
     public void setAchievementName(String theme) {
-        if (theme != null){
-            if (theme.equals("Dog")){
+        if (theme == null) {
+            throw new IllegalArgumentException("Theme cannot be null");
+        }
+        else{
+            if (theme.equals("Dog")) {
                 this.achievements = dogTheme;
             }
-            if (theme.equals("Cat")){
+            if (theme.equals("Cat")) {
                 this.achievements = catTheme;
             }
-            if (theme.equals("Bird")){
+            if (theme.equals("Bird")) {
                 this.achievements = birdTheme;
             }
         }
@@ -59,8 +63,8 @@ public class Achievements {
         // set worse score possible
         setAchievementValue(0, 0);
 
-        this.lowerScoreBound = (double)lower * numPlayers;
-        this.upperScoreBound = (double)upper * numPlayers;
+        this.lowerScoreBound = (double) lower * numPlayers;
+        this.upperScoreBound = (double) upper * numPlayers;
 
         double range = upperScoreBound - lowerScoreBound;
         double increment = range / (9 - 1);
@@ -108,9 +112,11 @@ public class Achievements {
         // that corresponds to the score
         int index = 0;
         for (int i = 0; i < 10; i++) {
-            if ((double)score > achievementValues[i]) {
+            if ((double) score > achievementValues[i]) {
                 index = i;
-            }else{ break; }
+            } else {
+                break;
+            }
         }
         return achievements[index];
     }
@@ -123,9 +129,11 @@ public class Achievements {
         // that corresponds to the score
         int index = 0;
         for (int i = 0; i < 10; i++) {
-            if ((double)score > achievementValues[i]) {
+            if ((double) score > achievementValues[i]) {
                 index = i;
-            }else{ break; }
+            } else {
+                break;
+            }
         }
         return index;
     }
