@@ -96,7 +96,7 @@ public class AddGame extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if(etPlayer.length() > 0){
-                    players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
+                    players = Integer.parseInt(((EditText)findViewById(R.id.player)).getText().toString());
                     playerScore = new int[players];
                 }else{
                     etPlayer.setError(getString(R.string.EmptyField));
@@ -208,7 +208,7 @@ public class AddGame extends AppCompatActivity {
     // Purpose: set up radio button for the difficulty level
     // Returns: void
     private void createRadioButtons() {
-        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
+        RadioGroup group1 = findViewById(R.id.radio_diffLvl);
         String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
 
         for (final String level: diff_level) {
@@ -258,7 +258,6 @@ public class AddGame extends AppCompatActivity {
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
             Achievements ach = setupAchievement();
             Game game = new Game(players, scores, time, diff_Level, playerScore, ach, ach_themes);
-
             config = cm.getConfigById(configPos);
             if (gamePos == -1) {// get the config instance
                 config.addGame(game);
@@ -372,7 +371,7 @@ public class AddGame extends AppCompatActivity {
     // Purpose: set up radio button for the achievement themes
     // Returns: void
     private void createAchThemeButtons() {
-        RadioGroup group = (RadioGroup) findViewById(R.id.radioAchTheme);
+        RadioGroup group = findViewById(R.id.radioAchTheme);
 
         String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
 

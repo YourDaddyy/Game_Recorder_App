@@ -106,9 +106,6 @@ public class GameList extends AppCompatActivity {
                 for (int i = 0; i < config.getGameNum(); i++) {
                     games.add(config.searchGame(i));
                 }
-                for (Game game : games) {
-                    updateGame(game);
-                }
             }
         } catch (IndexOutOfBoundsException e) {
             finish();
@@ -165,12 +162,7 @@ public class GameList extends AppCompatActivity {
 
             TextView txtDiff = itemView.findViewById(R.id.txtDiffLvl);
             String diffLevel = currentGame.getDifficulty();
-            // String diff = "";
-            // switch(diffLevel){
-            // case 0: diff = getString(R.string.normal); break;
-            // case 1: diff = getString(R.string.easy); break;
-            // case 2: diff = getString(R.string.hard);break;
-            // }
+
             txtDiff.setText(getString(R.string.diff_lvl, diffLevel));
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
