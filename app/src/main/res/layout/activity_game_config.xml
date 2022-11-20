@@ -104,25 +104,26 @@
         android:id="@+id/deleteConfig"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="55dp"
         android:text="@string/delete_config_text"
         android:textSize="16sp"
+        android:backgroundTint="@color/Red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LowerScoreBox" />
+        app:layout_constraintTop_toBottomOf="@+id/achConfig" />
 
     <Button
         android:id="@+id/achConfig"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="70dp"
         android:text="@string/config_ach_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteConfig" />
+        app:layout_constraintTop_toBottomOf="@+id/LowerScoreBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

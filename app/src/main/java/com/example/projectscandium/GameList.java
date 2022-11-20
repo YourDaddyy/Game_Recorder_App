@@ -165,12 +165,12 @@ public class GameList extends AppCompatActivity {
 
             TextView txtDiff = itemView.findViewById(R.id.txtDiffLvl);
             String diffLevel = currentGame.getDifficulty();
-//            String diff = "";
-//            switch(diffLevel){
-//                case 0: diff = getString(R.string.normal); break;
-//                case 1: diff = getString(R.string.easy); break;
-//                case 2: diff = getString(R.string.hard);break;
-//            }
+            // String diff = "";
+            // switch(diffLevel){
+            // case 0: diff = getString(R.string.normal); break;
+            // case 1: diff = getString(R.string.easy); break;
+            // case 2: diff = getString(R.string.hard);break;
+            // }
             txtDiff.setText(getString(R.string.diff_lvl, diffLevel));
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
@@ -205,7 +205,8 @@ public class GameList extends AppCompatActivity {
     }
 
     // registerCLickCallback method
-    // Purpose: registers the click callback for the list view to go to the clicked game
+    // Purpose: registers the click callback for the list view to go to the clicked
+    // game
     // Returns: void
     private void registerCLickCallback() {
         ListView list = findViewById(R.id.gameList);
@@ -216,7 +217,8 @@ public class GameList extends AppCompatActivity {
     }
 
     // onCreateOptionsMenu method
-    // Purpose: creates the options menu for the activity and adds the edit config button
+    // Purpose: creates the options menu for the activity and adds the edit config
+    // button
     // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -225,7 +227,8 @@ public class GameList extends AppCompatActivity {
     }
 
     // editConfig method
-    // Purpose: Calls the edit config activity if the edit config button is clicked from the toolbar
+    // Purpose: Calls the edit config activity if the edit config button is clicked
+    // from the toolbar
     // Returns: boolean
     public void EditConfig(MenuItem menuItem) {
         Intent intent = new Intent(GameList.this, GameConfig.class);
@@ -234,7 +237,8 @@ public class GameList extends AppCompatActivity {
     }
 
     // updateGame method
-    // Purpose: updates the game in the config manager and the local game list, specifically
+    // Purpose: updates the game in the config manager and the local game list,
+    // specifically
     // the Achievements, if the game is configuration values have changed
     // Returns: void
     private void updateGame(Game game) {
@@ -247,8 +251,9 @@ public class GameList extends AppCompatActivity {
         int lowerBound = cm.getConfigById(configPos).getPoorExpectedScore();
         // get the number of players
         int playerNum = game.getPlayerNum();
+        String difficultyLvl = game.getDifficulty();
         // update the achievement level of the game
-        achievements.setScoreBounds(lowerBound, upperBound, playerNum);
+        achievements.setDiffLevel(difficultyLvl, lowerBound, upperBound, playerNum);
         game.setAchievements(achievements);
     }
 
