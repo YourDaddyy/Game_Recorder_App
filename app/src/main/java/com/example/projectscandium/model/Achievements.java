@@ -55,10 +55,10 @@ public class Achievements {
         double score = 1;
         if (diffLevel.equals("Easy"))
             score = 0.75;
-        if (diffLevel.equals("Normal"))
-            score = 1;
         if (diffLevel.equals("Hard"))
             score = 1.25;
+        if (diffLevel.equals("Normal"))
+            //do nothing since
         // set worse score possible
         setAchievementValue(0, 0);
 
@@ -106,19 +106,17 @@ public class Achievements {
     // Purpose: returns the achievement name based on the score
     // Return: String
     public String getAchievement(int score) {
-        double doubleScore = score;
-
-        if (doubleScore < lowerScoreBound) {
+        if ((double)score < lowerScoreBound) {
             return achievements[0];
         }
         // if the score is greater than the upper bound, return the last achievement
-        if (doubleScore > (double)upperScoreBound) {
+        if ((double)score > (double)upperScoreBound) {
             return achievements[9];
         }
         // if the score is between the lower and upper bound, return the achievement
         // that corresponds to the score
         for (int i = 0; i < 10; i++) {
-            if (doubleScore <= achievementValues[i]) {
+            if ((double)score <= achievementValues[i]) {
                 return achievements[i];
             }
         }
@@ -129,19 +127,17 @@ public class Achievements {
     // Purpose: returns the index of the achievement that the given score belongs to
     // Return: int
     public int getAchievementIndex(int score) {
-        double doubleScore = score;
-
-        if (doubleScore < lowerScoreBound) {
+        if ((double)score < lowerScoreBound) {
             return 0;
         }
         // if the score is greater than the upper bound, return the last achievement
-        if (doubleScore > upperScoreBound) {
+        if ((double)score > upperScoreBound) {
             return 9;
         }
         // if the score is between the lower and upper bound, return the achievement
         // that corresponds to the score
         for (int i = 0; i < 10; i++) {
-            if (doubleScore <= achievementValues[i]) {
+            if ((double)score <= achievementValues[i]) {
                 return i;
             }
         }

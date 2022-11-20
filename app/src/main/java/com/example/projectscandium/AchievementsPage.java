@@ -33,7 +33,8 @@ public class AchievementsPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         // onCreate method
-        // Purpose: creates the activity, set the toolbar. It populate the list with achievements
+        // Purpose: creates the activity, set the toolbar. It populate the list with
+        // achievements
         // and the minimum score required based on the num of players
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
@@ -80,7 +81,8 @@ public class AchievementsPage extends AppCompatActivity {
             }
 
             // afterTextChanged
-            // Purpose: updates the list of achievements when the number of players is changed
+            // Purpose: updates the list of achievements when the number of players is
+            // changed
             // Return: void
             @Override
             public void afterTextChanged(Editable s) {
@@ -90,6 +92,11 @@ public class AchievementsPage extends AppCompatActivity {
                         achievementList.setAdapter(null);
                     } else {
                         numPlayers = Integer.parseInt(playerNum.getText().toString());
+                        RadioGroup group = (RadioGroup) findViewById(R.id.radio_diffLvl);
+                        int radioButtonID = group.getCheckedRadioButtonId();
+                        RadioButton radioButton = (RadioButton) group.findViewById(radioButtonID);
+                        String selectedText = (String) radioButton.getText();
+                        achievements.setDiffLevel(selectedText, lowerBound, upperBound, numPlayers);
 
                         // add the achievements name and the lower bound of the score to the list
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AchievementsPage.this,
@@ -128,10 +135,14 @@ public class AchievementsPage extends AppCompatActivity {
         for (final String ach_theme : ach_themes) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
-            button.setText(ach_theme + getString(R.string.button_txt_theme));
+            button.setText(String.format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
             button.setOnClickListener(v -> btnAction(obj, ach_theme, playerNum));
             group.addView(button);
         }
+
+        // set the second button to be checked
+        RadioButton secondButton = (RadioButton) group.getChildAt(1);
+        secondButton.setChecked(true);
     }
 
     // btnAction method
@@ -158,19 +169,24 @@ public class AchievementsPage extends AppCompatActivity {
         for (final String diff_lvl : levels) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
-            button.setText(diff_lvl + " Difficulty");
+            button.setText(diff_lvl);
             button.setOnClickListener(v -> btnActionDiff(obj, diff_lvl, playerNum, lowerBound, upperBound, numPlayers));
             group.addView(button);
         }
+
+        // set the first button to be checked
+        RadioButton firstButton = (RadioButton) group.getChildAt(0);
+        firstButton.setChecked(true);
     }
 
     // btnAction method
     // Purpose: set up radio button action for the achievement themes
     // Returns: void
-    private void btnActionDiff(Achievements obj, String diff_lvl, EditText playerNum, int lower, int upper, int players) {
+    private void btnActionDiff(Achievements obj, String diff_lvl, EditText playerNum, int lower, int upper,
+            int players) {
 
         // Sets the score based off diff_lvl
-        obj.setDiffLevel(diff_lvl,lower, upper, players);
+        obj.setDiffLevel(diff_lvl, lower, upper, players);
 
         // Updates the list view
         String input = String.valueOf(playerNum.getText());
