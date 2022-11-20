@@ -27,6 +27,8 @@ import java.util.Objects;
  */
 public class AchievementsPage extends AppCompatActivity {
 
+    int upperBound, lowerBound, numPlayers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -52,7 +54,16 @@ public class AchievementsPage extends AppCompatActivity {
 
         // Creating radio group for achievement themes
         createRadioButtons(achievements, playerNum);
+        // Creating radio group for diff lvls
+        createDiffButtons(achievements, playerNum);
 
+        // get the extra info from the intent
+        int index = getIntent().getIntExtra("configIndex", 0);
+        // get the config
+        Configs config = ConfigManager.getInstance().getConfigById(index);
+
+        upperBound = config.getGreatExpectedScore();
+        lowerBound = config.getPoorExpectedScore();
 
         // addTestListener
         // Purpose: adds a listener to the playerNum EditText. Updates the list of
@@ -78,20 +89,8 @@ public class AchievementsPage extends AppCompatActivity {
                     if (playerNum.getText().toString().isEmpty()) {
                         achievementList.setAdapter(null);
                     } else {
-                        // get the extra info from the intent
-                        int index = getIntent().getIntExtra("configIndex", 0);
-                        // get the config
-                        Configs config = ConfigManager.getInstance().getConfigById(index);
+                        numPlayers = Integer.parseInt(playerNum.getText().toString());
 
-                        int upperBound = config.getGreatExpectedScore();
-                        int lowerBound = config.getPoorExpectedScore();
-                        // get the number of players
-                        int numPlayers = Integer.parseInt(playerNum.getText().toString());
-                        // set the score bounds
-                        achievements.setScoreBounds(lowerBound, upperBound, numPlayers);
-
-                        // Creating radio group for diff lvls
-                        createDiffButtons(achievements, playerNum, lowerBound, upperBound, numPlayers);
                         // add the achievements name and the lower bound of the score to the list
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AchievementsPage.this,
                                 android.R.layout.simple_list_item_2, android.R.id.text1, achievements.achievements) {
@@ -116,8 +115,6 @@ public class AchievementsPage extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     // createRadioButtons method
@@ -128,12 +125,11 @@ public class AchievementsPage extends AppCompatActivity {
 
         String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
 
-        for (int i = 0; i < ach_themes.length; i++) {
-            final String ach_theme = ach_themes[i];
+        for (final String ach_theme : ach_themes) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
             button.setText(ach_theme + getString(R.string.button_txt_theme));
-            button.setOnClickListener(v -> btnAction(obj,ach_theme,playerNum));
+            button.setOnClickListener(v -> btnAction(obj, ach_theme, playerNum));
             group.addView(button);
         }
     }
@@ -154,17 +150,16 @@ public class AchievementsPage extends AppCompatActivity {
     // createDiffButtons method
     // Purpose: set up radio button for the difficulty lvls
     // Returns: void
-    private void createDiffButtons(Achievements obj, EditText playerNum, int lower, int upper, int players) {
+    private void createDiffButtons(Achievements obj, EditText playerNum) {
         RadioGroup group = (RadioGroup) findViewById(R.id.radio_diffLvl);
 
         String[] levels = getResources().getStringArray(R.array.difficulty_level);
 
-        for (int i = 0; i < levels.length; i++) {
-            final String diff_lvl = levels[i];
+        for (final String diff_lvl : levels) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
             button.setText(diff_lvl + " Difficulty");
-            button.setOnClickListener(v -> btnActionDiff(obj,diff_lvl,playerNum, lower, upper, players));
+            button.setOnClickListener(v -> btnActionDiff(obj, diff_lvl, playerNum, lowerBound, upperBound, numPlayers));
             group.addView(button);
         }
     }

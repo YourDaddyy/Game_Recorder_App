@@ -90,27 +90,6 @@ public class Achievements {
 
     // getLowerScoreBound
     // Purpose: returns the lower bound of the achievement scores
-    // Return: int
-    public void setScoreBounds(int lower, int upper, int numPlayers) {
-
-        // set worse score possible
-        setAchievementValue(0, 0);
-
-        this.lowerScoreBound = (double)lower * numPlayers;
-        this.upperScoreBound = (double)upper * numPlayers;
-
-        double range = upperScoreBound - lowerScoreBound;
-        double increment = (double)range / (9 - 1);
-        for (int i = 1; i < 10; i++) {
-            double points = lowerScoreBound + (increment * (i - 1));
-            setAchievementValue(i, points);
-        }
-    }
-
-
-
-    // getLowerScoreBound
-    // Purpose: returns the lower bound of the achievement scores
     // Return: double
     public double getLowerScoreBound() {
         return lowerScoreBound;

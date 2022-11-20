@@ -242,13 +242,15 @@ public class GameList extends AppCompatActivity {
         Achievements achievements = new Achievements();
         achievements.setAchievementName(game.getTheme());
 
+
         // get the upper and lower bound of the achievement level
         int upperBound = cm.getConfigById(configPos).getGreatExpectedScore();
         int lowerBound = cm.getConfigById(configPos).getPoorExpectedScore();
         // get the number of players
         int playerNum = game.getPlayerNum();
+        String difficultyLvl = game.getDifficulty();
         // update the achievement level of the game
-        achievements.setScoreBounds(lowerBound, upperBound, playerNum);
+        achievements.setDiffLevel(difficultyLvl, lowerBound, upperBound, playerNum);
         game.setAchievements(achievements);
     }
 
