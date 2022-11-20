@@ -46,13 +46,12 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores, diffLevel = 0, changeStatus = -1;
+    private int players, scores;
     private int gamePos, configPos;
     private int[] playerScore;
     private Button btnDelete;
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
-    private ArrayAdapter<String> adapter;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -89,7 +88,6 @@ public class AddGame extends AppCompatActivity {
     // Returns: void
     private void setupTxtWatcher() {
         etPlayer = findViewById(R.id.player);
-        TextChange tcPlayer = new TextChange();
         etPlayer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -97,38 +95,14 @@ public class AddGame extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) {
-                changeStatus = 1;
                 if(etPlayer.length() > 0){
                     players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
                     playerScore = new int[players];
-                    // populateListView();
                 }else{
                     etPlayer.setError(getString(R.string.EmptyField));
                 }
             }
         });
-    }
-
-    private void populateListView() {
-        // adapter = new MyListAdapter();
-        ListView list = findViewById(R.id.gameList);
-        list.setAdapter(adapter);
-    }
-
-    // TxtWatcher class
-    // Purpose: default create txt watcher
-    // Returns: void
-    class TextChange implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
     }
 
     // extractDataFromIntent method
