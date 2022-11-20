@@ -117,7 +117,8 @@ public class GameConfig extends AppCompatActivity {
         });
 
         // TextWatcher
-        // Purpose: listens to the text in the upper score box and checks if the value is valid
+        // Purpose: listens to the text in the upper score box and checks if the value
+        // is valid
         // Returns: void
         upperScoreBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -163,7 +164,8 @@ public class GameConfig extends AppCompatActivity {
         });
 
         // TextWatcher
-        // Purpose: listens to the text in the lower score box and checks if the value is valid
+        // Purpose: listens to the text in the lower score box and checks if the value
+        // is valid
         // Returns: void
         lowerScoreBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -210,7 +212,8 @@ public class GameConfig extends AppCompatActivity {
         });
 
         // When the delete button is clicked ask the user if they are sure
-        // if yes, delete the config and return to the main activity otherwise do nothing
+        // if yes, delete the config and return to the main activity otherwise do
+        // nothing
         Button deleteButton = findViewById(R.id.deleteConfig);
         if (Objects.equals(mode, "NewConfig")) {
             deleteButton.setVisibility(View.GONE);
@@ -239,7 +242,8 @@ public class GameConfig extends AppCompatActivity {
             }
         });
 
-        // View possible achievements list by calling the activity if the button is pressed
+        // View possible achievements list by calling the activity if the button is
+        // pressed
         Button achievementButton = findViewById(R.id.achConfig);
         if (Objects.equals(mode, "NewConfig")) {
             achievementButton.setVisibility(View.GONE);
@@ -274,7 +278,8 @@ public class GameConfig extends AppCompatActivity {
     }
 
     // onBackPress method
-    // Purpose: call the checkReturn method when the back button is pressed to confirm return
+    // Purpose: call the checkReturn method when the back button is pressed to
+    // confirm return
     // Returns: void
     @Override
     public void onBackPressed() {
@@ -282,7 +287,8 @@ public class GameConfig extends AppCompatActivity {
     }
 
     // checkReturn method
-    // Purpose: check if the user wants to return to the main activity without saving the changes
+    // Purpose: check if the user wants to return to the main activity without
+    // saving the changes
     // Returns: void
     private void checkReturn() {
         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(GameConfig.this);
@@ -294,7 +300,8 @@ public class GameConfig extends AppCompatActivity {
     }
 
     // onCreateOptionsMenu method
-    // Purpose: create the menu for the activity and inflate the menu with the save button
+    // Purpose: create the menu for the activity and inflate the menu with the save
+    // button
     // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -310,7 +317,8 @@ public class GameConfig extends AppCompatActivity {
     }
 
     // SaveConfig method
-    // Purpose: save the config to the config manager when the save button is pressed,
+    // Purpose: save the config to the config manager when the save button is
+    // pressed,
     // and the values are valid
     // Returns: void
     public void SaveConfig() {
@@ -318,14 +326,14 @@ public class GameConfig extends AppCompatActivity {
         upperScoreCheck = checkEmpty(upperScoreBox);
         lowerScoreCheck = checkEmpty(lowerScoreBox);
 
-        try{
+        try {
             if (Integer.parseInt(lowerScoreBox.getText().toString()) >= Integer
                     .parseInt(upperScoreBox.getText().toString())) {
                 lowerScoreDiff = true;
                 lowerScoreBox.setError(getString(R.string.ErrorLowerNum));
                 return;
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return;
         }
 

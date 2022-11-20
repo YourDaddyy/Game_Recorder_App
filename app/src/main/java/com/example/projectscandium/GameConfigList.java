@@ -111,7 +111,8 @@ public class GameConfigList extends AppCompatActivity {
     }
 
     // onBackPressed method
-    // Purpose: creates an alert to confirm exiting the app when the back button is pressed
+    // Purpose: creates an alert to confirm exiting the app when the back button is
+    // pressed
     // Returns: void
     @Override
     public void onBackPressed() {
