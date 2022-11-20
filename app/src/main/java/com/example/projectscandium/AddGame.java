@@ -157,6 +157,9 @@ public class AddGame extends AppCompatActivity {
                     for (int i = 0; i < players; i++) {
                         playerScore[i] = 0;
                     }
+                    scores = 0;
+                    TextView newScore = findViewById(R.id.score);
+                    newScore.setText(String.valueOf(scores));
                     try {
                         playerScoreList = findViewById(R.id.scoreList);
                         playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(AddGame.this, playerScore));
