@@ -81,7 +81,7 @@
     <string name="ErrorLowerNum">"Lower Score can't be less/equal to Upper Score"</string>
     <string name="EmptyField">This field should not be empty</string>
     <string name="play_game">Play Game</string>
-    <string name="congrats_msg">Achievement level Earned!</string>
+    <string name="congrats_msg">Achievement level %1$d:\n%2$s Earned!</string>
     <string name="ok_select">OK</string>
     <string name="button_txt_theme"> Theme </string>
 </resources>

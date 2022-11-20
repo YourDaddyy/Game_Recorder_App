@@ -119,20 +119,14 @@ public class Achievements {
     // Purpose: returns the index of the achievement that the given score belongs to
     // Return: int
     public int getAchievementIndex(int score) {
-        if ((double)score < achievementValues[1]) {
-            return 0;
-        }
-        // if the score is greater than the upper bound, return the last achievement
-        if ((double)score > achievementValues[9]) {
-            return 9;
-        }
         // if the score is between the lower and upper bound, return the achievement
         // that corresponds to the score
+        int index = 0;
         for (int i = 0; i < 10; i++) {
-            if ((double)score <= achievementValues[i]) {
-                return i;
-            }
+            if ((double)score > achievementValues[i]) {
+                index = i;
+            }else{ break; }
         }
-        return 9;
+        return index;
     }
 }
