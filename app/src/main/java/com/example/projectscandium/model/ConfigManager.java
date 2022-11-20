@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 /**
  * ConfigManager (Singleton Class)
- * Purpose: Represents the possible achievements that a game configuration can have. Stores the
+ * Purpose: Represents the possible achievements that a game configuration can
+ * have. Stores the
  * achievements in a shared preferences file.
  */
 public class ConfigManager {
@@ -91,7 +92,8 @@ public class ConfigManager {
     }
 
     // loadConfigs
-    // Purpose: loads the configs array list from a shared preferences file and populates
+    // Purpose: loads the configs array list from a shared preferences file and
+    // populates
     // the configs instance
     // Return: void
     public void loadConfigs(Context mContext) {

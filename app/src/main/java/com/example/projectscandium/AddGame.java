@@ -1,5 +1,7 @@
 package com.example.projectscandium;
 
+import static java.lang.String.format;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +13,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,10 +51,11 @@ public class AddGame extends AppCompatActivity {
     // private variables to store the necessary information
     private int players, scores;
     private int gamePos, configPos;
-    private int[] playerScore;
+    private Integer[] playerScore;
     private Button btnDelete;
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
+    private ListView playerScoreList;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -83,6 +87,30 @@ public class AddGame extends AppCompatActivity {
         setUpPlayBtn();
     }
 
+    // custom adapter for the list view
+    private class PlayerScoreAdapter extends ArrayAdapter<Integer> {
+        private final Context context;
+        private final Integer[] playerScores;
+
+        public PlayerScoreAdapter(Context context, Integer[] playerScores) {
+            super(context, R.layout.listview_adapter, playerScores);
+            this.context = context;
+            this.playerScores = playerScores;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.listview_adapter, parent, false);
+            TextView playerNum = rowView.findViewById(R.id.playerNum);
+            TextView playerScore = rowView.findViewById(R.id.playerScore);
+            playerNum.setText(String.format("%s %d", getString(R.string.playerText),position + 1));
+            playerScore.setText(String.valueOf(playerScores[position]));
+            return rowView;
+        }
+    }
+
     // Set up TxtWatcher Method
     // Purpose: Watch Player Num changed
     // Returns: void
@@ -90,15 +118,28 @@ public class AddGame extends AppCompatActivity {
         etPlayer = findViewById(R.id.player);
         etPlayer.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(etPlayer.length() > 0){
-                    players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
-                    playerScore = new int[players];
-                }else{
+                if (etPlayer.length() > 0) {
+                    players = Integer.parseInt(((String) ((EditText) findViewById(R.id.player)).getText().toString()));
+                    playerScore = new Integer[players];
+                    for (int i = 0; i < players; i++) {
+                        playerScore[i] = 0;
+                    }
+                    try {
+                        playerScoreList = findViewById(R.id.scoreList);
+                        playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(AddGame.this, playerScore));
+                    } catch (NullPointerException e){
+                        //do nothing
+                    }
+                } else {
                     etPlayer.setError(getString(R.string.EmptyField));
                 }
             }
@@ -166,7 +207,6 @@ public class AddGame extends AppCompatActivity {
     private void setupPage() {
         config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
-        Button playButton = findViewById(R.id.btnPlay);
 
         if (gamePos == -1) {
             // set up add title
@@ -174,7 +214,6 @@ public class AddGame extends AppCompatActivity {
             // set up time
             time = setTime();
             btnDelete.setVisibility(View.GONE);
-            playButton.setVisibility(View.GONE);
         } else {
             // set up edit tile
             setTitle(getString(R.string.editGame_title));
@@ -186,6 +225,12 @@ public class AddGame extends AppCompatActivity {
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             setupDeleteBtn();
+            try {
+                playerScoreList = findViewById(R.id.scoreList);
+                playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(this, game.getPlayerScore()));
+            } catch (NullPointerException e){
+                return;
+            }
         }
         TextView tvTime = findViewById(R.id.Time);
         tvTime.setText(time);
@@ -211,7 +256,7 @@ public class AddGame extends AppCompatActivity {
         RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
         String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
 
-        for (final String level: diff_level) {
+        for (final String level : diff_level) {
             RadioButton button1 = new RadioButton(this);
             button1.setTextSize(16);
             button1.setText(level);
@@ -219,7 +264,7 @@ public class AddGame extends AppCompatActivity {
             group1.addView(button1);
             if (gamePos == -1 && level.equals("Normal")) {
                 button1.setChecked(true);
-            }else if(gamePos != -1 && level.equals(config.getGames().get(gamePos).getDifficulty())){
+            } else if (gamePos != -1 && level.equals(config.getGames().get(gamePos).getDifficulty())) {
                 button1.setChecked(true);
             }
         }
@@ -313,7 +358,7 @@ public class AddGame extends AppCompatActivity {
                 try {
                     String sPlayer = (etP).getText().toString();
                     players = Integer.parseInt(sPlayer);
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     etP.setError(getString(R.string.ErrorNum));
                     return false;
                 }
@@ -321,7 +366,7 @@ public class AddGame extends AppCompatActivity {
                     // Save data into class
                     String sScore = (etS).getText().toString();
                     scores = Integer.parseInt(sScore);
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     etS.setError(getString(R.string.ErrorNum));
                     return false;
                 }
@@ -332,21 +377,13 @@ public class AddGame extends AppCompatActivity {
         return true;
     }
 
-    // setUpPlayBtn method
-    // Purpose: starts a game play
-    // Returns: void
-    private void setUpPlayBtn() {
-        Button playBtn = findViewById(R.id.btnPlay);
-        playBtn.setOnClickListener(view -> checkAchievement());
-    }
-
     // checkAchievement method
     // Purpose: shows the achievement level for user
     // Returns: void
     private void checkAchievement() {
 
         // Need to get Achievement lvl somehow
-        //  *******************************************************************
+        // *******************************************************************
 
         // Create sound
         MediaPlayer sound;
@@ -358,7 +395,7 @@ public class AddGame extends AppCompatActivity {
         builder.setIcon(R.drawable.cat_combat);
         builder.setTitle(R.string.congrats_msg);
 
-        builder.setPositiveButton(R.string.ok_select,null);
+        builder.setPositiveButton(R.string.ok_select, null);
 
         // Set dialog animation
         AlertDialog dialog = builder.create();
@@ -366,6 +403,26 @@ public class AddGame extends AppCompatActivity {
 
         dialog.show();
 
+        // when the user clicks the button, the dialog will close and the user will be
+        // returned to the main activity
+        Button okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish();
+        });
+    }
+
+    // setUpPlayBtn method
+    // Purpose: starts a game play
+    // Returns: void
+    private void setUpPlayBtn() {
+        Button playBtn = findViewById(R.id.btnPlay);
+        // on click listener for the play button to start activity
+        playBtn.setOnClickListener(v -> {
+            if (checkValid()) {
+                checkAchievement();
+            }
+        });
     }
 
     // createAchThemeButtons method
@@ -379,14 +436,14 @@ public class AddGame extends AppCompatActivity {
         for (final String ach_theme : ach_themes) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
-            button.setText(String.format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
+            button.setText(format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
             button.setOnClickListener(v -> this.ach_themes = ach_theme);
             group.addView(button);
 
             if (gamePos == -1 && ach_theme.equals("Cat")) {
                 button.setChecked(true);
                 this.ach_themes = "Cat";
-            }else if(gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())){
+            } else if (gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())) {
                 button.setChecked(true);
                 this.ach_themes = ach_theme;
             }
