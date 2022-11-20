@@ -54,7 +54,7 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores;
+    private int players, scores, illegalPlayGame = 1;
     private int gamePos, configPos;
     private Integer[] playerScore;
     private Button btnDelete;
@@ -123,7 +123,10 @@ public class AddGame extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    illegalPlayGame = 1;
                     if (s.toString().equals("")) {
+                        playerScore.setError(getString(R.string.EmptyField));
+                        illegalPlayGame = 0;
                         playerScores[position] = 0;
                     } else {
                         playerScores[position] = Integer.parseInt(s.toString());
@@ -152,7 +155,19 @@ public class AddGame extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (etPlayer.length() > 0) {
-                    players = Integer.parseInt(((String) ((EditText) findViewById(R.id.player)).getText().toString()));
+                    illegalPlayGame = 1;
+                    try{
+                        players = Integer.parseInt(((EditText) findViewById(R.id.player)).getText().toString());
+                    }catch (Exception e){
+                        etPlayer.setError(getString(R.string.IllegalField));
+                        illegalPlayGame = 0;
+                        return;
+                    }
+                    if(players == 0){
+                        etPlayer.setError(getString(R.string.ZeroField));
+                        illegalPlayGame = 0;
+                        return;
+                    }
                     playerScore = new Integer[players];
                     for (int i = 0; i < players; i++) {
                         playerScore[i] = 0;
@@ -168,6 +183,9 @@ public class AddGame extends AppCompatActivity {
                     }
                 } else {
                     etPlayer.setError(getString(R.string.EmptyField));
+                    playerScoreList = findViewById(R.id.scoreList);
+                    playerScoreList.setAdapter(null);
+                    illegalPlayGame = 0;
                 }
             }
         });
@@ -282,7 +300,7 @@ public class AddGame extends AppCompatActivity {
     // Purpose: set up radio button for the difficulty level
     // Returns: void
     private void createRadioButtons() {
-        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
+        RadioGroup group1 = findViewById(R.id.radio_diffLvl);
         String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
 
         for (final String level : diff_level) {
@@ -344,6 +362,9 @@ public class AddGame extends AppCompatActivity {
         builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
 
+    // setupAchievement method
+    // Purpose: set up Achievement level and name based on current input
+    // Returns: achievement
     private Achievements setupAchievement() {
         Achievements ach = new Achievements();
         ach.setAchievementName(ach_themes);
@@ -398,21 +419,32 @@ public class AddGame extends AppCompatActivity {
     private void checkAchievement() {
 
         // Get the achievement level
-        Game game = config.getGames().get(gamePos);
-        Achievements ach = game.getAchievements();
+        Achievements ach = setupAchievement();
         String achievementLevel = ach.getAchievement(scores);
+        int lvl = ach.getAchievementIndex(scores);
 
-        // Create sound
+        // Create sound & img based on theme
         MediaPlayer sound;
-        sound = MediaPlayer.create(getApplicationContext(), R.raw.winner);
+
+        int sound_source = R.raw.winner;
+        int img_source = R.drawable.cat_combat;
+        if(ach_themes.equals("Dog")){
+            sound_source = R.raw.dog_theme;
+            img_source = R.drawable.dog_theme;
+        } else if(ach_themes.equals("Bird")){
+            sound_source = R.raw.bird_theme;
+            img_source = R.drawable.bird_theme;
+        }
+
+        sound = MediaPlayer.create(getApplicationContext(), sound_source);
         sound.start();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setIcon(R.drawable.cat_combat);
+        builder.setIcon(img_source);
         builder.setTitle(R.string.congrats_msg);
         // set the message to be bold
-        SpannableString s = new SpannableString(getString(R.string.achievement_msg) +
+        SpannableString s = new SpannableString(getString(R.string.achievement_msg, lvl) +
                 " " + achievementLevel);
         s.setSpan(new StyleSpan(Typeface.BOLD), 17, s.length(), 0);
         // builder.setMessage(s);
@@ -447,7 +479,7 @@ public class AddGame extends AppCompatActivity {
         Button playBtn = findViewById(R.id.btnPlay);
         // on click listener for the play button to start activity
         playBtn.setOnClickListener(v -> {
-            if (checkValid()) {
+            if (checkValid() && illegalPlayGame != 0) {
                 checkAchievement();
             }
         });
@@ -457,7 +489,7 @@ public class AddGame extends AppCompatActivity {
     // Purpose: set up radio button for the achievement themes
     // Returns: void
     private void createAchThemeButtons() {
-        RadioGroup group = (RadioGroup) findViewById(R.id.radioAchTheme);
+        RadioGroup group = findViewById(R.id.radioAchTheme);
 
         String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
 
