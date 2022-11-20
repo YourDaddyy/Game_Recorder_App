@@ -3,6 +3,7 @@ package com.example.projectscandium;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class GameList extends AppCompatActivity {
 
     private int configPos;
     private static final String CONFIG_POS = "com.example.projectscandium.GameList - the Config position";
+    private static final String ACH_THEME = "com.example.projectscandium.AddGame - the achTheme";
 
     // onCreate method
     // Purpose: creates the activity, set the toolbar (including the title).
@@ -162,14 +164,14 @@ public class GameList extends AppCompatActivity {
             txtTime.setText(getString(R.string.game_time, currentGame.getTime()));
 
             TextView txtDiff = itemView.findViewById(R.id.txtDiffLvl);
-            int diffLevel = currentGame.getDifficulty();
-            String diff = "";
-            switch(diffLevel){
-                case 0: diff = getString(R.string.normal); break;
-                case 1: diff = getString(R.string.easy); break;
-                case 2: diff = getString(R.string.hard);break;
-            }
-            txtDiff.setText(getString(R.string.diff_lvl, diff));
+            String diffLevel = currentGame.getDifficulty();
+//            String diff = "";
+//            switch(diffLevel){
+//                case 0: diff = getString(R.string.normal); break;
+//                case 1: diff = getString(R.string.easy); break;
+//                case 2: diff = getString(R.string.hard);break;
+//            }
+            txtDiff.setText(getString(R.string.diff_lvl, diffLevel));
 
             TextView txtLevel = itemView.findViewById(R.id.txtLevel);
             Achievements achievements = currentGame.getAchievements();
@@ -238,6 +240,8 @@ public class GameList extends AppCompatActivity {
     private void updateGame(Game game) {
         // update the achievement level of the game
         Achievements achievements = new Achievements();
+        achievements.setAchievementName(game.getTheme());
+
         // get the upper and lower bound of the achievement level
         int upperBound = cm.getConfigById(configPos).getGreatExpectedScore();
         int lowerBound = cm.getConfigById(configPos).getPoorExpectedScore();
@@ -247,4 +251,5 @@ public class GameList extends AppCompatActivity {
         achievements.setScoreBounds(lowerBound, upperBound, playerNum);
         game.setAchievements(achievements);
     }
+
 }

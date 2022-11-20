@@ -7,15 +7,20 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -41,19 +46,19 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores, diffLevel = 0, changeStatus = -1;
+    private int players, scores;
     private int gamePos, configPos;
     private int[] playerScore;
     private Button btnDelete;
-    private String time;
+    private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
-    ArrayAdapter<String> adapter;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
     private Configs config;
     private static final String CONFIG_POS = "com.example.projectscandium.AddGame - the config pos";
     private static final String GAME_POS = "com.example.projectscandium.AddGame - the gamePos";
+    private static final String ACH_THEME = "com.example.projectscandium.AddGame - the achTheme";
 
     // onCreate method
     // Purpose: creates the activity, set the toolbar (including the title).
@@ -75,6 +80,7 @@ public class AddGame extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         setupTxtWatcher();
+        setUpPlayBtn();
     }
 
     // Set up TxtWatcher Method
@@ -82,54 +88,21 @@ public class AddGame extends AppCompatActivity {
     // Returns: void
     private void setupTxtWatcher() {
         etPlayer = findViewById(R.id.player);
-        TextChange tcPlayer = new TextChange();
-        etPlayer.addTextChangedListener(tcPlayer);
-    }
-
-    // TxtWatcher class
-    // Purpose: default create txt watcher
-    // Returns: void
-    class TextChange implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-        @Override
-        public void afterTextChanged(Editable s) {
-            changeStatus = 1;
-            if(etPlayer.length() > 0){
-                players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
-                playerScore = new int[players];
-
-            }else{
-                etPlayer.setError(getString(R.string.EmptyField));
+        etPlayer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(etPlayer.length() > 0){
+                    players = Integer.parseInt(((String)((EditText)findViewById(R.id.player)).getText().toString()));
+                    playerScore = new int[players];
+                }else{
+                    etPlayer.setError(getString(R.string.EmptyField));
+                }
             }
-        }
-    }
-
-    // createRadioButtons method
-    // Purpose: set up radio button for the difficulty level
-    // Returns: void
-    private void createRadioButtons() {
-        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
-
-        String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
-
-        for (int i = 0; i < 3; i++) {
-            RadioButton button1 = new RadioButton(this);
-            button1.setTextSize(16);
-            button1.setText(diff_level[i]);
-            final int level = i;
-            button1.setOnClickListener(v -> diffLevel = level);
-            group1.addView(button1);
-            if (gamePos == -1 && i == 0) {
-                button1.setChecked(true);
-            }else if(gamePos != -1 && i == config.getGames().get(gamePos).getDifficulty()){
-                button1.setChecked(true);
-            }
-        }
+        });
     }
 
     // extractDataFromIntent method
@@ -149,67 +122,6 @@ public class AddGame extends AppCompatActivity {
         intent.putExtra(CONFIG_POS, configPos);
         intent.putExtra(GAME_POS, gamePos);
         return intent;
-    }
-
-    // onCreateOptionsMenu method
-    // Purpose: creates the menu
-    // Returns: boolean
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // setup return button
-        if (item.getItemId() == android.R.id.home) {
-            checkReturn();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    // onBackPress method
-    // Purpose: checks if the user presses the back button
-    // Returns: void
-    @Override
-    public void onBackPressed() {
-        checkReturn();
-    }
-
-    // checkReturn method
-    // Purpose: checks if the user wants to return to the previous activity.
-    // In this case: the GameList activity.
-    // Returns: void
-    private void checkReturn() {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
-        builder1.setIcon(null);
-        builder1.setTitle(R.string.ReturnToGameListTitle);
-        builder1.setMessage(R.string.ReturnMessage);
-        builder1.setPositiveButton(R.string.Yes, (dialog, which) -> finish());
-        builder1.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
-    }
-
-    // setupPage method
-    // Purpose: sets up the page, including the buttons and the text fields
-    // Returns: void
-    private void setupPage() {
-        config = cm.getConfigById(configPos);
-        btnDelete = findViewById(R.id.btnDelete);
-        if (gamePos == -1) {
-            // set up add title
-            setTitle(R.string.GameNumberText + (config.getGameNum() + 1));
-            // set up time
-            time = setTime();
-            TextView tvTime = findViewById(R.id.Time);
-            tvTime.setText(time);
-            btnDelete.setVisibility(View.GONE);
-        } else {
-            // set up edit tile
-            setTitle(getString(R.string.editGame_title));
-            btnDelete.setVisibility(View.VISIBLE);
-            Game game = config.getGames().get(gamePos);
-            EditText etPlayer = findViewById(R.id.player);
-            EditText etScore = findViewById(R.id.score);
-            etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
-            etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
-            setupDeleteBtn();
-        }
     }
 
     // setupDeleteBtn method
@@ -248,6 +160,92 @@ public class AddGame extends AppCompatActivity {
         return Date + " @ " + Time;
     }
 
+    // setupPage method
+    // Purpose: sets up the page, including the buttons and the text fields
+    // Returns: void
+    private void setupPage() {
+        config = cm.getConfigById(configPos);
+        btnDelete = findViewById(R.id.btnDelete);
+        Button playButton = findViewById(R.id.btnPlay);
+
+        if (gamePos == -1) {
+            // set up add title
+            setTitle(getString(R.string.Add_Game));
+            // set up time
+            time = setTime();
+            btnDelete.setVisibility(View.GONE);
+            playButton.setVisibility(View.GONE);
+        } else {
+            // set up edit tile
+            setTitle(getString(R.string.editGame_title));
+            btnDelete.setVisibility(View.VISIBLE);
+            Game game = config.getGames().get(gamePos);
+            time = game.getTime();
+            EditText etPlayer = findViewById(R.id.player);
+            EditText etScore = findViewById(R.id.score);
+            etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
+            etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
+            setupDeleteBtn();
+        }
+        TextView tvTime = findViewById(R.id.Time);
+        tvTime.setText(time);
+    }
+
+    // onCreateOptionsMenu method
+    // Purpose: creates the menu
+    // Returns: boolean
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // setup return button
+        if (item.getItemId() == android.R.id.home) {
+            checkReturn();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // createRadioButtons method
+    // Purpose: set up radio button for the difficulty level
+    // Returns: void
+    private void createRadioButtons() {
+        RadioGroup group1 = (RadioGroup) findViewById(R.id.radio_diffLvl);
+        String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
+
+        for (final String level: diff_level) {
+            RadioButton button1 = new RadioButton(this);
+            button1.setTextSize(16);
+            button1.setText(level);
+            button1.setOnClickListener(v -> diff_Level = level);
+            group1.addView(button1);
+            if (gamePos == -1 && level.equals("Normal")) {
+                button1.setChecked(true);
+            }else if(gamePos != -1 && level.equals(config.getGames().get(gamePos).getDifficulty())){
+                button1.setChecked(true);
+            }
+        }
+    }
+
+    // onBackPress method
+    // Purpose: checks if the user presses the back button
+    // Returns: void
+    @Override
+    public void onBackPressed() {
+        checkReturn();
+    }
+
+    // checkReturn method
+    // Purpose: checks if the user wants to return to the previous activity.
+    // In this case: the GameList activity.
+    // Returns: void
+    private void checkReturn() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(AddGame.this);
+        builder1.setIcon(null);
+        builder1.setTitle(R.string.ReturnToGameListTitle);
+        builder1.setMessage(R.string.ReturnMessage);
+        builder1.setPositiveButton(R.string.Yes, (dialog, which) -> finish());
+        builder1.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
+    }
+
     // checkSave method
     // Purpose: checks if the user wants to save the game and if they do,
     // then saves the game to the game list.
@@ -258,11 +256,9 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle(R.string.SaveGameTitle);
         builder.setMessage(R.string.SaveGameMessage);
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
-            Game game = new Game(players, scores, time, diffLevel, playerScore);
-            Achievements achievements = new Achievements();
-            achievements.setScoreBounds(config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
-            // set the achievement for the game
-            game.setAchievements(achievements);
+            Achievements ach = setupAchievement();
+            Game game = new Game(players, scores, time, diff_Level, playerScore, ach, ach_themes);
+
             config = cm.getConfigById(configPos);
             if (gamePos == -1) {// get the config instance
                 config.addGame(game);
@@ -272,6 +268,13 @@ public class AddGame extends AppCompatActivity {
             finish();
         });
         builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
+    }
+
+    private Achievements setupAchievement() {
+        Achievements ach = new Achievements();
+        ach.setAchievementName(ach_themes);
+        ach.setDiffLevel(diff_Level, config.getPoorExpectedScore(), config.getGreatExpectedScore(), players);
+        return ach;
     }
 
     // checkValid method
@@ -296,6 +299,8 @@ public class AddGame extends AppCompatActivity {
     // Returns: boolean
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        createAchThemeButtons();
+
         getMenuInflater().inflate(R.menu.save_bar_item, menu);
         // on click listener for the save button
         MenuItem saveButton = menu.findItem(R.id.saveButton);
@@ -325,6 +330,71 @@ public class AddGame extends AppCompatActivity {
             return true;
         });
         return true;
+    }
+
+    // setUpPlayBtn method
+    // Purpose: starts a game play
+    // Returns: void
+    private void setUpPlayBtn() {
+        Button playBtn = findViewById(R.id.btnPlay);
+        playBtn.setOnClickListener(view -> {
+
+            checkAchievement();
+
+        });
+    }
+
+    // checkAchievement method
+    // Purpose: shows the achievement level for user
+    // Returns: void
+    private void checkAchievement() {
+
+        // Need to get Achievement lvl somehow
+        //  *******************************************************************
+
+        // Create sound
+        MediaPlayer sound;
+        sound = MediaPlayer.create(getApplicationContext(), R.raw.winner);
+        sound.start();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setIcon(R.drawable.cat_combat);
+        builder.setTitle(R.string.congrats_msg);
+
+        builder.setPositiveButton(R.string.ok_select,null);
+
+        // Set dialog animation
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.show();
+
+    }
+
+    // createAchThemeButtons method
+    // Purpose: set up radio button for the achievement themes
+    // Returns: void
+    private void createAchThemeButtons() {
+        RadioGroup group = (RadioGroup) findViewById(R.id.radioAchTheme);
+
+        String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
+
+        for (final String ach_theme : ach_themes) {
+            RadioButton button = new RadioButton(this);
+            button.setTextSize(16);
+            button.setText(ach_theme + getString(R.string.button_txt_theme));
+            button.setOnClickListener(v -> this.ach_themes = ach_theme);
+            group.addView(button);
+
+            if (gamePos == -1 && ach_theme.equals("Dog")) {
+                button.setChecked(true);
+                this.ach_themes = "Dog";
+            }else if(gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())){
+                button.setChecked(true);
+                this.ach_themes = ach_theme;
+            }
+        }
     }
 
 }

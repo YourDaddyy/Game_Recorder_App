@@ -36,7 +36,6 @@
     <string name="addPlayer">%1$d</string>
     <string name="addScore">%1$d</string>
     <string name="edit_button_text">EDIT</string>
-    <string name="time">Time</string>
     <string name="sep_3_15_20pm">Sep 3 @ 15:20PM</string>
     <string name="achievement_base_score_requirements">Achievement Base Score Requirements</string>
     <string name="current_score_rqd_score">Current Score / Rqd Score</string>
@@ -55,6 +54,9 @@
     <string name="EditConfigTitle">Edit Game Config.</string>
     <string name="ConfigurationListTitle">Game Configurations</string>
     <string name="GameNumberText">Game: </string>
+    <string name="Add_Game">Add New Game</string>
+    <string name="game_diff">Game Difficulty</string>
+    <string name="game_theme">Game Theme</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
     <string name="SaveGameTitle">Save Game?</string>
@@ -78,4 +80,8 @@
     <string name="ErrorNegativeScore">Score cannot be negative</string>
     <string name="ErrorLowerNum">"Lower Score can't be less/equal to Upper Score"</string>
     <string name="EmptyField">This field should not be empty</string>
+    <string name="play_game">Play Game</string>
+    <string name="congrats_msg">Achievement level Earned!</string>
+    <string name="ok_select">OK</string>
+    <string name="button_txt_theme"> Theme </string>
 </resources>

@@ -5,9 +5,17 @@ package com.example.projectscandium.model;
  * Purpose: Represents the possible achievements that a game configuration can have.
  */
 public class Achievements {
+    private final String[] catTheme = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
+            "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
+    private final String[] dogTheme = { "Novice Dog", "Average Joe Dog", "Daddy Dog", "Momma Dog", "Puppy Prodigy",
+            "Silly Dog", "Puppy Army", "Flabbergast Dog", "Nyan Doggy", "Aye Aye Dog-tain" };
+    private final String[] birdTheme = { "Novice Bird", "Average Joe Bird", "Daddy Bird", "Momma Bird", "Bird Prodigy",
+            "Silly Bird", "Bird Army", "Flabbergast Bird", "Nyan Birdie", "Aye Aye Bird-tain" };
+
     // array of achievements names
     public String[] achievements = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
             "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
+    private String theme;
 
     // array of int values for each achievement
     private final double[] achievementValues = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -21,6 +29,50 @@ public class Achievements {
     // Return: String
     public String getAchievementName(int index) {
         return achievements[index];
+    }
+
+    // setAchievementName
+    // Purpose: sets the name of the achievement name based on theme
+    // Return: void
+    public void setAchievementName(String theme) {
+        if (theme.equals("Dog")){
+            this.achievements = dogTheme;
+        }
+        if (theme.equals("Cat")){
+            this.achievements = catTheme;
+        }
+        if (theme.equals("Bird")){
+            this.achievements = birdTheme;
+        }
+    }
+
+    // setDiffLevel
+    // Purpose: Updates the score bound based on diff
+    // Return: void
+    public void setDiffLevel(String diffLevel, int lower, int upper, int numPlayers) {
+        double score = 1;
+        if (diffLevel.equals("Easy")){
+            score = 0.75;
+        }
+        if (diffLevel.equals("Normal")){
+            score = 1;
+        }
+        if (diffLevel.equals("Hard")){
+            score = 1.25;
+        }
+        // set worse score possible
+        setAchievementValue(0, 0);
+
+        this.lowerScoreBound = (double)lower * numPlayers;
+        this.upperScoreBound = (double)upper * numPlayers;
+
+        double range = upperScoreBound - lowerScoreBound;
+        double increment = (double)range / (9 - 1);
+        for (int i = 1; i < 10; i++) {
+            double points = lowerScoreBound + (increment * (i - 1));
+            points = points * score;
+            setAchievementValue(i, points);
+        }
     }
 
     // getAchievementValue

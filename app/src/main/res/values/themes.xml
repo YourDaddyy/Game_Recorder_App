@@ -20,4 +20,8 @@
     <style name="Theme.ProjectScandium.AppBarOverlay"
         parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.ProjectScandium.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
 </resources>
