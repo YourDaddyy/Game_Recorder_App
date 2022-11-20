@@ -9,10 +9,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +44,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Objects;
 
 /*Class AddGame
@@ -104,9 +109,28 @@ public class AddGame extends AppCompatActivity {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.listview_adapter, parent, false);
             TextView playerNum = rowView.findViewById(R.id.playerNum);
-            TextView playerScore = rowView.findViewById(R.id.playerScore);
-            playerNum.setText(String.format("%s %d", getString(R.string.playerText),position + 1));
-            playerScore.setText(String.valueOf(playerScores[position]));
+            EditText playerScore = rowView.findViewById(R.id.playerScore);
+            playerNum.setText(String.format(Locale.getDefault(),"Player %d", position + 1));
+            playerScore.setText(String.valueOf(this.playerScores[position]));
+            playerScore.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.toString().equals("")) {
+                        playerScores[position] = 0;
+                    } else {
+                        playerScores[position] = Integer.parseInt(s.toString());
+                    }
+                    updateCombinedScore();
+                }
+            });
             return rowView;
         }
     }
@@ -136,8 +160,8 @@ public class AddGame extends AppCompatActivity {
                     try {
                         playerScoreList = findViewById(R.id.scoreList);
                         playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(AddGame.this, playerScore));
-                    } catch (NullPointerException e){
-                        //do nothing
+                    } catch (NullPointerException e) {
+                        // do nothing
                     }
                 } else {
                     etPlayer.setError(getString(R.string.EmptyField));
@@ -221,14 +245,16 @@ public class AddGame extends AppCompatActivity {
             Game game = config.getGames().get(gamePos);
             time = game.getTime();
             EditText etPlayer = findViewById(R.id.player);
-            EditText etScore = findViewById(R.id.score);
+            TextView etScore = findViewById(R.id.score);
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
+            scores = game.getCombinedScore();
+            playerScore = game.getPlayerScore();
             setupDeleteBtn();
             try {
                 playerScoreList = findViewById(R.id.scoreList);
-                playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(this, game.getPlayerScore()));
-            } catch (NullPointerException e){
+                playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(this, playerScore));
+            } catch (NullPointerException e) {
                 return;
             }
         }
@@ -327,13 +353,8 @@ public class AddGame extends AppCompatActivity {
     // Returns: boolean
     private boolean checkValid() {
         EditText etP = findViewById(R.id.player);
-        EditText etS = findViewById(R.id.score);
         if (etP.length() == 0) {
             etP.setError(getString(R.string.EmptyField));
-            return false;
-        }
-        if (etS.length() == 0) {
-            etS.setError(getString(R.string.EmptyField));
             return false;
         }
         return true;
@@ -354,20 +375,11 @@ public class AddGame extends AppCompatActivity {
             if (checkValid()) {
                 // Save data into class
                 EditText etP = findViewById(R.id.player);
-                EditText etS = findViewById(R.id.score);
                 try {
                     String sPlayer = (etP).getText().toString();
                     players = Integer.parseInt(sPlayer);
                 } catch (NumberFormatException e) {
                     etP.setError(getString(R.string.ErrorNum));
-                    return false;
-                }
-                try {
-                    // Save data into class
-                    String sScore = (etS).getText().toString();
-                    scores = Integer.parseInt(sScore);
-                } catch (NumberFormatException e) {
-                    etS.setError(getString(R.string.ErrorNum));
                     return false;
                 }
                 checkSave();
@@ -382,8 +394,10 @@ public class AddGame extends AppCompatActivity {
     // Returns: void
     private void checkAchievement() {
 
-        // Need to get Achievement lvl somehow
-        // *******************************************************************
+        // Get the achievement level
+        Game game = config.getGames().get(gamePos);
+        Achievements ach = game.getAchievements();
+        String achievementLevel = ach.getAchievement(scores);
 
         // Create sound
         MediaPlayer sound;
@@ -394,6 +408,20 @@ public class AddGame extends AppCompatActivity {
 
         builder.setIcon(R.drawable.cat_combat);
         builder.setTitle(R.string.congrats_msg);
+        // set the message to be bold
+        SpannableString s = new SpannableString(getString(R.string.achievement_msg) +
+                " " + achievementLevel);
+        s.setSpan(new StyleSpan(Typeface.BOLD), 17, s.length(), 0);
+        // builder.setMessage(s);
+
+        // add rotation animation to the text
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
+        animation.setDuration(2000);
+        TextView textView = new TextView(this);
+        textView.setText(s);
+        textView.setAnimation(animation);
+        textView.setGravity(Gravity.CENTER);
+        builder.setView(textView);
 
         builder.setPositiveButton(R.string.ok_select, null);
 
@@ -406,10 +434,7 @@ public class AddGame extends AppCompatActivity {
         // when the user clicks the button, the dialog will close and the user will be
         // returned to the main activity
         Button okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        okButton.setOnClickListener(v -> {
-            dialog.dismiss();
-            finish();
-        });
+        okButton.setOnClickListener(v -> dialog.dismiss());
     }
 
     // setUpPlayBtn method
@@ -448,5 +473,19 @@ public class AddGame extends AppCompatActivity {
                 this.ach_themes = ach_theme;
             }
         }
+    }
+
+    // updateCombinedScore
+    // Purpose: updates the combined score
+    // Returns: void
+    private void updateCombinedScore() {
+        TextView combinedScore = findViewById(R.id.score);
+        int combined = 0;
+        // add the scores together from the scores array
+        for (Integer integer : playerScore) {
+            combined += integer;
+        }
+        combinedScore.setText(String.valueOf(combined));
+        scores = combined;
     }
 }
