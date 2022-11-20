@@ -57,8 +57,6 @@ public class Achievements {
             score = 0.75;
         if (diffLevel.equals("Hard"))
             score = 1.25;
-        if (diffLevel.equals("Normal"))
-            //do nothing since
         // set worse score possible
         setAchievementValue(0, 0);
 
