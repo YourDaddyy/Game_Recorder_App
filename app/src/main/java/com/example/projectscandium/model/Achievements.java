@@ -46,6 +46,35 @@ public class Achievements {
         }
     }
 
+    // setDiffLevel
+    // Purpose: Updates the score bound based on diff
+    // Return: void
+    public void setDiffLevel(String diffLevel, int lower, int upper, int numPlayers) {
+        double score = 1;
+        if (diffLevel.equals("Easy")){
+            score = 0.75;
+        }
+        if (diffLevel.equals("Normal")){
+            score = 1;
+        }
+        if (diffLevel.equals("Hard")){
+            score = 1.25;
+        }
+        // set worse score possible
+        setAchievementValue(0, 0);
+
+        this.lowerScoreBound = (double)lower * numPlayers;
+        this.upperScoreBound = (double)upper * numPlayers;
+
+        double range = upperScoreBound - lowerScoreBound;
+        double increment = (double)range / (9 - 1);
+        for (int i = 1; i < 10; i++) {
+            double points = lowerScoreBound + (increment * (i - 1));
+            points = points * score;
+            setAchievementValue(i, points);
+        }
+    }
+
     // getAchievementValue
     // Purpose: returns the value of the achievement at the given index
     // Return: double

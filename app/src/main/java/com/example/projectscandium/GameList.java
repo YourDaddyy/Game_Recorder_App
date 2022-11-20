@@ -233,25 +233,6 @@ public class GameList extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // getAchievementTheme method
-    // Purpose: Gets the achievement theme from the AddGame class
-    // Returns: String
-    public String getAchievementTheme() {
-        Intent intent = getIntent();
-        String theme = intent.getStringExtra(ACH_THEME);
-        return theme;
-    }
-
-    // makeIntent method
-    // Purpose: creates an intent to start the GameList activity
-    // returns: Intent
-    public static Intent makeIntent(Context context, String theme) {
-        Intent intent = new Intent(context, GameList.class);
-        intent.putExtra(ACH_THEME, theme);
-        return intent;
-    }
-
-
     // updateGame method
     // Purpose: updates the game in the config manager and the local game list, specifically
     // the Achievements, if the game is configuration values have changed
@@ -260,9 +241,6 @@ public class GameList extends AppCompatActivity {
         // update the achievement level of the game
         Achievements achievements = new Achievements();
         achievements.setAchievementName(game.getTheme());
-
-//        String theme = getAchievementTheme();
-//        achievements.setAchievementName(theme);
 
         // get the upper and lower bound of the achievement level
         int upperBound = cm.getConfigById(configPos).getGreatExpectedScore();

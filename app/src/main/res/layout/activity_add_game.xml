@@ -52,8 +52,8 @@
         android:id="@+id/addGame_Theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="240dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="244dp"
+        android:layout_marginTop="8dp"
         android:text="@string/game_theme"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -66,10 +66,10 @@
         android:layout_height="84dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.876"
+        app:layout_constraintHorizontal_bias="0.861"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.216" />
+        app:layout_constraintVertical_bias="0.191" />
 
     <TextView
         android:id="@+id/input_Info"

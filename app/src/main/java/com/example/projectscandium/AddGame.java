@@ -59,7 +59,6 @@ public class AddGame extends AppCompatActivity {
     private Configs config;
     private static final String CONFIG_POS = "com.example.projectscandium.AddGame - the config pos";
     private static final String GAME_POS = "com.example.projectscandium.AddGame - the gamePos";
-    private static final String ACH_THEME = "com.example.projectscandium.AddGame - the achTheme";
 
     // onCreate method
     // Purpose: creates the activity, set the toolbar (including the title).
@@ -82,8 +81,6 @@ public class AddGame extends AppCompatActivity {
 
         setupTxtWatcher();
         setUpPlayBtn();
-        GameList.makeIntent(AddGame.this,ach_themes);
-
     }
 
     // Set up TxtWatcher Method
