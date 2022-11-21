@@ -9,12 +9,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -110,7 +113,7 @@ public class AddGame extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.listview_adapter, parent, false);
             TextView playerNum = rowView.findViewById(R.id.playerNum);
             EditText playerScore = rowView.findViewById(R.id.playerScore);
-            playerNum.setText(String.format(Locale.getDefault(),"Player %d", position + 1));
+            playerNum.setText(String.format(Locale.getDefault(), "Player %d", position + 1));
             playerScore.setText(String.valueOf(this.playerScores[position]));
             playerScore.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -156,14 +159,14 @@ public class AddGame extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (etPlayer.length() > 0) {
                     illegalPlayGame = 1;
-                    try{
+                    try {
                         players = Integer.parseInt(((EditText) findViewById(R.id.player)).getText().toString());
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         etPlayer.setError(getString(R.string.IllegalField));
                         illegalPlayGame = 0;
                         return;
                     }
-                    if(players == 0){
+                    if (players == 0) {
                         etPlayer.setError(getString(R.string.ZeroField));
                         illegalPlayGame = 0;
                         return;
@@ -435,10 +438,10 @@ public class AddGame extends AppCompatActivity {
 
         int sound_source = R.raw.winner;
         int img_source = R.drawable.cat_combat;
-        if(ach_themes.equals("Dog")){
+        if (ach_themes.equals("Dog")) {
             sound_source = R.raw.dog_theme;
             img_source = R.drawable.dog_theme;
-        } else if(ach_themes.equals("Bird")){
+        } else if (ach_themes.equals("Bird")) {
             sound_source = R.raw.bird_theme;
             img_source = R.drawable.bird_theme;
         }
@@ -449,11 +452,26 @@ public class AddGame extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setIcon(img_source);
-        builder.setTitle(R.string.congrats_msg);
+        builder.setTitle(getString(R.string.congrats_msg, lvl, achievementLevel));
         // set the message to be bold
         SpannableString s = new SpannableString(getString(R.string.achievement_msg, lvl) +
                 " " + achievementLevel);
-        s.setSpan(new StyleSpan(Typeface.BOLD), 17, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), 18, s.length(), 0);
+
+        // get the current theme from the radio group
+        RadioGroup group = findViewById(R.id.radioAchTheme);
+        int radioButtonID = group.getCheckedRadioButtonId();
+        RadioButton radioButton = group.findViewById(radioButtonID);
+        String selectedText = (String) radioButton.getText();
+        ForegroundColorSpan color;
+        if (selectedText.equals("DogTheme")) {
+            color = new ForegroundColorSpan(Color.parseColor("#FF6200EE"));
+        } else if (selectedText.equals("BirdTheme")) {
+            color = new ForegroundColorSpan(Color.parseColor("#F6CF57"));
+        } else {
+            color = new ForegroundColorSpan(Color.parseColor("#FF018786"));
+        }
+        s.setSpan(color, 18, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // builder.setMessage(s);
 
         // add rotation animation to the text
