@@ -256,7 +256,6 @@ public class AddGame extends AppCompatActivity {
     private void setupPage() {
         config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
-        Button playButton = findViewById(R.id.btnPlay);
 
         if (gamePos == -1) {
             // set up add title
@@ -264,7 +263,6 @@ public class AddGame extends AppCompatActivity {
             // set up time
             time = setTime();
             btnDelete.setVisibility(View.GONE);
-            playButton.setVisibility(View.GONE);
         } else {
             // set up edit tile
             setTitle(getString(R.string.editGame_title));
@@ -353,7 +351,7 @@ public class AddGame extends AppCompatActivity {
     // Purpose: checks if the user wants to save the game and if they do,
     // then saves the game to the game list.
     // Returns: void
-    private void checkSave() {
+    private void checkSave(String button) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
         builder.setTitle(R.string.SaveGameTitle);
@@ -368,7 +366,12 @@ public class AddGame extends AppCompatActivity {
             } else {
                 config.getGames().set(gamePos, game);
             }
-            finish();
+            if (button.equals("Play")){
+                checkAchievement();
+            }
+            if (button.equals("Save")){
+                finish();
+            }
         });
         builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
@@ -417,7 +420,7 @@ public class AddGame extends AppCompatActivity {
                     etP.setError(getString(R.string.ErrorNum));
                     return false;
                 }
-                checkSave();
+                checkSave("Save");
             }
             return true;
         });
@@ -494,6 +497,7 @@ public class AddGame extends AppCompatActivity {
         okButton.setOnClickListener(v -> {
             dialog.dismiss();
             sound.stop();
+            finish();
         });
     }
 
@@ -505,7 +509,7 @@ public class AddGame extends AppCompatActivity {
         // on click listener for the play button to start activity
         playBtn.setOnClickListener(v -> {
             if (checkValid() && illegalPlayGame != 0) {
-                checkAchievement();
+                checkSave("Play");
             }
         });
     }
