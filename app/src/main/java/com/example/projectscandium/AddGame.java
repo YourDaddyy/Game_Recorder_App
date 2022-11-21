@@ -366,10 +366,10 @@ public class AddGame extends AppCompatActivity {
             } else {
                 config.getGames().set(gamePos, game);
             }
-            if (button.equals("Play")){
+            if (button.equals("Play")) {
                 checkAchievement();
             }
-            if (button.equals("Save")){
+            if (button.equals("Save")) {
                 finish();
             }
         });
@@ -476,12 +476,13 @@ public class AddGame extends AppCompatActivity {
 
         // add rotation animation to the text
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
-        animation.setDuration(2000);
-        TextView textView = new TextView(this);
-        textView.setText(s);
-        textView.setAnimation(animation);
-        textView.setGravity(Gravity.CENTER);
-        builder.setView(textView);
+        animation.setDuration(3000);
+        TextView message = new TextView(this);
+        message.setText(s);
+        message.setAnimation(animation);
+        message.animate().rotationBy(360).setDuration(1500);
+        message.setGravity(Gravity.CENTER);
+        builder.setView(message);
 
         builder.setPositiveButton(R.string.ok_select, null);
 
@@ -494,6 +495,16 @@ public class AddGame extends AppCompatActivity {
         // when the user clicks the button, the dialog will close and the user will be
         // returned to the main activity
         Button okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        // set the color of the button based on the theme
+        if (getSelectedTheme().equals("DogTheme")) {
+            okButton.setTextColor(Color.parseColor("#FF6200EE"));
+        }
+        if (getSelectedTheme().equals("BirdTheme")) {
+            okButton.setTextColor(Color.parseColor("#F6CF57"));
+        }
+        if (getSelectedTheme().equals("CatTheme")) {
+            okButton.setTextColor(Color.parseColor("#FF018786"));
+        }
         okButton.setOnClickListener(v -> {
             dialog.dismiss();
             sound.stop();
