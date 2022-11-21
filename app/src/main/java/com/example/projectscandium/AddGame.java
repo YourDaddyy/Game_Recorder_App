@@ -64,6 +64,7 @@ public class AddGame extends AppCompatActivity {
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
     private ListView playerScoreList;
+    private MediaPlayer sound;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -433,9 +434,6 @@ public class AddGame extends AppCompatActivity {
         String achievementLevel = ach.getAchievement(scores);
         int lvl = ach.getAchievementIndex(scores);
 
-        // Create sound & img based on theme
-        MediaPlayer sound;
-
         int sound_source = R.raw.winner;
         int img_source = R.drawable.cat_combat;
         if (ach_themes.equals("Dog")) {
@@ -446,6 +444,10 @@ public class AddGame extends AppCompatActivity {
             img_source = R.drawable.bird_theme;
         }
 
+        // stop any previous sound playing
+        if (sound != null && sound.isPlaying()) {
+            sound.stop();
+        }
         sound = MediaPlayer.create(getApplicationContext(), sound_source);
         sound.start();
 
@@ -457,22 +459,17 @@ public class AddGame extends AppCompatActivity {
         SpannableString s = new SpannableString(getString(R.string.achievement_msg, lvl) +
                 " " + achievementLevel);
         s.setSpan(new StyleSpan(Typeface.BOLD), 18, s.length(), 0);
-
-        // get the current theme from the radio group
-        RadioGroup group = findViewById(R.id.radioAchTheme);
-        int radioButtonID = group.getCheckedRadioButtonId();
-        RadioButton radioButton = group.findViewById(radioButtonID);
-        String selectedText = (String) radioButton.getText();
         ForegroundColorSpan color;
-        if (selectedText.equals("DogTheme")) {
+        // get the current theme from the radio group
+        String selectedTheme = getSelectedTheme();
+        if (selectedTheme.equals("DogTheme")) {
             color = new ForegroundColorSpan(Color.parseColor("#FF6200EE"));
-        } else if (selectedText.equals("BirdTheme")) {
+        } else if (selectedTheme.equals("BirdTheme")) {
             color = new ForegroundColorSpan(Color.parseColor("#F6CF57"));
         } else {
             color = new ForegroundColorSpan(Color.parseColor("#FF018786"));
         }
         s.setSpan(color, 18, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // builder.setMessage(s);
 
         // add rotation animation to the text
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
@@ -494,7 +491,10 @@ public class AddGame extends AppCompatActivity {
         // when the user clicks the button, the dialog will close and the user will be
         // returned to the main activity
         Button okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        okButton.setOnClickListener(v -> dialog.dismiss());
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            sound.stop();
+        });
     }
 
     // setUpPlayBtn method
@@ -522,15 +522,15 @@ public class AddGame extends AppCompatActivity {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
             button.setText(format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
-            button.setOnClickListener(v -> this.ach_themes = ach_theme);
+            button.setOnClickListener(v -> themeSettings(ach_theme));
             group.addView(button);
 
             if (gamePos == -1 && ach_theme.equals("Cat")) {
                 button.setChecked(true);
-                this.ach_themes = "Cat";
+                themeSettings("Cat");
             } else if (gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())) {
                 button.setChecked(true);
-                this.ach_themes = ach_theme;
+                themeSettings(ach_theme);
             }
         }
     }
@@ -547,5 +547,31 @@ public class AddGame extends AppCompatActivity {
         }
         combinedScore.setText(String.valueOf(combined));
         scores = combined;
+    }
+
+    // getSelectedTheme method
+    // Purpose: gets the theme for the achievement
+    // Returns: String
+    private String getSelectedTheme() {
+        RadioGroup group = findViewById(R.id.radioAchTheme);
+        RadioButton radioButton = group.findViewById(group.getCheckedRadioButtonId());
+        return (String) radioButton.getText();
+    }
+
+    // themeSettings method
+    // Purpose: sets the theme for the activity
+    // Returns: void
+    private void themeSettings(String ach_theme) {
+        this.ach_themes = ach_theme;
+        TextView combinedScore = findViewById(R.id.score);
+        if (getSelectedTheme().equals("DogTheme")) {
+            combinedScore.setTextColor(Color.parseColor("#FF6200EE"));
+        }
+        if (getSelectedTheme().equals("BirdTheme")) {
+            combinedScore.setTextColor(Color.parseColor("#F6CF57"));
+        }
+        if (getSelectedTheme().equals("CatTheme")) {
+            combinedScore.setTextColor(Color.parseColor("#FF018786"));
+        }
     }
 }
