@@ -6,6 +6,8 @@ package com.example.projectscandium.model;
  * have.
  */
 public class Achievements {
+
+    // array of achievement themes
     private final String[] catTheme = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
             "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
     private final String[] dogTheme = { "Novice Dog", "Average Joe Dog", "Daddy Dog", "Momma Dog", "Puppy Prodigy",
@@ -42,11 +44,14 @@ public class Achievements {
             if (theme.equals("Dog")) {
                 this.achievements = dogTheme;
             }
-            if (theme.equals("Cat")) {
+            else if (theme.equals("Cat")) {
                 this.achievements = catTheme;
             }
-            if (theme.equals("Bird")) {
+            else if (theme.equals("Bird")) {
                 this.achievements = birdTheme;
+            }
+            else {
+                throw new IllegalArgumentException("Theme must be Dog, Cat, or Bird");
             }
         }
     }
@@ -55,23 +60,41 @@ public class Achievements {
     // Purpose: Updates the score bound based on diff
     // Return: void
     public void setDiffLevel(String diffLevel, int lower, int upper, int numPlayers) {
-        double score = 1;
-        if (diffLevel.equals("Easy"))
-            score = 0.75;
-        if (diffLevel.equals("Hard"))
-            score = 1.25;
-        // set worse score possible
-        setAchievementValue(0, 0);
+        // empty input
+        if (diffLevel == null) {
+            throw new IllegalArgumentException("Difficulty level cannot be null");
+        }
+        // check if lower bound is bigger than upper
+        else if (lower > upper) {
+            throw new IllegalArgumentException("Lower score bound can not be lower than upper");
+        }
+        // check if bound is negative
+        else if (lower > 0) {
+            throw new IllegalArgumentException("Score bound can not be negative");
+        }
+        // check if number of players is greater than zero
+        else if (numPlayers > 0) {
+            throw new IllegalArgumentException("Players must be greater than zero");
+        }
+        else {
+            double score = 1;
+            if (diffLevel.equals("Easy"))
+                score = 0.75;
+            if (diffLevel.equals("Hard"))
+                score = 1.25;
+            // set worse score possible
+            setAchievementValue(0, 0);
 
-        this.lowerScoreBound = (double) lower * numPlayers;
-        this.upperScoreBound = (double) upper * numPlayers;
+            this.lowerScoreBound = (double) lower * numPlayers;
+            this.upperScoreBound = (double) upper * numPlayers;
 
-        double range = upperScoreBound - lowerScoreBound;
-        double increment = range / (9 - 1);
-        for (int i = 1; i < 10; i++) {
-            double points = lowerScoreBound + (increment * (i - 1));
-            points = points * score;
-            setAchievementValue(i, points);
+            double range = upperScoreBound - lowerScoreBound;
+            double increment = range / (9 - 1);
+            for (int i = 1; i < 10; i++) {
+                double points = lowerScoreBound + (increment * (i - 1));
+                points = points * score;
+                setAchievementValue(i, points);
+            }
         }
     }
 
