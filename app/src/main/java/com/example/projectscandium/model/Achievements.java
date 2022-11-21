@@ -6,6 +6,8 @@ package com.example.projectscandium.model;
  * have.
  */
 public class Achievements {
+
+    // array of achievement themes
     private final String[] catTheme = { "Novice Cat", "Average Joe Cat", "Daddy Cat", "Momma Cat", "Kitten Prodigy",
             "Silly Cat", "Kitten Army", "Flabbergast Cat", "Nyan Kitty", "Aye Aye Cat-tain" };
     private final String[] dogTheme = { "Novice Dog", "Average Joe Dog", "Daddy Dog", "Momma Dog", "Puppy Prodigy",
@@ -36,15 +38,22 @@ public class Achievements {
     // Purpose: sets the name of the achievement name based on theme
     // Return: void
     public void setAchievementName(String theme) {
-        if (theme != null) {
-            if (theme.equals("Dog")) {
-                this.achievements = dogTheme;
-            }
-            if (theme.equals("Cat")) {
-                this.achievements = catTheme;
-            }
-            if (theme.equals("Bird")) {
-                this.achievements = birdTheme;
+        if (theme == null) {
+            throw new IllegalArgumentException("Theme cannot be null");
+        }
+        else{
+            switch (theme) {
+                case "Dog":
+                    this.achievements = dogTheme;
+                    break;
+                case "Cat":
+                    this.achievements = catTheme;
+                    break;
+                case "Bird":
+                    this.achievements = birdTheme;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Theme must be Dog, Cat, or Bird");
             }
         }
     }
@@ -53,23 +62,41 @@ public class Achievements {
     // Purpose: Updates the score bound based on diff
     // Return: void
     public void setDiffLevel(String diffLevel, int lower, int upper, int numPlayers) {
-        double score = 1;
-        if (diffLevel.equals("Easy"))
-            score = 0.75;
-        if (diffLevel.equals("Hard"))
-            score = 1.25;
-        // set worse score possible
-        setAchievementValue(0, 0);
+        // empty input
+        if (diffLevel == null) {
+            throw new IllegalArgumentException("Difficulty level cannot be null");
+        }
+        // check if lower bound is bigger than upper
+        else if (lower > upper) {
+            throw new IllegalArgumentException("Lower score bound can not be lower than upper");
+        }
+        // check if bound is negative
+        else if (lower < 0) {
+            throw new IllegalArgumentException("Score bound can not be negative");
+        }
+        // check if number of players is greater than zero
+        else if (numPlayers <= 0) {
+            throw new IllegalArgumentException("Players must be greater than zero");
+        }
+        else {
+            double score = 1;
+            if (diffLevel.equals("Easy"))
+                score = 0.75;
+            if (diffLevel.equals("Hard"))
+                score = 1.25;
+            // set worse score possible
+            setAchievementValue(0, 0);
 
-        this.lowerScoreBound = (double) lower * numPlayers;
-        this.upperScoreBound = (double) upper * numPlayers;
+            setLowerScoreBound(lower, numPlayers);
+            setUpperScoreBound(upper, numPlayers);
 
-        double range = upperScoreBound - lowerScoreBound;
-        double increment = range / (9 - 1);
-        for (int i = 1; i < 10; i++) {
-            double points = lowerScoreBound + (increment * (i - 1));
-            points = points * score;
-            setAchievementValue(i, points);
+            double range = upperScoreBound - lowerScoreBound;
+            double increment = range / (9 - 1);
+            for (int i = 1; i < 10; i++) {
+                double points = lowerScoreBound + (increment * (i - 1));
+                points = points * score;
+                setAchievementValue(i, points);
+            }
         }
     }
 
@@ -94,6 +121,13 @@ public class Achievements {
         return lowerScoreBound;
     }
 
+    // setLowerScoreBound
+    // Purpose: sets the lower bound of the achievement scores
+    // Return: void
+    public void setLowerScoreBound(int lowerBound, int players) {
+        this.lowerScoreBound = (double) (lowerBound * players);
+    }
+
     // getUpperScoreBound
     // Purpose: returns the upper bound of the achievement scores
     // Return: double
@@ -101,34 +135,54 @@ public class Achievements {
         return upperScoreBound;
     }
 
+    // setUpperScoreBound
+    // Purpose: sets the upper bound of the achievement scores
+    // Return: void
+    public void setUpperScoreBound(int upperBound, int players) {
+        this.upperScoreBound = (double) (upperBound * players);
+    }
+
     // getAchievement
     // Purpose: returns the achievement name based on the score
     // Return: String
     public String getAchievement(int score) {
-
-        // if the score is between the lower and upper bound, return the achievement
-        // that corresponds to the score
-        int index = 0;
-        for (int i = 0; i < 10; i++) {
-            if ((double)score >= achievementValues[i]) {
-                index = i;
-            }else{ break; }
+        if (score < 0) {
+            throw new IllegalArgumentException("Score can not be negative");
         }
-        return achievements[index];
+        else{
+            // if the score is between the lower and upper bound, return the achievement
+            // that corresponds to the score
+            int index = 0;
+            for (int i = 0; i < 10; i++) {
+                if ((double) score >= achievementValues[i]) {
+                    index = i;
+                } else {
+                    break;
+                }
+            }
+            return achievements[index];
+        }
     }
 
     // getAchievementIndex
     // Purpose: returns the index of the achievement that the given score belongs to
     // Return: int
     public int getAchievementIndex(int score) {
-        // if the score is between the lower and upper bound, return the achievement
-        // that corresponds to the score
-        int index = 0;
-        for (int i = 0; i < 10; i++) {
-            if ((double)score > achievementValues[i]) {
-                index = i;
-            }else{ break; }
+        if (score < 0) {
+            throw new IllegalArgumentException("Score can not be negative");
         }
-        return index;
+        else {
+            // if the score is between the lower and upper bound, return the achievement
+            // that corresponds to the score
+            int index = 0;
+            for (int i = 0; i < 10; i++) {
+                if ((double) score >= achievementValues[i]) {
+                    index = i;
+                } else {
+                    break;
+                }
+            }
+            return index;
+        }
     }
 }

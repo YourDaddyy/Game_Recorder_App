@@ -97,7 +97,7 @@ public class GameList extends AppCompatActivity {
             if (config.getGameNum() == 0) {
                 txtEmpty.setVisibility(View.VISIBLE);
                 SpannableString spannableString = new SpannableString(getString(R.string.game_tutorial));
-                ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
+                ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03DAC5"));
                 spannableString.setSpan(teal, 36, 41, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 txtEmpty.setText(spannableString);
                 gameList.setEmptyView(txtEmpty);
