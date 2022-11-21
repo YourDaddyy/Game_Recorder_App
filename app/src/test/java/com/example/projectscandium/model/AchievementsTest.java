@@ -48,15 +48,15 @@ class AchievementsTest {
 
         // Test achievement value after setting scores with easy difficulty
         Achievements achievement3 = new Achievements();
-        achievement2.setDiffLevel("Easy",2,10,1);
+        achievement3.setDiffLevel("Easy",2,10,1);
 
         // Test achievement value after setting scores with hard difficulty
         Achievements achievement4 = new Achievements();
-        achievement2.setDiffLevel("Hard",2,10,2);
+        achievement4.setDiffLevel("Hard",2,10,2);
 
         // Test achievement value after changing player num scores with normal difficulty
         Achievements achievement5 = new Achievements();
-        achievement2.setDiffLevel("Normal",1,9,2);
+        achievement5.setDiffLevel("Normal",1,9,2);
 
 
         assertAll("Correctly calculates scores, ",
@@ -100,22 +100,21 @@ class AchievementsTest {
 
         // Test achievement value after setting scores with easy difficulty
         Achievements achievement3 = new Achievements();
-        achievement2.setDiffLevel("Easy",2,10,1);
+        achievement3.setDiffLevel("Easy",2,10,1);
 
         // Test achievement value after setting scores with hard difficulty
         Achievements achievement4 = new Achievements();
-        achievement2.setDiffLevel("Hard",2,10,2);
+        achievement4.setDiffLevel("Hard",2,10,2);
 
         // Test achievement value after changing player num scores with normal difficulty
         Achievements achievement5 = new Achievements();
-        achievement2.setDiffLevel("Normal",1,9,2);
+        achievement5.setDiffLevel("Normal",1,9,2);
 
         assertAll("Correctly calculates boundary, ",
                 ()->assertEquals(0, achievement.getLowerScoreBound()),
                 ()->assertEquals(1, achievement2.getLowerScoreBound()),
-                ()->assertEquals(1, achievement2.getAchievementValue(1)),
-                ()->assertEquals(2 * 0.75, achievement3.getLowerScoreBound()),
-                ()->assertEquals(2 * 1.25 * 2, achievement4.getLowerScoreBound()),
+                ()->assertEquals(2, achievement3.getLowerScoreBound()),
+                ()->assertEquals(4, achievement4.getLowerScoreBound()),
                 ()-> assertEquals(2, achievement5.getLowerScoreBound())
         );
 
@@ -132,23 +131,22 @@ class AchievementsTest {
 
         // Test achievement value after setting scores with easy difficulty
         Achievements achievement3 = new Achievements();
-        achievement2.setDiffLevel("Easy",2,10,1);
+        achievement3.setDiffLevel("Easy",2,10,1);
 
         // Test achievement value after setting scores with hard difficulty
         Achievements achievement4 = new Achievements();
-        achievement2.setDiffLevel("Hard",2,10,2);
+        achievement4.setDiffLevel("Hard",2,10,2);
 
         // Test achievement value after changing player num scores with normal difficulty
         Achievements achievement5 = new Achievements();
-        achievement2.setDiffLevel("Normal",1,9,2);
+        achievement5.setDiffLevel("Normal",1,9,2);
 
         assertAll("Correctly calculates boundary, ",
-                ()->assertEquals(0, achievement.getLowerScoreBound()),
-                ()->assertEquals(9, achievement2.getLowerScoreBound()),
-                ()->assertEquals(9, achievement2.getAchievementValue(1)),
-                ()->assertEquals(10 * 0.75, achievement3.getLowerScoreBound()),
-                ()->assertEquals(10 * 1.25 * 2, achievement4.getLowerScoreBound()),
-                ()-> assertEquals(10 * 2, achievement5.getLowerScoreBound())
+                ()->assertEquals(0, achievement.getUpperScoreBound()),
+                ()->assertEquals(9, achievement2.getUpperScoreBound()),
+                ()->assertEquals(10, achievement3.getUpperScoreBound()),
+                ()->assertEquals(20, achievement4.getUpperScoreBound()),
+                ()-> assertEquals(18, achievement5.getUpperScoreBound())
         );
     }
 

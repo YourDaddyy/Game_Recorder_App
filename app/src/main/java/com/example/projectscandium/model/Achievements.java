@@ -41,17 +41,18 @@ public class Achievements {
             throw new IllegalArgumentException("Theme cannot be null");
         }
         else{
-            if (theme.equals("Dog")) {
-                this.achievements = dogTheme;
-            }
-            else if (theme.equals("Cat")) {
-                this.achievements = catTheme;
-            }
-            else if (theme.equals("Bird")) {
-                this.achievements = birdTheme;
-            }
-            else {
-                throw new IllegalArgumentException("Theme must be Dog, Cat, or Bird");
+            switch (theme) {
+                case "Dog":
+                    this.achievements = dogTheme;
+                    break;
+                case "Cat":
+                    this.achievements = catTheme;
+                    break;
+                case "Bird":
+                    this.achievements = birdTheme;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Theme must be Dog, Cat, or Bird");
             }
         }
     }
@@ -85,8 +86,8 @@ public class Achievements {
             // set worse score possible
             setAchievementValue(0, 0);
 
-            this.lowerScoreBound = (double) lower * numPlayers;
-            this.upperScoreBound = (double) upper * numPlayers;
+            setLowerScoreBound(lower, numPlayers);
+            setUpperScoreBound(upper, numPlayers);
 
             double range = upperScoreBound - lowerScoreBound;
             double increment = range / (9 - 1);
@@ -119,11 +120,25 @@ public class Achievements {
         return lowerScoreBound;
     }
 
+    // setLowerScoreBound
+    // Purpose: sets the lower bound of the achievement scores
+    // Return: void
+    public void setLowerScoreBound(int lowerBound, int players) {
+        this.lowerScoreBound = (double) (lowerBound * players);
+    }
+
     // getUpperScoreBound
     // Purpose: returns the upper bound of the achievement scores
     // Return: double
     public double getUpperScoreBound() {
         return upperScoreBound;
+    }
+
+    // setUpperScoreBound
+    // Purpose: sets the upper bound of the achievement scores
+    // Return: void
+    public void setUpperScoreBound(int upperBound, int players) {
+        this.upperScoreBound = (double) (upperBound * players);
     }
 
     // getAchievement
@@ -138,7 +153,7 @@ public class Achievements {
             // that corresponds to the score
             int index = 0;
             for (int i = 0; i < 10; i++) {
-                if ((double) score > achievementValues[i]) {
+                if ((double) score >= achievementValues[i]) {
                     index = i;
                 } else {
                     break;
@@ -160,7 +175,7 @@ public class Achievements {
             // that corresponds to the score
             int index = 0;
             for (int i = 0; i < 10; i++) {
-                if ((double) score > achievementValues[i]) {
+                if ((double) score >= achievementValues[i]) {
                     index = i;
                 } else {
                     break;
