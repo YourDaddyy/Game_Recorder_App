@@ -69,7 +69,7 @@ public class Achievements {
             throw new IllegalArgumentException("Lower score bound can not be lower than upper");
         }
         // check if bound is negative
-        else if (lower <= 0) {
+        else if (lower < 0) {
             throw new IllegalArgumentException("Score bound can not be negative");
         }
         // check if number of players is greater than zero
@@ -130,34 +130,43 @@ public class Achievements {
     // Purpose: returns the achievement name based on the score
     // Return: String
     public String getAchievement(int score) {
-
-        // if the score is between the lower and upper bound, return the achievement
-        // that corresponds to the score
-        int index = 0;
-        for (int i = 0; i < 10; i++) {
-            if ((double) score > achievementValues[i]) {
-                index = i;
-            } else {
-                break;
-            }
+        if (score < 0) {
+            throw new IllegalArgumentException("Score can not be negative");
         }
-        return achievements[index];
+        else{
+            // if the score is between the lower and upper bound, return the achievement
+            // that corresponds to the score
+            int index = 0;
+            for (int i = 0; i < 10; i++) {
+                if ((double) score > achievementValues[i]) {
+                    index = i;
+                } else {
+                    break;
+                }
+            }
+            return achievements[index];
+        }
     }
 
     // getAchievementIndex
     // Purpose: returns the index of the achievement that the given score belongs to
     // Return: int
     public int getAchievementIndex(int score) {
-        // if the score is between the lower and upper bound, return the achievement
-        // that corresponds to the score
-        int index = 0;
-        for (int i = 0; i < 10; i++) {
-            if ((double) score > achievementValues[i]) {
-                index = i;
-            } else {
-                break;
-            }
+        if (score < 0) {
+            throw new IllegalArgumentException("Score can not be negative");
         }
-        return index;
+        else {
+            // if the score is between the lower and upper bound, return the achievement
+            // that corresponds to the score
+            int index = 0;
+            for (int i = 0; i < 10; i++) {
+                if ((double) score > achievementValues[i]) {
+                    index = i;
+                } else {
+                    break;
+                }
+            }
+            return index;
+        }
     }
 }
