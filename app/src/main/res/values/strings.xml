@@ -47,6 +47,7 @@
     <string name="skip">Skip</string>
     <string name="todo">TODO</string>
     <string name="add_game_text">To add a new game please press a config. from the list above</string>
+    <string name="play_game_text">To view achievement please press play game button after selecting a game!</string>
     <string name="game_title">Cat Stat Combat</string>
     <string name="save_button_text">SAVE</string>
     <string name="fab">FAB</string>
