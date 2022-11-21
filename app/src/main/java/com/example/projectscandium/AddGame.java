@@ -468,7 +468,7 @@ public class AddGame extends AppCompatActivity {
         if (selectedTheme.equals("DogTheme")) {
             color = new ForegroundColorSpan(Color.parseColor("#FF6200EE"));
         } else if (selectedTheme.equals("BirdTheme")) {
-            color = new ForegroundColorSpan(Color.parseColor("#F6CF57"));
+            color = new ForegroundColorSpan(Color.parseColor("#FF6600"));
         } else {
             color = new ForegroundColorSpan(Color.parseColor("#FF018786"));
         }
@@ -500,7 +500,7 @@ public class AddGame extends AppCompatActivity {
             okButton.setTextColor(Color.parseColor("#FF6200EE"));
         }
         if (getSelectedTheme().equals("BirdTheme")) {
-            okButton.setTextColor(Color.parseColor("#F6CF57"));
+            okButton.setTextColor(Color.parseColor("#FF6600"));
         }
         if (getSelectedTheme().equals("CatTheme")) {
             okButton.setTextColor(Color.parseColor("#FF018786"));
@@ -583,7 +583,7 @@ public class AddGame extends AppCompatActivity {
             combinedScore.setTextColor(Color.parseColor("#FF6200EE"));
         }
         if (getSelectedTheme().equals("BirdTheme")) {
-            combinedScore.setTextColor(Color.parseColor("#F6CF57"));
+            combinedScore.setTextColor(Color.parseColor("#FF6600"));
         }
         if (getSelectedTheme().equals("CatTheme")) {
             combinedScore.setTextColor(Color.parseColor("#FF018786"));
