@@ -1,0 +1,15 @@
+User stories
+
+Unit of 1 work: 3 hours
+
+1) User story: Game Played Difficulty
+Brief description:
+Estimated amount of work:
+
+2) User story: Achievement Improvements
+Brief description:
+Estimated amount of work:
+
+3) User story: Edit Game Played
+Brief description:
+Estimated amount of work: 1 Unit of Work
