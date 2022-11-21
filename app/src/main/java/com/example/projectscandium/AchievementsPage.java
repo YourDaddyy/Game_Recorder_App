@@ -39,6 +39,8 @@ public class AchievementsPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
 
+        numPlayers = 1;
+
         // create a new achievements object
         Achievements achievements = new Achievements();
 
