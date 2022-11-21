@@ -1,0 +1,27 @@
+User stories
+
+Unit of 1 work: 3 hours
+
+1) User story: Game Played Difficulty
+Brief description: Required scores of achievement levels are adjusted based on their selected difficulty: Normal 100%, Easy 75%, Hard 125%. Users can view difficulty level on achievement screen and in game play.
+Estimated amount of work: 3 Units of work.
+
+2) User story: Achievement Improvements
+Brief description: When an achievement level is earned after a game, a user receives a notification with images, animations, and sound. Users can select 3 themes for achievement levels while recording game play and viewing achievements page.
+Estimated amount of work: 4 Units of work.
+
+3) User story: Edit Game Played
+Brief description: Scores or the  difficulty of previous games can be changed.
+Estimated amount of work: 1 Unit of Work.
+
+4) User story: Friendly UI
+Brief description: Improve the  app UI to make app looks nicer,  better fit every theme and more user friendly for using.
+Estimated amount of work: 3 unit of work.
+
+5) User story: Score Calculator
+Brief description: Within play game page, create multi player score for user to input based on player number. Then calculate the total score and save the data for future use.
+Estimated amount of work: 3 unit of work.
+
+6) User story: Development Process
+Brief description: Create test class test file in JUnit to check any potential error situation would happen.
+Estimated amount of work: 2 unit of work.
