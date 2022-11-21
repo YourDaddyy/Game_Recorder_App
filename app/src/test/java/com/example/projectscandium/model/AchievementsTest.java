@@ -39,7 +39,6 @@ class AchievementsTest {
         assertThrows(IllegalArgumentException.class, () -> achievement.setDiffLevel("Easy", -3,1, 1));
         // Illegal player number exception
         assertThrows(IllegalArgumentException.class, () -> achievement.setDiffLevel("Easy", 0,1, 0));
-
     }
 
     @org.junit.jupiter.api.Test

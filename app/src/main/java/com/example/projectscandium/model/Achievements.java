@@ -69,11 +69,11 @@ public class Achievements {
             throw new IllegalArgumentException("Lower score bound can not be lower than upper");
         }
         // check if bound is negative
-        else if (lower > 0) {
+        else if (lower <= 0) {
             throw new IllegalArgumentException("Score bound can not be negative");
         }
         // check if number of players is greater than zero
-        else if (numPlayers > 0) {
+        else if (numPlayers <= 0) {
             throw new IllegalArgumentException("Players must be greater than zero");
         }
         else {

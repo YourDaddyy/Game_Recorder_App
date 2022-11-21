@@ -30,9 +30,11 @@ android {
         viewBinding true
     }
 }
- tasks.withType(Test) {
-     useJUnitPlatform()
- }
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
