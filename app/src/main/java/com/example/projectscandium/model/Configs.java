@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 /**
  * Configs (Class)
- * Purpose: Represents the possible achievements that a game configuration can have.
- * Stores the games, achievements, and the game configuration (i.e the name and expected scores)
+ * Purpose: Represents the possible achievements that a game configuration can
+ * have.
+ * Stores the games, achievements, and the game configuration (i.e the name and
+ * expected scores)
  */
 public class Configs {
 

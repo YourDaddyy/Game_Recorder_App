@@ -13,49 +13,55 @@
         android:theme="@style/Theme.ProjectScandium"
         tools:targetApi="31">
         <activity
-            android:screenOrientation="portrait"
             android:name=".AchievementsPage"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".GameConfigList"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".GameConfig"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".AddGame"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".GameList"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".WelcomePage"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

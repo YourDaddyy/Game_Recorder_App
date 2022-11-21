@@ -1,5 +1,7 @@
 package com.example.projectscandium;
 
+import static java.lang.String.format;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,10 +9,18 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +47,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Objects;
 
 /*Class AddGame
@@ -46,12 +57,14 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores;
+    private int players, scores, illegalPlayGame = 1;
     private int gamePos, configPos;
-    private int[] playerScore;
+    private Integer[] playerScore;
     private Button btnDelete;
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
+    private ListView playerScoreList;
+    private MediaPlayer sound;
 
     // Singleton the game list
     private final ConfigManager cm = ConfigManager.getInstance();
@@ -83,6 +96,52 @@ public class AddGame extends AppCompatActivity {
         setUpPlayBtn();
     }
 
+    // custom adapter for the list view
+    private class PlayerScoreAdapter extends ArrayAdapter<Integer> {
+        private final Context context;
+        private final Integer[] playerScores;
+
+        public PlayerScoreAdapter(Context context, Integer[] playerScores) {
+            super(context, R.layout.listview_adapter, playerScores);
+            this.context = context;
+            this.playerScores = playerScores;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.listview_adapter, parent, false);
+            TextView playerNum = rowView.findViewById(R.id.playerNum);
+            EditText playerScore = rowView.findViewById(R.id.playerScore);
+            playerNum.setText(String.format(Locale.getDefault(), "Player %d", position + 1));
+            playerScore.setText(String.valueOf(this.playerScores[position]));
+            playerScore.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    illegalPlayGame = 1;
+                    if (s.toString().equals("")) {
+                        playerScore.setError(getString(R.string.EmptyField));
+                        illegalPlayGame = 0;
+                        playerScores[position] = 0;
+                    } else {
+                        playerScores[position] = Integer.parseInt(s.toString());
+                    }
+                    updateCombinedScore();
+                }
+            });
+            return rowView;
+        }
+    }
+
     // Set up TxtWatcher Method
     // Purpose: Watch Player Num changed
     // Returns: void
@@ -90,16 +149,47 @@ public class AddGame extends AppCompatActivity {
         etPlayer = findViewById(R.id.player);
         etPlayer.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(etPlayer.length() > 0){
-                    players = Integer.parseInt(((EditText)findViewById(R.id.player)).getText().toString());
-                    playerScore = new int[players];
-                }else{
+                if (etPlayer.length() > 0) {
+                    illegalPlayGame = 1;
+                    try {
+                        players = Integer.parseInt(((EditText) findViewById(R.id.player)).getText().toString());
+                    } catch (Exception e) {
+                        etPlayer.setError(getString(R.string.IllegalField));
+                        illegalPlayGame = 0;
+                        return;
+                    }
+                    if (players == 0) {
+                        etPlayer.setError(getString(R.string.ZeroField));
+                        illegalPlayGame = 0;
+                        return;
+                    }
+                    playerScore = new Integer[players];
+                    for (int i = 0; i < players; i++) {
+                        playerScore[i] = 0;
+                    }
+                    scores = 0;
+                    TextView newScore = findViewById(R.id.score);
+                    newScore.setText(String.valueOf(scores));
+                    try {
+                        playerScoreList = findViewById(R.id.scoreList);
+                        playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(AddGame.this, playerScore));
+                    } catch (NullPointerException e) {
+                        // do nothing
+                    }
+                } else {
                     etPlayer.setError(getString(R.string.EmptyField));
+                    playerScoreList = findViewById(R.id.scoreList);
+                    playerScoreList.setAdapter(null);
+                    illegalPlayGame = 0;
                 }
             }
         });
@@ -166,7 +256,6 @@ public class AddGame extends AppCompatActivity {
     private void setupPage() {
         config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
-        Button playButton = findViewById(R.id.btnPlay);
 
         if (gamePos == -1) {
             // set up add title
@@ -174,22 +263,30 @@ public class AddGame extends AppCompatActivity {
             // set up time
             time = setTime();
             btnDelete.setVisibility(View.GONE);
-            playButton.setVisibility(View.GONE);
         } else {
             // set up edit tile
             setTitle(getString(R.string.editGame_title));
             btnDelete.setVisibility(View.VISIBLE);
             Game game = config.getGames().get(gamePos);
+            time = game.getTime();
             EditText etPlayer = findViewById(R.id.player);
-            EditText etScore = findViewById(R.id.score);
+            TextView etScore = findViewById(R.id.score);
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
+            scores = game.getCombinedScore();
+            playerScore = game.getPlayerScore();
             setupDeleteBtn();
             time = game.getTime();
             scores = game.getCombinedScore();
             players = game.getPlayerNum();
             diff_Level = game.getDifficulty();
             ach_themes = game.getTheme();
+            try {
+                playerScoreList = findViewById(R.id.scoreList);
+                playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(this, playerScore));
+            } catch (NullPointerException e) {
+                return;
+            }
         }
         TextView tvTime = findViewById(R.id.Time);
         tvTime.setText(time);
@@ -215,7 +312,7 @@ public class AddGame extends AppCompatActivity {
         RadioGroup group1 = findViewById(R.id.radio_diffLvl);
         String[] diff_level = getResources().getStringArray(R.array.difficulty_level);
 
-        for (final String level: diff_level) {
+        for (final String level : diff_level) {
             RadioButton button1 = new RadioButton(this);
             button1.setTextSize(16);
             button1.setText(level);
@@ -223,7 +320,7 @@ public class AddGame extends AppCompatActivity {
             group1.addView(button1);
             if (gamePos == -1 && level.equals("Normal")) {
                 button1.setChecked(true);
-            }else if(gamePos != -1 && level.equals(config.getGames().get(gamePos).getDifficulty())){
+            } else if (gamePos != -1 && level.equals(config.getGames().get(gamePos).getDifficulty())) {
                 button1.setChecked(true);
             }
         }
@@ -254,7 +351,7 @@ public class AddGame extends AppCompatActivity {
     // Purpose: checks if the user wants to save the game and if they do,
     // then saves the game to the game list.
     // Returns: void
-    private void checkSave() {
+    private void checkSave(String button) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddGame.this);
         builder.setIcon(null);
         builder.setTitle(R.string.SaveGameTitle);
@@ -262,17 +359,26 @@ public class AddGame extends AppCompatActivity {
         builder.setPositiveButton(R.string.Yes, (dialog, which) -> {
             Achievements ach = setupAchievement();
             Game game = new Game(players, scores, time, diff_Level, playerScore, ach, ach_themes);
+
             config = cm.getConfigById(configPos);
             if (gamePos == -1) {// get the config instance
                 config.addGame(game);
             } else {
                 config.getGames().set(gamePos, game);
             }
-            finish();
+            if (button.equals("Play")) {
+                checkAchievement();
+            }
+            if (button.equals("Save")) {
+                finish();
+            }
         });
         builder.setNegativeButton(R.string.No, (dialog, which) -> dialog.dismiss()).show();
     }
 
+    // setupAchievement method
+    // Purpose: set up Achievement level and name based on current input
+    // Returns: achievement
     private Achievements setupAchievement() {
         Achievements ach = new Achievements();
         ach.setAchievementName(ach_themes);
@@ -285,13 +391,8 @@ public class AddGame extends AppCompatActivity {
     // Returns: boolean
     private boolean checkValid() {
         EditText etP = findViewById(R.id.player);
-        EditText etS = findViewById(R.id.score);
         if (etP.length() == 0) {
             etP.setError(getString(R.string.EmptyField));
-            return false;
-        }
-        if (etS.length() == 0) {
-            etS.setError(getString(R.string.EmptyField));
             return false;
         }
         return true;
@@ -312,35 +413,18 @@ public class AddGame extends AppCompatActivity {
             if (checkValid()) {
                 // Save data into class
                 EditText etP = findViewById(R.id.player);
-                EditText etS = findViewById(R.id.score);
                 try {
                     String sPlayer = (etP).getText().toString();
                     players = Integer.parseInt(sPlayer);
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     etP.setError(getString(R.string.ErrorNum));
                     return false;
                 }
-                try {
-                    // Save data into class
-                    String sScore = (etS).getText().toString();
-                    scores = Integer.parseInt(sScore);
-                } catch (NumberFormatException e){
-                    etS.setError(getString(R.string.ErrorNum));
-                    return false;
-                }
-                checkSave();
+                checkSave("Save");
             }
             return true;
         });
         return true;
-    }
-
-    // setUpPlayBtn method
-    // Purpose: starts a game play
-    // Returns: void
-    private void setUpPlayBtn() {
-        Button playBtn = findViewById(R.id.btnPlay);
-        playBtn.setOnClickListener(view -> checkAchievement());
     }
 
     // checkAchievement method
@@ -348,20 +432,59 @@ public class AddGame extends AppCompatActivity {
     // Returns: void
     private void checkAchievement() {
 
-        // Need to get Achievement lvl somehow
+        // Get the achievement level
         Achievements ach = setupAchievement();
+        String achievementLevel = ach.getAchievement(scores);
+        int lvl = ach.getAchievementIndex(scores);
 
-        // Create sound
-        MediaPlayer sound;
-        sound = MediaPlayer.create(getApplicationContext(), R.raw.winner);
+        int sound_source = R.raw.winner;
+        int img_source = R.drawable.cat_combat;
+        if (ach_themes.equals("Dog")) {
+            sound_source = R.raw.dog_theme;
+            img_source = R.drawable.dog_theme;
+        } else if (ach_themes.equals("Bird")) {
+            sound_source = R.raw.bird_theme;
+            img_source = R.drawable.bird_theme;
+        }
+
+        // stop any previous sound playing
+        if (sound != null && sound.isPlaying()) {
+            sound.stop();
+        }
+        sound = MediaPlayer.create(getApplicationContext(), sound_source);
         sound.start();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setIcon(R.drawable.cat_combat);
-        builder.setTitle(getString(R.string.congrats_msg, ach.getAchievementIndex(scores), ach.getAchievement(scores)));
+        builder.setIcon(img_source);
+        builder.setTitle(getString(R.string.congrats_msg, lvl, achievementLevel));
+        // set the message to be bold
+        SpannableString s = new SpannableString(getString(R.string.achievement_msg, lvl) +
+                " " + achievementLevel);
+        s.setSpan(new StyleSpan(Typeface.BOLD), 18, s.length(), 0);
+        ForegroundColorSpan color;
+        // get the current theme from the radio group
+        String selectedTheme = getSelectedTheme();
+        if (selectedTheme.equals("DogTheme")) {
+            color = new ForegroundColorSpan(Color.parseColor("#FF6200EE"));
+        } else if (selectedTheme.equals("BirdTheme")) {
+            color = new ForegroundColorSpan(Color.parseColor("#FF6600"));
+        } else {
+            color = new ForegroundColorSpan(Color.parseColor("#FF018786"));
+        }
+        s.setSpan(color, 18, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        builder.setPositiveButton(R.string.ok_select,null);
+        // add rotation animation to the text
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
+        animation.setDuration(3000);
+        TextView message = new TextView(this);
+        message.setText(s);
+        message.setAnimation(animation);
+        message.animate().rotationBy(360).setDuration(1500);
+        message.setGravity(Gravity.CENTER);
+        builder.setView(message);
+
+        builder.setPositiveButton(R.string.ok_select, null);
 
         // Set dialog animation
         AlertDialog dialog = builder.create();
@@ -369,6 +492,37 @@ public class AddGame extends AppCompatActivity {
 
         dialog.show();
 
+        // when the user clicks the button, the dialog will close and the user will be
+        // returned to the main activity
+        Button okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        // set the color of the button based on the theme
+        if (getSelectedTheme().equals("DogTheme")) {
+            okButton.setTextColor(Color.parseColor("#FF6200EE"));
+        }
+        if (getSelectedTheme().equals("BirdTheme")) {
+            okButton.setTextColor(Color.parseColor("#FF6600"));
+        }
+        if (getSelectedTheme().equals("CatTheme")) {
+            okButton.setTextColor(Color.parseColor("#FF018786"));
+        }
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            sound.stop();
+            finish();
+        });
+    }
+
+    // setUpPlayBtn method
+    // Purpose: starts a game play
+    // Returns: void
+    private void setUpPlayBtn() {
+        Button playBtn = findViewById(R.id.btnPlay);
+        // on click listener for the play button to start activity
+        playBtn.setOnClickListener(v -> {
+            if (checkValid() && illegalPlayGame != 0) {
+                checkSave("Play");
+            }
+        });
     }
 
     // createAchThemeButtons method
@@ -382,17 +536,57 @@ public class AddGame extends AppCompatActivity {
         for (final String ach_theme : ach_themes) {
             RadioButton button = new RadioButton(this);
             button.setTextSize(16);
-            button.setText(String.format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
-            button.setOnClickListener(v -> this.ach_themes = ach_theme);
+            button.setText(format("%s%s", ach_theme, getString(R.string.button_txt_theme)));
+            button.setOnClickListener(v -> themeSettings(ach_theme));
             group.addView(button);
 
             if (gamePos == -1 && ach_theme.equals("Cat")) {
                 button.setChecked(true);
-                this.ach_themes = "Cat";
-            }else if(gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())){
+                themeSettings("Cat");
+            } else if (gamePos != -1 && ach_theme.equals(config.getGames().get(gamePos).getTheme())) {
                 button.setChecked(true);
-                this.ach_themes = ach_theme;
+                themeSettings(ach_theme);
             }
+        }
+    }
+
+    // updateCombinedScore
+    // Purpose: updates the combined score
+    // Returns: void
+    private void updateCombinedScore() {
+        TextView combinedScore = findViewById(R.id.score);
+        int combined = 0;
+        // add the scores together from the scores array
+        for (Integer integer : playerScore) {
+            combined += integer;
+        }
+        combinedScore.setText(String.valueOf(combined));
+        scores = combined;
+    }
+
+    // getSelectedTheme method
+    // Purpose: gets the theme for the achievement
+    // Returns: String
+    private String getSelectedTheme() {
+        RadioGroup group = findViewById(R.id.radioAchTheme);
+        RadioButton radioButton = group.findViewById(group.getCheckedRadioButtonId());
+        return (String) radioButton.getText();
+    }
+
+    // themeSettings method
+    // Purpose: sets the theme for the activity
+    // Returns: void
+    private void themeSettings(String ach_theme) {
+        this.ach_themes = ach_theme;
+        TextView combinedScore = findViewById(R.id.score);
+        if (getSelectedTheme().equals("DogTheme")) {
+            combinedScore.setTextColor(Color.parseColor("#FF6200EE"));
+        }
+        if (getSelectedTheme().equals("BirdTheme")) {
+            combinedScore.setTextColor(Color.parseColor("#FF6600"));
+        }
+        if (getSelectedTheme().equals("CatTheme")) {
+            combinedScore.setTextColor(Color.parseColor("#FF018786"));
         }
     }
 }

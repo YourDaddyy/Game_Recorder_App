@@ -47,6 +47,7 @@
     <string name="skip">Skip</string>
     <string name="todo">TODO</string>
     <string name="add_game_text">To add a new game please press a config. from the list above</string>
+    <string name="play_game_text">To view achievement please press play game button after selecting a game!</string>
     <string name="game_title">Cat Stat Combat</string>
     <string name="save_button_text">SAVE</string>
     <string name="fab">FAB</string>
@@ -80,8 +81,12 @@
     <string name="ErrorNegativeScore">Score cannot be negative</string>
     <string name="ErrorLowerNum">"Lower Score can't be less/equal to Upper Score"</string>
     <string name="EmptyField">This field should not be empty</string>
+    <string name="ZeroField">This field should not be 0</string>
+    <string name="IllegalField">Contain Illegal Text</string>
     <string name="play_game">Play Game</string>
     <string name="congrats_msg">Achievement level %1$d:\n%2$s Earned!</string>
     <string name="ok_select">OK</string>
     <string name="button_txt_theme"> Theme </string>
+    <string name="playerText">Player</string>
+    <string name="achievement_msg">\nCongratulations!\nYou reached Level: %1$d \n</string>
 </resources>

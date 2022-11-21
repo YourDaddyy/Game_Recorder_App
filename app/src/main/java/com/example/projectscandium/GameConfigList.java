@@ -89,7 +89,7 @@ public class GameConfigList extends AppCompatActivity {
             ConfigList.setAdapter(null);
             configEmptyState.setVisibility(TextView.VISIBLE);
             SpannableString spannableString = new SpannableString(getString(R.string.config_tutorial_text));
-            ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03dac5"));
+            ForegroundColorSpan teal = new ForegroundColorSpan(Color.parseColor("#03DAC5"));
             spannableString.setSpan(teal, 36, 41, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             configEmptyState.setText(spannableString);
             ConfigList.setEmptyView(configEmptyState);
@@ -111,7 +111,8 @@ public class GameConfigList extends AppCompatActivity {
     }
 
     // onBackPressed method
-    // Purpose: creates an alert to confirm exiting the app when the back button is pressed
+    // Purpose: creates an alert to confirm exiting the app when the back button is
+    // pressed
     // Returns: void
     @Override
     public void onBackPressed() {
