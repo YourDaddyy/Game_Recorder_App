@@ -185,4 +185,46 @@ public class Achievements {
             return index;
         }
     }
+
+    // getPointsRqd
+    // Purpose: returns points to get the next achievement
+    // Return: double
+    public double getPointsRqd(int score) {
+
+        // Gets the current achievement
+        int index = getAchievementIndex(score);
+        double points;
+
+        // Determines whether the highest lvl (index 9) is achieved
+        if (index == 9) {
+            points = 0;
+        }
+        // Returns the rqd points for the next lvl
+        else {
+            points = achievementValues[index + 1] - score;
+        }
+        return points;
+
+    }
+
+
+    // getNextAchievement
+    // Purpose: returns the next achievement name
+    // Return: String
+    public String getNextAchievement(int score) {
+
+        // Gets the current achievement
+        int index = getAchievementIndex(score);
+        String name = "";
+
+        // Determines whether the highest lvl (index 9) is achieved
+        if (index == 9) {
+            name = "\n\nYou've achieved the highest level\n";
+        }
+        // Returns the next level name
+        else {
+            name = "\n\nNext achievement: " + achievements[index + 1] + "\n";
+        }
+        return name;
+    }
 }

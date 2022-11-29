@@ -437,6 +437,10 @@ public class AddGame extends AppCompatActivity {
         String achievementLevel = ach.getAchievement(scores);
         int lvl = ach.getAchievementIndex(scores);
 
+        // Get the next achievement
+        String nextLevel = ach.getNextAchievement(scores);
+        double rqdPoints = ach.getPointsRqd(scores);
+
         int sound_source = R.raw.winner;
         int img_source = R.drawable.cat_combat;
         if (ach_themes.equals("Dog")) {
@@ -460,7 +464,7 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle(getString(R.string.congrats_msg, lvl, achievementLevel));
         // set the message to be bold
         SpannableString s = new SpannableString(getString(R.string.achievement_msg, lvl) +
-                " " + achievementLevel);
+                " " + achievementLevel + " " + nextLevel + "Points to next level: " + rqdPoints);
         s.setSpan(new StyleSpan(Typeface.BOLD), 18, s.length(), 0);
         ForegroundColorSpan color;
         // get the current theme from the radio group
