@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -123,5 +125,24 @@ public class GameConfigList extends AppCompatActivity {
         builder.setPositiveButton(R.string.Yes, (dialog, id) -> finishAffinity());
         builder.setNegativeButton(R.string.No, (dialog, id) -> dialog.cancel());
         builder.show();
+    }
+
+    // onCreateOptionsMenu method
+    // Purpose: creates the options menu for the activity and adds the about page
+    // button
+    // Returns: boolean
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.about_bar_item, menu);
+        return true;
+    }
+
+    // aboutPage method
+    // Purpose: Calls the about page activity if the about button is clicked
+    // from the toolbar
+    // Returns: boolean
+    public void AboutPage(MenuItem menuItem) {
+        Intent intent = new Intent(GameConfigList.this, AboutPage.class);
+        startActivity(intent);
     }
 }
