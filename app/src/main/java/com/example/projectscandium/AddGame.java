@@ -489,6 +489,10 @@ public class AddGame extends AppCompatActivity {
         builder.setView(message);
 
         builder.setPositiveButton(R.string.ok_select, null);
+        builder.setNegativeButton(R.string.replay, (dialog, which) -> {
+            dialog.dismiss();
+            checkAchievement();
+        });
 
         // Set dialog animation
         AlertDialog dialog = builder.create();
