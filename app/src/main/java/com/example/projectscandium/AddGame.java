@@ -57,9 +57,9 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores, illegalPlayGame = 1;
+    private int players, oldPlayers, scores, illegalPlayGame = 1;
     private int gamePos, configPos;
-    private Integer[] playerScore;
+    private Integer[] playerScore, oldPlayerScore;
     private Button btnDelete;
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
@@ -172,11 +172,23 @@ public class AddGame extends AppCompatActivity {
                         illegalPlayGame = 0;
                         return;
                     }
-                    playerScore = new Integer[players];
-                    for (int i = 0; i < players; i++) {
-                        playerScore[i] = 0;
+                    if (players < oldPlayers) {
+                         Integer[] newPlayerScore = new Integer[players];
+                         System.arraycopy(playerScore, 0, newPlayerScore, 0, players);
+                         playerScore = newPlayerScore;
+                    } else if (players == oldPlayers) {
+                         playerScore = oldPlayerScore;
+                    } else {
+                         Integer[] newPlayerScore = new Integer[players];
+                         if (oldPlayers >= 0)
+                            System.arraycopy(playerScore, 0, newPlayerScore, 0, oldPlayers);
+                         for (int i = oldPlayers; i < players; i++) {
+                            newPlayerScore[i] = 0;
+                         }
+                         playerScore = newPlayerScore;
                     }
-                    scores = 0;
+                    // set the combined score to the sum of the new player scores
+                    updateCombinedScore();
                     TextView newScore = findViewById(R.id.score);
                     newScore.setText(String.valueOf(scores));
                     try {
@@ -275,10 +287,12 @@ public class AddGame extends AppCompatActivity {
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             scores = game.getCombinedScore();
             playerScore = game.getPlayerScore();
+            oldPlayerScore = playerScore;
             setupDeleteBtn();
             time = game.getTime();
             scores = game.getCombinedScore();
             players = game.getPlayerNum();
+            oldPlayers = players;
             diff_Level = game.getDifficulty();
             ach_themes = game.getTheme();
             try {
