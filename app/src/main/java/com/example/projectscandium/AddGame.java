@@ -114,6 +114,10 @@ public class AddGame extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.listview_adapter, parent, false);
             TextView playerNum = rowView.findViewById(R.id.playerNum);
             EditText playerScore = rowView.findViewById(R.id.playerScore);
+            // set the color of the player number to be white
+            playerNum.setTextColor(Color.WHITE);
+            // set the color of the player score to be white
+            playerScore.setTextColor(Color.WHITE);
             playerNum.setText(String.format(Locale.getDefault(), "Player %d", position + 1));
             playerScore.setText(String.valueOf(this.playerScores[position]));
             playerScore.addTextChangedListener(new TextWatcher() {
@@ -138,6 +142,8 @@ public class AddGame extends AppCompatActivity {
                     updateCombinedScore();
                 }
             });
+            // set background color for the list view
+            rowView.setBackgroundColor(Color.parseColor("#FF018786"));
             return rowView;
         }
     }
