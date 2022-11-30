@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -62,9 +62,9 @@
                 android:id="@+id/Resources_Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="25dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
                 android:text=""
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
