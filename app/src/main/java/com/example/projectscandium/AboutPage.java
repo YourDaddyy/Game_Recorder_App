@@ -41,6 +41,7 @@ public class AboutPage extends AppCompatActivity {
         aboutPageText.setText(Html.fromHtml("<b>Tutorials</b> <br> " +
                 "- Dr Brian's YouTube Tutorials <br>" +
                 "<a href=https://www.youtube.com/watch?v=KsyCfxxEIwQ>- Gif Animation Tutorial</a><br>"+
+                "<a href=https://www.youtube.com/watch?v=h6g4NpiC0i4&ab_channel=TechizVibe>- Scroll View Tutorial</a><br>"+
                 "<a href=https://www.youtube.com/watch?v=JvyA7seYiCI&ab_channel=TechnicalCoding>- Fade Animation Tutorial</a><br>"+
                 "<a href=https://www.youtube.com/watch?v=0SJAK_pKUoE>- Sound Tutorial <br>" +
                 "<a href=https://devstudioonline.com/article/create-rounded-background-as-border-radius-in-android-layout>- Rounded Buttons </a><br>" +
