@@ -52,9 +52,9 @@ public class AboutPage extends AppCompatActivity {
                 "<a href=https://www.xmple.com/>-Background Source</a><br>"+
                 "<a href=http://www.istmagazine.com/ist-watchdog-all-morphed-up/>-Dog Theme Icon Source</a><br>"+
                 "<a href=https://www.shutterstock.com/image-vector/decorative-bird-icon-vector-illustration-78771382>-Bird Theme Icon Source</a><br>" +
-                "<a href=https://www.mixkit.co/free-sound-effects/game/>-Dog Theme Celebration Sound Source</a><br>"+
-                "<a href=https://www.mixkit.co/free-sound-effects/game/>-Bird Theme Celebration Sound Source</a><br>"+
-                "<a href=https://www.youtube.com/watch?v=s8LBlwQGmqo&ab_channel=SoundEffectDatabase/>-Cat Theme Celebration Sound Source</a><br>" +
+                "<a href=https://www.mixkit.co/free-sound-effects/game/>-Dog Celebration Sound Source</a><br>"+
+                "<a href=https://www.mixkit.co/free-sound-effects/game/>-Bird Celebration Sound Source</a><br>"+
+                "<a href=https://www.youtube.com/watch?v=s8LBlwQGmqo&ab_channel=SoundEffectDatabase/>-Cat Celebration Sound Source</a><br>" +
                 "<a href=https://www.freepik.com/free-vector/illustration-animal-adult-coloring-page_2614622.htm#query=cat%20art&position=2&from_view=search&track=sph>-Game Image Source</a><br>"
                 ,Html.FROM_HTML_MODE_LEGACY));
     }
