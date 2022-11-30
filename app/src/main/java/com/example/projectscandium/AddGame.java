@@ -441,6 +441,10 @@ public class AddGame extends AppCompatActivity {
         String achievementLevel = ach.getAchievement(scores);
         int lvl = ach.getAchievementIndex(scores);
 
+        // Get the next achievement
+        String nextLevel = ach.getNextAchievement(scores);
+        double rqdPoints = ach.getPointsRqd(scores);
+
         int sound_source = R.raw.winner;
         int img_source = R.drawable.cat_combat;
         if (ach_themes.equals("Dog")) {
@@ -464,7 +468,7 @@ public class AddGame extends AppCompatActivity {
         builder.setTitle(getString(R.string.congrats_msg, lvl, achievementLevel));
         // set the message to be bold
         SpannableString s = new SpannableString(getString(R.string.achievement_msg, lvl) +
-                " " + achievementLevel);
+                " " + achievementLevel + " " + nextLevel + "Points to next level: " + rqdPoints);
         s.setSpan(new StyleSpan(Typeface.BOLD), 18, s.length(), 0);
         ForegroundColorSpan color;
         // get the current theme from the radio group
@@ -489,6 +493,37 @@ public class AddGame extends AppCompatActivity {
         builder.setView(message);
 
         builder.setPositiveButton(R.string.ok_select, null);
+        builder.setNegativeButton(R.string.replay, (dialog, which) -> {
+            dialog.dismiss();
+            checkAchievement();
+        });
+        // Add a button to the dialog to cycle through the achievement themes
+        builder.setNeutralButton(R.string.next_theme, (dialog, which) -> {
+            dialog.dismiss();
+            // get the current theme from the radio group
+            String selectedTheme1 = getSelectedTheme();
+            if (selectedTheme1.equals("CatTheme")) {
+                ach_themes = "Dog";
+            } else if (selectedTheme1.equals("DogTheme")) {
+                ach_themes = "Bird";
+            } else {
+                ach_themes = "Cat";
+            }
+            // save the new theme to the config
+            themeSettings(ach_themes);
+            // set the radio button to the new theme
+            setSelectedTheme(ach_themes);
+            Achievements new_ach = setupAchievement();
+            Game game = new Game(players, scores, time, diff_Level, playerScore, new_ach, ach_themes);
+
+            config = cm.getConfigById(configPos);
+            if (gamePos == -1) {// get the config instance
+                config.addGame(game);
+            } else {
+                config.getGames().set(gamePos, game);
+            }
+            checkAchievement();
+        });
 
         // Set dialog animation
         AlertDialog dialog = builder.create();
@@ -575,6 +610,22 @@ public class AddGame extends AppCompatActivity {
         RadioGroup group = findViewById(R.id.radioAchTheme);
         RadioButton radioButton = group.findViewById(group.getCheckedRadioButtonId());
         return (String) radioButton.getText();
+    }
+
+    // setSelectedTheme method
+    // Purpose: sets the theme for the achievement
+    // Returns: void
+    private void setSelectedTheme(String ach_theme) {
+        // set the radio button to the new theme
+        RadioGroup group = findViewById(R.id.radioAchTheme);
+        String[] ach_themes = getResources().getStringArray(R.array.achievement_themes);
+        // loop through the radio buttons to find the one that matches the theme
+        for (int i = 0; i < group.getChildCount(); i++) {
+            RadioButton button = (RadioButton) group.getChildAt(i);
+            if (button.getText().equals(format("%s%s", ach_theme, getString(R.string.button_txt_theme)))) {
+                button.setChecked(true);
+            }
+        }
     }
 
     // themeSettings method
