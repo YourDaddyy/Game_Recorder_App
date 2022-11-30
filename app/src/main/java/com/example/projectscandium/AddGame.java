@@ -173,19 +173,19 @@ public class AddGame extends AppCompatActivity {
                         return;
                     }
                     if (players < oldPlayers) {
-                         Integer[] newPlayerScore = new Integer[players];
-                         System.arraycopy(playerScore, 0, newPlayerScore, 0, players);
-                         playerScore = newPlayerScore;
+                        Integer[] newPlayerScore = new Integer[players];
+                        System.arraycopy(playerScore, 0, newPlayerScore, 0, players);
+                        playerScore = newPlayerScore;
                     } else if (players == oldPlayers) {
-                         playerScore = oldPlayerScore;
+                        playerScore = oldPlayerScore;
                     } else {
-                         Integer[] newPlayerScore = new Integer[players];
-                         if (oldPlayers >= 0)
+                        Integer[] newPlayerScore = new Integer[players];
+                        if (oldPlayers >= 0)
                             System.arraycopy(playerScore, 0, newPlayerScore, 0, oldPlayers);
-                         for (int i = oldPlayers; i < players; i++) {
+                        for (int i = oldPlayers; i < players; i++) {
                             newPlayerScore[i] = 0;
-                         }
-                         playerScore = newPlayerScore;
+                        }
+                        playerScore = newPlayerScore;
                     }
                     // set the combined score to the sum of the new player scores
                     updateCombinedScore();
@@ -268,21 +268,32 @@ public class AddGame extends AppCompatActivity {
     private void setupPage() {
         config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
-
+        EditText etPlayer = findViewById(R.id.player);
+        TextView etScore = findViewById(R.id.score);
         if (gamePos == -1) {
             // set up add title
             setTitle(getString(R.string.Add_Game));
             // set up time
             time = setTime();
             btnDelete.setVisibility(View.GONE);
+            // default player number to 2
+            players = 2;
+            playerScore = new Integer[players];
+            for (int i = 0; i < players; i++) {
+                playerScore[i] = 0;
+            }
+            // update the combined score
+            updateCombinedScore();
+            // populate the list view
+            playerScoreList = findViewById(R.id.scoreList);
+            playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(AddGame.this, playerScore));
+            etPlayer.setText(String.valueOf(players));
         } else {
             // set up edit tile
             setTitle(getString(R.string.editGame_title));
             btnDelete.setVisibility(View.VISIBLE);
             Game game = config.getGames().get(gamePos);
             time = game.getTime();
-            EditText etPlayer = findViewById(R.id.player);
-            TextView etScore = findViewById(R.id.score);
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             scores = game.getCombinedScore();
