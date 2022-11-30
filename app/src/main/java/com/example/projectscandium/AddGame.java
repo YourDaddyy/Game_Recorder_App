@@ -226,6 +226,7 @@ public class AddGame extends AppCompatActivity {
             builder.setMessage(R.string.DeleteGameMessage);
             // make Sure
             builder.setPositiveButton(R.string.Yes, (dialogInterface, i) -> {
+                config.setAch_count(config.getGames().get(gamePos).getAchievements().getAchievementIndex(scores), -1);
                 config.deleteGame(gamePos);
                 finish();
             });
@@ -364,8 +365,11 @@ public class AddGame extends AppCompatActivity {
             if (gamePos == -1) {// get the config instance
                 config.addGame(game);
             } else {
+                int index = config.getGames().get(gamePos).getAchievements().getAchievementIndex(scores);
+                config.setAch_count(index, -1);
                 config.getGames().set(gamePos, game);
             }
+            config.setAch_count(ach.getAchievementIndex(scores), 1);
             if (button.equals("Play")) {
                 checkAchievement();
             }
