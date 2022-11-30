@@ -223,7 +223,7 @@ public class Achievements {
         }
         // Returns the next level name
         else {
-            name = "\n\nNext achievement: " + achievements[index + 1] + "\n";
+            name = "\n\nNext Achievement: " + achievements[index + 1] + "\n";
         }
         return name;
     }
