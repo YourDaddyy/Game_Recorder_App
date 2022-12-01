@@ -34,14 +34,11 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.projectscandium.model.Achievements;
 import com.example.projectscandium.model.ConfigManager;
 import com.example.projectscandium.model.Configs;
 import com.example.projectscandium.model.Game;
-
-import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -57,9 +54,9 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, oldPlayers, scores, illegalPlayGame = 1;
+    private int players, originalPlayers, scores, illegalPlayGame = 1;
     private int gamePos, configPos;
-    private Integer[] playerScore, oldPlayerScore;
+    private Integer[] playerScore, originalPlayerScore;
     private Button btnDelete;
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
@@ -178,17 +175,20 @@ public class AddGame extends AppCompatActivity {
                         illegalPlayGame = 0;
                         return;
                     }
-                    if (players < oldPlayers) {
+                    if (players < originalPlayers) {
                         Integer[] newPlayerScore = new Integer[players];
-                        System.arraycopy(playerScore, 0, newPlayerScore, 0, players);
+                        for (int i = 0; i < players; i++) {
+                            newPlayerScore[i] = originalPlayerScore[i];
+                        }
                         playerScore = newPlayerScore;
-                    } else if (players == oldPlayers) {
-                        playerScore = oldPlayerScore;
+                    } else if (players == originalPlayers) {
+                        playerScore = originalPlayerScore;
                     } else {
                         Integer[] newPlayerScore = new Integer[players];
-                        if (oldPlayers >= 0)
-                            System.arraycopy(playerScore, 0, newPlayerScore, 0, oldPlayers);
-                        for (int i = oldPlayers; i < players; i++) {
+                        for (int i = 0; i < originalPlayers; i++) {
+                            newPlayerScore[i] = originalPlayerScore[i];
+                        }
+                        for (int i = originalPlayers; i < players; i++) {
                             newPlayerScore[i] = 0;
                         }
                         playerScore = newPlayerScore;
@@ -305,12 +305,12 @@ public class AddGame extends AppCompatActivity {
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             scores = game.getCombinedScore();
             playerScore = game.getPlayerScore();
-            oldPlayerScore = playerScore;
+            originalPlayerScore = playerScore;
             setupDeleteBtn();
             time = game.getTime();
             scores = game.getCombinedScore();
             players = game.getPlayerNum();
-            oldPlayers = players;
+            originalPlayers = players;
             diff_Level = game.getDifficulty();
             ach_themes = game.getTheme();
             try {
