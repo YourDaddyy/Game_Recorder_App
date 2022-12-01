@@ -57,9 +57,9 @@ import java.util.Objects;
 public class AddGame extends AppCompatActivity {
 
     // private variables to store the necessary information
-    private int players, scores, illegalPlayGame = 1;
+    private int players, oldPlayers, scores, illegalPlayGame = 1;
     private int gamePos, configPos;
-    private Integer[] playerScore;
+    private Integer[] playerScore, oldPlayerScore;
     private Button btnDelete;
     private String time, ach_themes, diff_Level = "Normal";
     private TextView etPlayer;
@@ -114,6 +114,10 @@ public class AddGame extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.listview_adapter, parent, false);
             TextView playerNum = rowView.findViewById(R.id.playerNum);
             EditText playerScore = rowView.findViewById(R.id.playerScore);
+            // set the color of the player number to be white
+            playerNum.setTextColor(Color.WHITE);
+            // set the color of the player score to be white
+            playerScore.setTextColor(Color.WHITE);
             playerNum.setText(String.format(Locale.getDefault(), "Player %d", position + 1));
             playerScore.setText(String.valueOf(this.playerScores[position]));
             playerScore.addTextChangedListener(new TextWatcher() {
@@ -138,6 +142,8 @@ public class AddGame extends AppCompatActivity {
                     updateCombinedScore();
                 }
             });
+            // set background color for the list view
+            rowView.setBackgroundColor(Color.parseColor("#FF018786"));
             return rowView;
         }
     }
@@ -172,11 +178,23 @@ public class AddGame extends AppCompatActivity {
                         illegalPlayGame = 0;
                         return;
                     }
-                    playerScore = new Integer[players];
-                    for (int i = 0; i < players; i++) {
-                        playerScore[i] = 0;
+                    if (players < oldPlayers) {
+                        Integer[] newPlayerScore = new Integer[players];
+                        System.arraycopy(playerScore, 0, newPlayerScore, 0, players);
+                        playerScore = newPlayerScore;
+                    } else if (players == oldPlayers) {
+                        playerScore = oldPlayerScore;
+                    } else {
+                        Integer[] newPlayerScore = new Integer[players];
+                        if (oldPlayers >= 0)
+                            System.arraycopy(playerScore, 0, newPlayerScore, 0, oldPlayers);
+                        for (int i = oldPlayers; i < players; i++) {
+                            newPlayerScore[i] = 0;
+                        }
+                        playerScore = newPlayerScore;
                     }
-                    scores = 0;
+                    // set the combined score to the sum of the new player scores
+                    updateCombinedScore();
                     TextView newScore = findViewById(R.id.score);
                     newScore.setText(String.valueOf(scores));
                     try {
@@ -257,29 +275,42 @@ public class AddGame extends AppCompatActivity {
     private void setupPage() {
         config = cm.getConfigById(configPos);
         btnDelete = findViewById(R.id.btnDelete);
-
+        EditText etPlayer = findViewById(R.id.player);
+        TextView etScore = findViewById(R.id.score);
         if (gamePos == -1) {
             // set up add title
             setTitle(getString(R.string.Add_Game));
             // set up time
             time = setTime();
             btnDelete.setVisibility(View.GONE);
+            // default player number to 2
+            players = 2;
+            playerScore = new Integer[players];
+            for (int i = 0; i < players; i++) {
+                playerScore[i] = 0;
+            }
+            // update the combined score
+            updateCombinedScore();
+            // populate the list view
+            playerScoreList = findViewById(R.id.scoreList);
+            playerScoreList.setAdapter(new AddGame.PlayerScoreAdapter(AddGame.this, playerScore));
+            etPlayer.setText(String.valueOf(players));
         } else {
             // set up edit tile
             setTitle(getString(R.string.editGame_title));
             btnDelete.setVisibility(View.VISIBLE);
             Game game = config.getGames().get(gamePos);
             time = game.getTime();
-            EditText etPlayer = findViewById(R.id.player);
-            TextView etScore = findViewById(R.id.score);
             etPlayer.setText(getString(R.string.addPlayer, game.getPlayerNum()));
             etScore.setText(getString(R.string.addScore, game.getCombinedScore()));
             scores = game.getCombinedScore();
             playerScore = game.getPlayerScore();
+            oldPlayerScore = playerScore;
             setupDeleteBtn();
             time = game.getTime();
             scores = game.getCombinedScore();
             players = game.getPlayerNum();
+            oldPlayers = players;
             diff_Level = game.getDifficulty();
             ach_themes = game.getTheme();
             try {
