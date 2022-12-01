@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- followed: https://devstudioonline.com/article/create-rounded-background-as-border-radius-in-android-layout -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false" >
+        <shape>
+            <gradient
+                android:startColor="@color/scandium"
+                android:endColor="@color/BabyBlue"
+                android:angle="200" />
+            <stroke
+                android:width="1px"
+                android:color="@color/scandium" />
+            <corners android:radius="40dp" />
+        </shape>
+    </item>
+    <item android:state_pressed="true" >
+        <shape>
+            <gradient
+                android:startColor="@color/BabyBlue"
+                android:endColor="@color/scandium"
+                android:angle="200" />
+            <stroke
+                android:width="1px"
+                android:color="@color/BabyBlue" />
+            <corners android:radius="60dp" />
+        </shape>
+    </item>
+</selector>
