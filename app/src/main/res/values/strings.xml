@@ -95,4 +95,6 @@
     <string name="ach_level">Achievement Level %1$d: </string>
     <string name="replay">Replay</string>
     <string name="next_theme">Cycle Theme</string>
+    <string name="photo">Photo</string>
+    <string name="add">Add</string>
 </resources>
