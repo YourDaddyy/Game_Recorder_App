@@ -91,4 +91,7 @@
     <string name="achievement_msg">\nCongratulations!\nYou reached Level: %1$d \n</string>
     <string name="about_button_text">about</string>
     <string name="aboutPageTitle">About Us</string>
+    <string name="ach_level">Achievement Level %1$d: </string>
+    <string name="replay">Replay</string>
+    <string name="next_theme">Cycle Theme</string>
 </resources>

@@ -16,6 +16,7 @@ public class Configs {
     private int greatExpectedScore;
     private int poorExpectedScore;
     private String gameConfigName;
+    private int[] ach_count = new int[10];
 
     // private array list to store the games and integer to store the number of
     // games in the config
@@ -127,5 +128,19 @@ public class Configs {
     // Return: void
     public void setGameNum(int gameNum) {
         this.gameNum = gameNum;
+    }
+
+    // getAchNum
+    // Purpose: gets the number of ach in the config
+    // Return: int
+    public int getAch_count(int index) {
+        return ach_count[index];
+    }
+
+    // setGameNum
+    // Purpose: sets the ach num of config
+    // Return: void
+    public void setAch_count(int index, int num) {
+        this.ach_count[index] += num;
     }
 }

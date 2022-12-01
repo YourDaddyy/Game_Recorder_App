@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -33,6 +38,8 @@ public class GameConfig extends AppCompatActivity {
     private boolean emptyName, upperScoreCheck, lowerScoreCheck, lowerScoreDiff;
 
     EditText nameBox, upperScoreBox, lowerScoreBox;
+    private TableLayout tableLayout;
+
 
     // onCreate method
     // Purpose: creates the activity, set the toolbar (including the title).
@@ -87,6 +94,12 @@ public class GameConfig extends AppCompatActivity {
             upperScoreBox.setText(String.valueOf(config.getGreatExpectedScore()));
             lowerScoreBox.setText(String.valueOf(config.getPoorExpectedScore()));
         }
+
+        // Ach Table
+        tableLayout = findViewById(R.id.ach_tablelayout);
+        tableLayout.setStretchAllColumns(true);
+        tableLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        setupTable();
 
         // TextWatcher
         // Purpose: listens to the text in the name box and checks if it is empty
@@ -256,6 +269,27 @@ public class GameConfig extends AppCompatActivity {
             new_intent.putExtra("configIndex", index);
             startActivity(new_intent);
         });
+    }
+
+    private void setupTable() {
+        for(int i = 0; i < 10; i++){
+            TableRow tableRow = new TableRow(this);
+            tableRow.setWeightSum(10);
+            tableRow.setPadding(0,10,0,10);
+            TextView achTV = new TextView(this);
+            TextView ach_numTV = new TextView(this);
+            achTV.setTextColor(getColor(R.color.white));
+            ach_numTV.setTextColor(getColor(R.color.white));
+            achTV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            ach_numTV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+            achTV.setText(getString(R.string.ach_level, i));
+            ach_numTV.setText(getString(R.string.addScore, config.getAch_count(i)));
+            tableRow.addView(achTV);
+            tableRow.addView(ach_numTV);
+
+            tableLayout.addView(tableRow);
+        }
     }
 
     // checkEmpty method
